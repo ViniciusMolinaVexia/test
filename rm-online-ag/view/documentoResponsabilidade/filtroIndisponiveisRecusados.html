@@ -1,0 +1,86 @@
+<nx-filtro>
+    <div class="form-group"
+         ng-if="configuracao.habilitaEapMultiEmpresa && configuracao.habilitaEapMultiEmpresa == true">
+        <label>{{ResourceBundle['label_eap_multi_empresa']}}</label>
+        <nx-combo id="filtroEapMultiEmpresa" ng-model="filtroIndisRec.eapMultiEmpresa"
+                  ng-options="eapMultiEmpresa as eapMultiEmpresa.descricao for eapMultiEmpresa in listaTodasEapMultiEmpresa track by eapMultiEmpresa.id">
+        </nx-combo>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_rma_separe_por_ponto_e_virgula_as_rmas']}}</label>
+        <input id="docResponsabilidadeNumeroRmaIndisRec" class="form-control" ng-model="filtroIndisRec.numeroRm">
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_material']}}</label>
+        <nx-auto-complete
+                id="filtroMaterialIndisRec"
+                ng-model="filtroIndisRec.material"
+                typeahead="Material as '{{ResourceBundle['label_codigo']}}: ' + Material.codigo + '<br>{{ResourceBundle['label_nome']}}: ' + Material.nome + '<br>{{ResourceBundle['label_unidade_medida']}}: ' + Material.unidadeMedida.descricao for Material in getAutoCompleteMateriaisExistentes($viewValue)">
+        </nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_requisitante']}}</label>
+        <nx-auto-complete id="docResponsabilidadeRequisitanteIndisRec" ng-model="filtroIndisRec.requisitante"
+                          typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)">
+        </nx-auto-complete>
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_usuario_cadastrante']}}</label>
+        <nx-auto-complete id="docResponsabilidadeUsuarioCadastranteIndisRec"
+                          ng-model="filtroIndisRec.usuarioCadastrante"
+                          typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)">
+        </nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_data_emissao']}}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <nx-date-field id="docResponsabilidadeDataEmissaoDeIndisRec"
+                               placeholder="{{ResourceBundle['label_de']}}"
+                               ng-model="filtroIndisRec.stDataEmissaoDe"></nx-date-field>
+            </div>
+            <div class="col-md-6">
+                <nx-date-field id="docResponsabilidadeDataEmissaoAteIndisRec"
+                               placeholder="{{ResourceBundle['label_ate']}}"
+                               ng-model="filtroIndisRec.stDataEmissaoAte"></nx-date-field>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_data_aplicacao']}}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <nx-date-field id="docResponsabilidadeDataAplicacaoDeIndisRec"
+                               placeholder="{{ResourceBundle['label_de']}}"
+                               ng-model="filtroIndisRec.stDataAplicacaoDe"></nx-date-field>
+            </div>
+            <div class="col-md-6">
+                <nx-date-field id="docResponsabilidadeDataAplicacaoAtIndisRece"
+                               placeholder="{{ResourceBundle['label_ate']}}"
+                               ng-model="filtroIndisRec.stDataAplicacaoAte"></nx-date-field>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_material_chave']}}</label>
+        <input id="docResponsabilidadeMaterialChaveIndisRec" class="form-control"
+               ng-model="filtroIndisRec.materialChave">
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_tipo_material']}}</label>
+        <nx-combo class="form-control" id="docResponsabilidadeExibirTipoMaIndisRec"
+                  name="docResponsabilidadeExibirImpressosIndisRec" ng-model="filtroIndisRec.tipoMaterial">
+            <option value="T">{{ResourceBundle['label_todos']}}</option>
+            <option value="E">{{ResourceBundle['label_equipamento']}}</option>
+            <option value="EPI">{{ResourceBundle['label_epi']}}</option>
+            <option value="MC">{{ResourceBundle['label_mc']}}</option>
+        </nx-combo>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_deposito']}}</label>
+        <nx-combo id="docResponsabilidadeDeposito" ng-model="filtroIndisRec.deposito"
+                  ng-options="Deposito as Deposito.nome for Deposito in listaDepositos track by Deposito.depositoId"
+        ></nx-combo>
+    </div>
+</nx-filtro>

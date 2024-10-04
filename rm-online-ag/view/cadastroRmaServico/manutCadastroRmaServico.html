@@ -1,0 +1,559 @@
+<nx-manut id="manutCadastroRmaServico">
+    <div class="panel-body">
+        <form id="formManutencao">
+            <nx-float-group cols="4">
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_centro']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-combo id="manutCadastroCentro" ng-model="objSelecionado.rm.centro" ng-change="atualizarDepositos(objSelecionado.rm.centro)" required ng-options="Centro as Centro.nome for Centro in listaCentros track by Centro.centroId" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm">
+                    </nx-combo>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_area']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-combo id="manutCadastroArea" ng-model="objSelecionado.rm.area" ng-change="changeArea()" required ng-options="Area as Area.nome for Area in listaAreas track by Area.areaId" ng-disabled="false">
+                    </nx-combo>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_numero"]}}</label>
+                    <input id="manutCadastroRmaNumeroRma" type="text" ng-disabled="true" ng-model="objSelecionado.rm.numeroRmServico" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_requisitante"]}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                    <nx-auto-complete id="manutCadastroRmaRequisitante" ng-model="objSelecionado.rm.requisitante" typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompleteRequisitante($viewValue)" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"
+                        required></nx-auto-complete>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_data_emissao"]}}</label>
+                    <nx-date-field title="Data da emiss&atilde;o da SS" id="manutCadastroRmaDataEmissao" ng-model="objSelecionado.rm.stDataEmissao" ng-disabled="true"></nx-date-field>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_necessidade"]}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                    <nx-date-field title="Data em que o servi&ccedil;o deva estar contratado e dispon&iacute;vel para ser realizado/mobilizado." id="manutCadastroRmaDataAplicacao" ng-model="objSelecionado.rm.stDataAplicacao" required ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"
+                        ng-change="changeDataAplicacao()"></nx-date-field>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_natureza_operacao"]}}</label>
+                    <input id="manutCadastroRmaPrioridade" type="text" ng-disabled="true" ng-value="(objSelecionado.rm.prioridade.descricao)" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_local_entrega"]}}</label>
+                    <span class="glyphicon" ng-class="{'glyphicon-asterisk obrigatorio': objSelecionado.rm.centro.codigo !== 'WMG2'}"></span>
+                    <input id="manutCadastroRmaLocalEntrega" title="Frente de atua&ccedil;&atilde;o, endere	&ccedil;o completo da obra, etc." type="text" maxlength="25" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm || objSelecionado.rm.centro.codigo == 'WMG2'"
+                        ng-model="objSelecionado.rm.localEntrega" class="form-control" ng-class="{'required': objSelecionado.rm.centro.codigo !== 'WMG2'}">
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_observacao"]}}</label>
+                    <textarea id="manutCadastroRmaObservacao" rows="3" maxlength="1000" ng-model="objSelecionado.rm.observacao" class="form-control" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"></textarea>
+                </div>
+            </nx-float-group>
+
+            <nx-float-group cols="4" ng-show="!ocultarCampoEnvSap">
+                <h3>{{ResourceBundle["label_almoxarifado_servico"]}}</h3>
+                <hr>
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_enviado_sap"] }}</label>
+                    <div>
+                        <label>
+                        <input ng-model="objSelecionado.rmServico.enviadoSap" type="radio" name="enviadoSap" id="enviadoSap"
+                               value="S" ng-disabled="bloquearCampoEnvSap"/> 
+                            {{ResourceBundle["label_sim_enviado_ao_sap"]}}
+                    </label>
+                    </div>
+                </div>
+                <div ng-if="objSelecionado.rmServico.enviadoSap === 'S'" class="form-group">
+                    <label>{{ResourceBundle["label_enviado_numero_sap_servico"]}}</label>
+                    <textarea id="manutCadastroRmaNumeroSap" rows="1" maxlength="50" ng-model="objSelecionado.rmServico.numeroReqSap" class="form-control" ng-disabled="bloquearCampoEnvSap"></textarea>
+                </div>
+            </nx-float-group>
+        </form>
+        <h3>{{ResourceBundle["label_servicos"]}}</h3>
+        <hr>
+        <form id="formServicos">
+            <!--HM-->
+            <nx-float-group cols="" required>
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_tipo_solicitacao"] }}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <div>
+                        <label>
+                        <input title="Dever&aacute; ser solicitado contratar um servi&ccedil;o Spot, para o seguinte caso:-> Servi&cdcedil;o e mesmo objeto que podem ocorrer at&eacute; 2 vezes, e/ou que n&atilde;o h&aacute; funcion&aacute;rio do prestador realizando atividade nas depend&ecirc;ncias da AG." ng-model="objSelecionado.rmServico.opcoesTpSolicitacao" type="radio" name="opcoesTpSolicitacao" id="tpSolicitacaoSpot"
+                               value="spot" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"/> 
+                            {{ResourceBundle["label_solicitacao_servico_pontual"]}}
+                    </label>
+                        <label>
+                        <input ng-model="objSelecionado.rmServico.opcoesTpSolicitacao" title="Dever&aacute; ser solicitado emiss&atilde;o de um Contrato, para os seguintes casos: -> Servi&ccedil;os de mesmo objeto que podem acontecer por 3 vezes ou mais; -> Servi&ccedil;os onde h&aacute; funcion&aacute;rio do prestador realizando atividade nas depend&ecirc;ncias da AG."
+                               type="radio" name="opcoesTpSolicitacao" id="tpSolicitacaoContrato"
+                               value="contrato" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"/> 
+                            {{ResourceBundle["label_solicitacao_servico_contrato"]}}
+                    </label>
+                        <!--<label>
+                        <input title="Dever&aacute; ser solicitado uma contrata&ccedil;&atilde;o de Subempreitada  para o seguinte caso: -> Subcontrata&ccedil;&atilde;o da execu&ccedil;&atilde;o de parcela do objeto do Contrato Principal, celebrado entre a AG e seu Cliente." ng-model="objSelecionado.rmServico.opcoesTpSolicitacao" 
+                               type="radio" name="opcoesTpSolicitacao" id="tpSolicitacaoSub"
+                               value="sub" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"/> 
+                            {{ResourceBundle["label_solicitacao_contratacao_subempreitada"]}}
+                    </label>-->
+                    </div>
+                </div>
+            </nx-float-group>
+            <nx-float-group cols="3">
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_elemento_pep"] }} / {{ ResourceBundle["label_ordem_servico"] }}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <div><input title="Informar o Elemento PEP ou nº da Ordem de Servi&ccedil;o (no caso de servi&ccedil;os em equipamentos)" class="form-control" type="text" ng-model="objSelecionado.rmServico.elementoPep" required ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"
+                        /></div>
+                </div>
+                <!--<div class="form-group">
+                    <label>{{ ResourceBundle["label_codigo_sap"] }}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-auto-complete id="manutCadastroRmServicoCodigoSap" ng-model="objSelecionado.rmServico.codigoSap" typeahead="CodigoSap as CodigoSap.descricao for CodigoSap in getAutoCompleteServicosCodigoSap($viewValue)" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"
+                        required>
+                    </nx-auto-complete>
+                </div>-->
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_codigo_sap']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-combo id="manutCadastroCodigoSap" ng-model="objSelecionado.codigoSap" required ng-options="CodigoSap as CodigoSap.descricao for CodigoSap in listaCodigoSap track by CodigoSap.codigoId" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm">
+                    </nx-combo>
+                </div>
+            </nx-float-group>
+            <div class="form-group">
+                <label>1 - {{ ResourceBundle["label_escopo_servicos"] }}</label>
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                <div><textarea title="Descrever detalhadamente os servi&ccedil;os, incluindo todos os dados, informa&ccedil;&otilde;es e especifica&ccedil;&otilde;es t&eacute;cnicas necess&aacute;rias &agrave; sua correta contrata&ccedil;&atilde;o." class="form-control autocomplete-grande"
+                        ng-model="objSelecionado.rmServico.escopoServico" rows="8" maxlength="1000" required ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"></textarea></div>
+            </div>
+            <nx-float-group cols="2">
+                <div class="form-group">
+                    <label>2 - {{ ResourceBundle["label_abrangencia_escopo"] }}</label>
+                    <div><textarea class="form-control autocomplete-grande" title="Informar se todos os fornecimentos ser&atilde;o por conta da Contratada ou se algum material ou servi&ccedil;o ser&aacute; fornecido diretamente pela AG, tipo cimento, aço, tintas e solventes, ensaios, sondagens, etc."
+                            ng-model="objSelecionado.rmServico.abrangenciaEscopo" rows="5" maxlength="1000" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm">
+                    </textarea></div>
+                </div>
+                <div class="form-group">
+                    <label>3 - {{ ResourceBundle["label_local_prestacao_servico"] }}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <div><textarea class="form-control autocomplete-grande" title="Frente de atua&ccedil;&atilde;o, endere&ccedil;o completo da obra, etc." ng-model="objSelecionado.rmServico.localPrestacaoServico" rows="5" maxlength="1000" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"></textarea></div>
+                </div>
+            </nx-float-group>
+            <div class="form-group">
+                <label>4 - {{ ResourceBundle["label_sugestao_fornecedores"] }}</label>
+                <nx-float-group cols="4">
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_fornecedor"] }}</label>
+                        <input class="form-control" type="text" ng-model="objSelecionado.rmServico.cadFornecedor" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" />
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_telefone"] }}</label>
+                        <input class="form-control" type="text" ng-model="objSelecionado.rmServico.cadTelefone" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" />
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_email"] }}</label>
+                        <input class="form-control" type="text" ng-model="objSelecionado.rmServico.cadEmail" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" />
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_pessoa_contato"] }}</label>
+                        <input class="form-control" type="text" ng-model="objSelecionado.rmServico.cadContato" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" />
+                    </div>
+                    <input class="btn btn-default" type="button" value="{{ResourceBundle['label_adicionar']}}" ng-click="addFornecedorServico()" />
+                </nx-float-group>
+            </div>
+            <div>
+                <table class="table table-bordered table-hover table-striped not-fix" not-fix="true" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm">
+                    <thead class="fundo-cabecalho-tabela">
+                        <tr>
+                            <th>
+                            </th>
+                            <th>{{ ResourceBundle["label_fornecedor"] }}</th>
+                            <th>{{ ResourceBundle["label_telefone"] }}</th>
+                            <th>{{ ResourceBundle["label_email"] }}</th>
+                            <th>{{ ResourceBundle["label_pessoa_contato"] }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="fornecedor in objSelecionado.rmServico.fornecedores">
+                            <td>
+                                <nx-btn-2 title="{{ResourceBundle['label_excluir']}}" icone="glyphicon glyphicon-remove" ng-click="rmFornecedorServico($index)"></nx-btn-2>
+                            </td>
+                            <td>{{ fornecedor.fornecedor }}</td>
+                            <td>{{ fornecedor.telefone }}</td>
+                            <td>{{ fornecedor.email }}</td>
+                            <td>{{ fornecedor.contato }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <label>5 - {{ ResourceBundle["label_particularidades_servicos"] }}</label>
+            </div>
+            <nx-float-group>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-3">{{ ResourceBundle["label_atestacao_empresa"] }}</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input class="form-control autocomplete-grande" type="text" ng-model="objSelecionado.rmServico.atestacaoEmpresa" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" />
+                        </div>
+                    </div>
+                </div><br/>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-3">{{ ResourceBundle["label_curriculos_colaboradores"] }}</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input class="form-control autocomplete-grande" type="text" ng-model="objSelecionado.rmServico.curriculoColaboradores" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" />
+                        </div>
+                    </div>
+                </div><br/>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-3">{{ ResourceBundle["label_certificacoes_exigidas"] }}</label>
+                        <div class="col-xs-12 col-sm-6">
+                            <input class="form-control autocomplete-grande" type="text" ng-model="objSelecionado.rmServico.certificadosExigidos" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" />
+                        </div>
+                    </div>
+                </div><br/>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-3">{{ ResourceBundle["label_outros"] }}</label>
+                        <div class="col-xs-12 col-sm-6"><input class="form-control autocomplete-grande" type="text" ng-model="objSelecionado.rmServico.particularidadesServicosOutros" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></div>
+                    </div>
+                </div>
+            </nx-float-group>
+            <br />
+            <div class="form-group">
+                <label>6 - {{ ResourceBundle["label_responsabilidades"] }}</label>
+            </div>
+            <div class="form-group">
+                <table title="Inserir detalhe das responsabilidades: [EPI's, EPC's, voltagem da energia, capacidade do guindaste, etc]" style="width:100%;">
+                    <tr>
+                        <td style="width:30%">
+                            <table class="table table-bordered table-hover table-striped not-fix" style="width:100%;" not-fix="true">
+                                <thead class="fundo-cabecalho-tabela">
+                                    <tr>
+                                        <td>{{ ResourceBundle["label_ag"] }}</td>
+                                        <td>{{ ResourceBundle["label_fornecedor"] }}</td>
+                                        <td style="width:60%"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.alojamento" name="alojamento" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.alojamento" name="alojamento" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_alojamento"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.alimentacao" name="alimentacao" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.alimentacao" name="alimentacao" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_alimentacao"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.transporte" name="transporte" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.transporte" name="transporte" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_transporte"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.cestaBasica" name="cesta_basica" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.cestaBasica" name="cesta_basica" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_cesta_basica"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.planoOdontologico" name="plano_odontologico" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.planoOdontologico" name="plano_odontologico" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_plano_odontologico"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.epis" name="epis" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.epis" name="epis" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_epis"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.epcs" name="epcs" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.epcs" name="epcs" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_epcs"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.despesasViagem" name="despesas_viagem" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.despesasViagem" name="despesas_viagem" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_despesas_viagem"] }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td style="width:4%"></td>
+                        <td style="width:30%;">
+                            <table title="Inserir detalhe das responsabilidades: [EPI's, EPC's, voltagem da energia, capacidade do guindaste, etc]" class="table table-bordered table-hover table-striped not-fix" style="width:100%;" not-fix="true">
+                                <thead class="fundo-cabecalho-tabela">
+                                    <tr>
+                                        <td>{{ ResourceBundle["label_ag"] }}</td>
+                                        <td>{{ ResourceBundle["label_fornecedor"] }}</td>
+                                        <td style="width:60%"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.escritorio" name="escritorio" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.escritorio" name="escritorio" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_escritorio"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.mobiliario" name="mobiliario" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.mobiliario" name="mobiliario" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_mobiliario"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.seguro" name="seguro" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.seguro" name="seguro" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_seguro"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.garantias" name="garantias" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.garantias" name="garantias" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_garantias"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.veiculos" name="veiculos" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.veiculos" name="veiculos" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_veiculos"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.impostos" name="impostos" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.impostos" name="impostos" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_impostos"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.responsabilidadesOutros1" name="responsabilidadesOutros1" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.responsabilidadesOutros1" name="responsabilidadesOutros1" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_outros"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.responsabilidadesOutros2" name="responsabilidadesOutros2" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.responsabilidadesOutros2" name="responsabilidadesOutros2" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_outros"] }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td style="width:4%"></td>
+                        <td style="width:31%">
+                            <table title="Inserir detalhe das responsabilidades: [EPI's, EPC's, voltagem da energia, capacidade do guindaste, etc]" class="table table-bordered table-hover table-striped not-fix" style="width:100%" not-fix="true">
+                                <thead class="fundo-cabecalho-tabela">
+                                    <tr>
+                                        <td>{{ ResourceBundle["label_ag"] }}</td>
+                                        <td>{{ ResourceBundle["label_fornecedor"] }}</td>
+                                        <td style="width:60%"></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.banheiroQuimico" name="banheiro_quimico" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.banheiroQuimico" name="banheiro_quimico" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_banheiro_quimico"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.energia" name="energia" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.energia" name="energia" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_energia"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.agua" name="agua" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.agua" name="agua" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_agua"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.examesAdmissionais" name="exames_admissionais" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.examesAdmissionais" name="exames_admissionais" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_exames_admissionais"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.crachaUniforme" name="cracha_uniforme" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.crachaUniforme" name="cracha_uniforme" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_cracha_uniforme"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.guindaste" name="guindaste" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.guindaste" name="guindaste" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_guindaste"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.andaime" name="andaime" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.andaime" name="andaime" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_andaime"] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.pequenoPorte" name="pequeno_porte" value="AG" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td><input type="radio" ng-model="objSelecionado.rmServico.pequenoPorte" name="pequeno_porte" value="FORNECEDOR" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                                        <td>{{ ResourceBundle["label_equipamentos_pequeno_porte"] }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form-group">
+                <label>{{ ResourceBundle["label_observacoes_responsabilidades"] }}</label>
+                <textarea class="form-control" ng-model="objSelecionado.rmServico.responsabilidadeObservacoes" rows="5" maxlength="1000" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"></textarea>
+            </div>
+            <div class="form-group">
+                <label>7 - {{ ResourceBundle["label_prazo_previsto_execucao_servico"] }}</label>
+            </div>
+            <nx-float-group cols="4">
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_data_inicio"] }}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-date-field id="cadstroServicoDataInicial" ng-model="objSelecionado.rmServico.stDataInicio" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"></nx-date-field>
+                </div>
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_data_termino"] }}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-date-field id="cadstroServicoDataTermino" ng-model="objSelecionado.rmServico.stDataTermino" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" ng-change="verificaPrazo()"></nx-date-field>
+                </div>
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_prazo_total"] }}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <div><input class="form-control" type="text" ng-model="objSelecionado.rmServico.prazoTotal" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></div>
+                </div>
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_marcos_parciais"] }}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <div><input class="form-control" type="text" ng-model="objSelecionado.rmServico.marcosParciais" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></div>
+                </div>
+            </nx-float-group>
+            <div class="form-group">
+                <label>8 - {{ ResourceBundle["label_condicao_trabalho"] }}</label>
+            </div>
+            <nx-float-group cols="4">
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_jornada_trabalho"] }}</label>
+                    <div><input class="form-control" type="text" ng-model="objSelecionado.rmServico.jornadaTrabalho" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></div>
+                </div>
+            </nx-float-group>
+            <div class="form-group">
+                <table class="table table-bordered table-hover table-striped not-fix" not-fix="true">
+                    <thead class="fundo-cabecalho-tabela">
+                        <tr>
+                            <td></td>
+                            <td>{{ ResourceBundle["label_sim"] }}</td>
+                            <td>{{ ResourceBundle["label_nao"] }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ ResourceBundle["label_permitido_trabalho_noturno"] }}</td>
+                            <td><input type="radio" ng-model="objSelecionado.rmServico.permitidoTrabalhoNoturno" name="permitidoTrabalhoNoturno" value="SIM" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                            <td><input type="radio" ng-model="objSelecionado.rmServico.permitidoTrabalhoNoturno" name="permitidoTrabalhoNoturno" value="NAO" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                        </tr>
+                        <tr>
+                            <td>{{ ResourceBundle["label_permitido_trabalho_horario_extraordinario"] }}</td>
+                            <td><input type="radio" ng-model="objSelecionado.rmServico.permitidoTrabalhoHorarioExtraordinario" name="permitidoTrabalhoHorarioExtraordinario" value="SIM" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                            <td><input type="radio" ng-model="objSelecionado.rmServico.permitidoTrabalhoHorarioExtraordinario" name="permitidoTrabalhoHorarioExtraordinario" value="NAO" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                        </tr>
+                        <tr>
+                            <td>{{ ResourceBundle["label_permitido_trabalho_dias_especiais"] }}</td>
+                            <td><input type="radio" ng-model="objSelecionado.rmServico.permitidoTrabalhoDiasEspeciais" name="permitidoTrabalhoDiasEspeciais" value="SIM" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                            <td><input type="radio" ng-model="objSelecionado.rmServico.permitidoTrabalhoDiasEspeciais" name="permitidoTrabalhoDiasEspeciais" value="NAO" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <label>{{ ResourceBundle["label_observacoes"] }}</label>
+                <textarea class="form-control" title="Inserir observa&ccedil;&otilde;es que considerem importantes sobre condi&ccedil;&otilde;es de trabalho" ng-model="objSelecionado.rmServico.condicaoTrabalhoObservacao" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"></textarea>
+            </div>
+            <div class="form-group">
+                <label>9 - {{ ResourceBundle["label_requisitos_acesso_obra"] }}</label>
+            </div>
+            <nx-float-group cols="4">
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_exames_necessarios"] }}</label>
+                    <div><br /><input class="form-control" type="text" ng-model="objSelecionado.rmServico.examesNecessarios" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></div>
+                </div>
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_prazo_integracao"] }}</label>
+                    <div><br /><input class="form-control" type="text" ng-model="objSelecionado.rmServico.prazoIntegracao" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></div>
+                </div>
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_tempo_medio_espera_pessoal"] }}</label>
+                    <div><br /><input class="form-control" type="text" ng-model="objSelecionado.rmServico.tempoMedioEsperaPessoal" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></div>
+                </div>
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_tempo_medio_espera_materiais"] }}</label>
+                    <div><br /><input class="form-control" type="text" ng-model="objSelecionado.rmServico.tempoMedioEsperaMateriais" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" /></div>
+                </div>
+            </nx-float-group>
+            <div class="form-group">
+                <label>10 - {{ ResourceBundle["label_anexos"] }}</label>
+            </div>
+            <!--<div class="form-group" ng-show="objSelecionado.rm.rmId">
+                <nx-float-group cols="5">
+                    <input class="btn btn-default" type="file" ng-model="anexoServicoSelecionado" id="anexoServico" value="{{ResourceBundle['label_novo_anexo']}}" onchange="angular.element(this).scope().adicionarAnexoServico()" multiple/>
+                </nx-float-group>
+            </div>-->
+            <div class="form-group" ng-show="objSelecionado.rm.rmId">
+                <table class="table table-bordered table-hover table-striped not-fix" not-fix="true">
+                    <thead class="fundo-cabecalho-tabela">
+                        <tr>
+                            <td>{{ ResourceBundle["label_anexos"] }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="anexo in listaAnexo">
+                            <td>{{ anexo.nome }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!--<table class="table table-bordered table-hover table-striped not-fix" not-fix="true" style="width:100%;">
+                    <thead class="fundo-cabecalho-tabela">
+                        <tr>
+                            <td style="width:10%;">{{ ResourceBundle["label_tabela_anexo"] }}</td>
+                            <td style="width:10%;">{{ ResourceBundle["label_tabela_anexo_titulo"] }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ ResourceBundle["label_anexo_i"] }}</td>
+                            <td><input class="autocomplete-grande" type="text" ng-model="objSelecionado.rmServico.anexo1" name="anexo1" /></td>
+                        </tr>
+                        <tr>
+                            <td>{{ ResourceBundle["label_anexo_ii"] }}</td>
+                            <td><input class="autocomplete-grande" type="text" ng-model="objSelecionado.rmServico.anexo2" name="anexo2" /></td>
+                        </tr>
+                        <tr>
+                            <td>{{ ResourceBundle["label_anexo_iii"] }}</td>
+                            <td><input class="autocomplete-grande" type="text" ng-model="objSelecionado.rmServico.anexo3" name="anexo3" /></td>
+                        </tr>
+                        <tr>
+                            <td>{{ ResourceBundle["label_anexo_iv"] }}</td>
+                            <td><input class="autocomplete-grande" type="text" ng-model="objSelecionado.rmServico.anexo4" name="anexo4" /></td>
+                        </tr>
+                        <tr>
+                            <td>{{ ResourceBundle["label_anexo_v"] }}</td>
+                            <td><input class="autocomplete-grande" type="text" ng-model="objSelecionado.rmServico.anexo5" name="anexo5" /></td>
+                        </tr>
+                    </tbody>
+                </table>-->
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_observacoes"] }}</label>
+                    <textarea class="form-control autocomplete-grande" ng-model="objSelecionado.rmServico.anexoObservacoes" rows="5"></textarea>
+                </div>
+            </div>
+
+            <!--<div class="form-group" ng-show="objSelecionado.rm.rmId">
+                <table class="table table-bordered table-hover table-striped not-fix" not-fix="true">
+                    <thead class="fundo-cabecalho-tabela">
+                        <tr>
+                            <td>{{ ResourceBundle["label_anexos"] }}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="anexo in listaAnexo">
+                            <td>{{ anexo.nome }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>-->
+        </form>
+    </div>
+</nx-manut>

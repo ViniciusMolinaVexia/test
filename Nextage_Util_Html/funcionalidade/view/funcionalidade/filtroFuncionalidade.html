@@ -1,0 +1,68 @@
+<nx-filtro id="filtroDinamico">
+    <div class="row">
+        <div class="divFiltroDinamicoTamanhoMinimo"></div>
+        <div ng-repeat="campoManut in listaCamposFiltro" class="col-md-4"
+             ng-if="campoManut.campo.tipoCampo.nome !== DATE">
+            <label for="{{campoManut.id}}">
+                {{ResourceBundle[campoManut.campo.chaveLabel]}}
+            </label>
+            <!--comeÃ§a campos dinamicos-->
+            <!--primitivos-->
+            <!--Integer double string-->
+            <primitivos-filtro></primitivos-filtro>
+            <!--autocoplete-->
+            <autocomplete-filtro></autocomplete-filtro>
+            <!--autocoplete-codigo-->
+            <autocomplete-codigo-filtro></autocomplete-codigo-filtro>
+            <!--autocoplete-pessoa-->
+            <autocomplete-pessoa-filtro></autocomplete-pessoa-filtro>
+            <!--combo-->
+            <combo-filtro-funcionalidade></combo-filtro-funcionalidade>
+            <!--combo-codigo-->
+            <combo-codigo-filtro-funcionalidade></combo-codigo-filtro-funcionalidade>
+            <!--textarea-->
+            <text-area-filtro></text-area-filtro>
+            <!--combo-aux-->
+            <combo-aux-filtro></combo-aux-filtro>
+            <!--combo-sim-nao-->
+            <combo-sim-nao-filtro></combo-sim-nao-filtro>
+            <!--combo eap multiEmpresa-->
+            <combo-eap-multi-empresa-filtro></combo-eap-multi-empresa-filtro>
+        </div>
+        <div ng-repeat="dataManut in listaCamposDataVo" class="col-md-4">
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="{{dataManut.campo.id}}">
+                        {{ResourceBundle[dataManut.campo.chaveLabel]}}
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="checkbox"
+                           ng-click="checkFiltroDataNullNotNull(dataManut, 'notNull')"
+                           ng-checked="dataManut.dataNotNull"
+                           ng-true-value="true" ng-false-value="false"/>
+                    <label for="{{dataManut.campo.id}}" style="font-weight: normal;">
+                        {{ResourceBundle['label_preenchido']}}
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <input type="checkbox"
+                           ng-click="checkFiltroDataNullNotNull(dataManut, 'null')"
+                           ng-checked="dataManut.dataNull"
+                           ng-true-value="false" ng-false-value="true"/>
+                    <label for="{{dataManut.campo.id}}" style="font-weight: normal;">
+                        {{ResourceBundle['label_nao_preenchido']}}
+                    </label>
+                </div>
+            </div>
+
+            <!--campos periodo Datas-->
+            <campo-data-vo></campo-data-vo>
+        </div>
+    </div>
+</nx-filtro>

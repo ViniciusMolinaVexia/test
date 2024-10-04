@@ -1,0 +1,93 @@
+<nx-manut> 
+	<div class="panel-body"> 
+		<div class="row"> 
+			<div class="col-md-12"> 
+				<form name="formManutencao " role="form" id="formManutencao" class="form">
+
+					<!-- Campos Aqui --> 
+					<div class="form-group col-md-4"> 
+						<label for="sistema"> 
+							{{ResourceBundle['label_sistema']}} 
+						</label> 
+						<input type="text" class="form-control" id="sistema" name="sistema" ng-model="objSelecionado.sistema" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="interfaceExec"> 
+							{{ResourceBundle['label_interface_exec']}} 
+						</label> 
+						<input type="text" class="form-control" id="interfaceExec" name="interfaceExec" ng-model="objSelecionado.interfaceExec" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="numRma"> 
+							{{ResourceBundle['label_num_rma']}} 
+						</label> 
+						<input type="text" class="form-control" id="numRma" name="numRma" ng-model="objSelecionado.numRma" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="codigoDeposito"> 
+							{{ResourceBundle['label_codigo_deposito']}} 
+						</label> 
+						<input type="text" class="form-control" id="codigoDeposito" name="codigoDeposito" ng-model="objSelecionado.codigoDeposito" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="itemRequisicaoSap"> 
+							{{ResourceBundle['label_item_requisicao_sap']}} 
+						</label> 
+						<input type="text" class="form-control" id="itemRequisicaoSap" name="itemRequisicaoSap" ng-model="objSelecionado.itemRequisicaoSap" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="numRequisicaoSap"> 
+							{{ResourceBundle['label_num_requisicao_sap']}} 
+						</label> 
+						<input type="text" class="form-control" id="numRequisicaoSap" name="numRequisicaoSap" ng-model="objSelecionado.numRequisicaoSap" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="numPedidoSap"> 
+							{{ResourceBundle['label_num_pedido_sap']}} 
+						</label> 
+						<input type="text" class="form-control" id="numPedidoSap" name="numPedidoSap" ng-model="objSelecionado.numPedidoSap" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group"> 
+						<label for="dataHoraInclusaoLog"> 
+							{{ResourceBundle['label_data_hora_inclusao_log']}} 
+						</label> 
+						<nx-date-field id="stdataHoraInclusaoLog" ng-model="objSelecionado.stDataHoraInclusaoLog" 
+ ></nx-date-field> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="usuarioInclusao"> 
+							{{ResourceBundle['label_usuario_inclusao']}} 
+						</label> 
+						<input type="text" class="form-control" id="usuarioInclusao" name="usuarioInclusao" ng-model="objSelecionado.usuarioInclusao" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="json"> 
+							{{ResourceBundle['label_json']}} 
+						</label> 
+						<input type="text" class="form-control" id="json" name="json" ng-model="objSelecionado.json" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="mensagem"> 
+							{{ResourceBundle['label_mensagem']}} 
+						</label> 
+						<input type="text" class="form-control" id="mensagem" name="mensagem" ng-model="objSelecionado.mensagem" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="tipoMensagem"> 
+							{{ResourceBundle['label_tipo_mensagem']}} 
+						</label> 
+						<input type="text" class="form-control" id="tipoMensagem" name="tipoMensagem" ng-model="objSelecionado.tipoMensagem" nx-limit-to="255" /> 
+					</div> 
+					<div class="form-group col-md-4"> 
+						<label for="erroMensagem"> 
+							{{ResourceBundle['label_erro_mensagem']}} 
+						</label> 
+						<input type="text" class="form-control" id="erroMensagem" name="erroMensagem" ng-model="objSelecionado.erroMensagem" nx-limit-to="255" /> 
+					</div> 
+
+ 
+				</form> 
+			</div> 
+		</div> 
+	</div> 
+</nx-manut>

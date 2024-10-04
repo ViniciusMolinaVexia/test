@@ -1,0 +1,71 @@
+<div class="row col-md-12">
+    <div class="col-md-12">
+        <conteudo-aba-funcionalidade></conteudo-aba-funcionalidade>
+    </div>
+    <div class="col-md-12" ng-show="listaCamposAbas[aba.codigo].listaCamposManut.length > 0">
+        <nx-btn2 label="{{ResourceBundle['label_salvar']}}"
+                 icone="glyphicon glyphicon-ok" ng-click="salvarFilho()"></nx-btn2>
+        <nx-btn2 label="{{ResourceBundle['label_novo']}}"
+                 icone="glyphicon glyphicon-plus" ng-click="novoFilho()"></nx-btn2>
+        <nx-btn2 label="{{ResourceBundle['label_excluir']}}"
+                 icone="glyphicon glyphicon-remove" ng-click="excluirConfirmaFilho(objSelecionadoAba[aba.codigo])"
+                 ng-show='objSelecionadoAba[aba.codigo][aba.propriedadeId] > 0'></nx-btn2>
+    </div>
+    <div class="col-md-12">
+        <nx-paginacao
+                num-paginas="numPaginasFilho[aba.codigo]"
+                pagina-atual="paginaAtivaFilho[aba.codigo]"
+                listar-pagina="irParaPaginaEspecificaFilho"
+        >
+            <div class="col-md-12 listaObjetos">
+                <div class=" table-responsive">
+                    <table class="table table-hover table-striped table-bordered lista">
+                        <thead class="fundo-cabecalho-tabela">
+                        <tr>
+                            <th ng-repeat="obj in listaCamposAbas[aba.codigo].listaCamposLista"
+                                ng-click="ordenarListaAba(obj)">
+                                <a>
+                                    {{ResourceBundle[obj.campo.chaveLabel]}}
+                                </a>
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="obj in listaFuncFilhos[aba.codigo]| orderBy:ordemListaAba[aba.codigo]:reverseAba[aba.codigo]">
+                            <td ng-repeat="campo in listaCamposAbas[aba.codigo].listaCamposLista" class="col-md-2"
+                                ng-click="editarFilho(obj[aba.propriedadeId])"
+                                ng-class="{'read':obj[aba.propriedadeId] === objSelecionadoAba[aba.codigo][aba.propriedadeId]}">
+                                <div ng-style="{'width': (campo.campo.tamanhoCampo ? campo.campo.tamanhoCampo : 75)}"></div>
+                                <label ng-if="campo.campo.tipoCampo.nome === DATE && campo.campo.nivelConsulta === 1"
+                                       class="label-nao-negrito">
+                                    {{obj[campo.campo.propriedadeEntity]| date: ResourceBundle["format_date"]}}
+                                </label>
+                                <label ng-if="campo.campo.tipoCampo.nome !== DATE && campo.campo.modoExibicao === COMBOSIMNAO && campo.campo.nivelConsulta === 1"
+                                       class="label-nao-negrito">
+                                    {{ResourceBundle[(obj[campo.campo.propriedadeEntity] === "S" ? "label_sim" :
+                                    "label_nao")]}}
+                                </label>
+                                <label ng-if="campo.campo.tipoCampo.nome !== DATE && campo.campo.modoExibicao !== COMBOSIMNAO && campo.campo.nivelConsulta === 1"
+                                       class="label-nao-negrito">
+                                    {{obj[campo.campo.propriedadeEntity]}}
+                                </label>
+                                <label ng-if="campo.campo.tipoCampo.nome === DATE && campo.campo.nivelConsulta !== 1"
+                                       class="label-nao-negrito">
+                                    {{formataLabel(obj[campo.campo.propriedadeEntity], campo.campo.propriedadeExibicao)
+                                    | date: ResourceBundle["format_date"]}}
+                                </label>
+                                <label ng-if="campo.campo.tipoCampo.nome !== DATE && campo.campo.nivelConsulta !== 1"
+                                       class="label-nao-negrito">
+                                    {{formataLabel(obj[campo.campo.propriedadeEntity],
+                                    campo.campo.propriedadeExibicao)}}
+                                </label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nx-paginacao>
+    </div>
+</div>

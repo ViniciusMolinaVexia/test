@@ -1,0 +1,18 @@
+<div class="row" id="nxCamera">
+    <div class="col-md-12">
+        <div class="col-md-2">
+            <div id="webcam">
+            </div>
+        </div>
+        <div class="col-md-1" id="nxCameraBtnSnap">
+            <nx-btn label="" funcao="getSnapshot()" icone="glyphicon glyphicon-camera"></nx-btn>
+        </div>
+        <div class="col-md-2">
+            <canvas id="canvas" clas="nxCameraCanvas" height="200" width="216"></canvas>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <nx-btn icone="glyphicon glyphicon-minus" label="{{ResourceBundle['label_limpar']}}"
+                funcao='limparFoto()'></nx-btn>
+    </div>
+</div>

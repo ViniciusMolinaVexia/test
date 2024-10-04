@@ -1,0 +1,121 @@
+<nx-manut id="manutAdministrador">
+    <div class="panel-body" ng-show="habilitarManutSap()">
+        <div class="table-responsive" >
+            <table class="table table-bordered table-hover table-striped not-fix">
+                <thead class="fundo-cabecalho-tabela">
+                    <tr>
+                        <th ng-if="objSelecionado.sincRegistro.funcionalidade !== 'INTEGRACAO_RETIRADA_MATERIAL'">
+                            {{ResourceBundle['label_item']}}
+                        </th>
+                        <th>{{ResourceBundle['label_numero_rm']}}</th>
+                        <th>{{ResourceBundle['label_material']}}</th>
+                        <th>{{ResourceBundle['label_descricao']}}</th>
+                        <th>{{ResourceBundle['label_quantidade']}}</th>
+                        <th>{{ResourceBundle['label_unidade_medida']}}</th>
+                        <th>{{ResourceBundle['label_local_entrega']}}</th>
+                        <th>{{ResourceBundle['label_observacao']}}</th>
+                        <th>{{ResourceBundle['label_deposito']}}</th>
+                        <th ng-if="objSelecionado.sincRegistro.funcionalidade !== 'INTEGRACAO_RETIRADA_MATERIAL'">
+                            {{ResourceBundle["label_fluxo_material"]}}
+                        </th>
+                        <th>{{ResourceBundle["label_coletor_custos"]}}</th>
+                        <th ng-if="objSelecionado.sincRegistro.funcionalidade !== 'INTEGRACAO_RETIRADA_MATERIAL'">
+                            {{ResourceBundle["label_esta_no_orcamento"]}}
+                        </th>
+                        <th ng-if="objSelecionado.sincRegistro.funcionalidade !== 'INTEGRACAO_RETIRADA_MATERIAL'">
+                            {{ResourceBundle["label_valor_orcado"]}}
+                        </th>
+                        <th ng-if="objSelecionado.sincRegistro.funcionalidade !== 'INTEGRACAO_RETIRADA_MATERIAL'">
+                            {{ResourceBundle["label_observacao_custo"]}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="obj in objSelecionado.rmMateriais">
+                        <td ng-if="objSelecionado.sincRegistro.funcionalidade !== 'INTEGRACAO_RETIRADA_MATERIAL'">
+                            {{obj.ordem}}
+                        </td>
+                        <td>{{obj.rm.numeroRm}}</td>
+                        <td>{{obj.material.codigo}}</td>
+                        <td>{{obj.material.nome}}</td>
+                        <td>{{obj.quantidade}}</td>
+                        <td>{{obj.material.unidadeMedida.descricao}}</td>
+                        <td>{{obj.localEntrega}}</td>
+                        <td>{{obj.observacao}}</td>
+                        <td>{{obj.deposito.nome || obj.rm.deposito.nome}}</td>
+                        <td ng-if="objSelecionado.sincRegistro.funcionalidade !== 'INTEGRACAO_RETIRADA_MATERIAL'">
+                            {{obj.fluxoMaterial}}
+                        </td>
+                        <td style="width:25%">
+                            <span class="additional-info-wrap">
+                                <div class="btn-group">
+                                    <label>
+                                        <input ng-model="objColetorCusto[$index]"
+                                               required
+                                               ng-change="changeColetorCusto(OPERACAO_PEP, $index)"
+                                               ng-disabled="objSelecionado.sincRegistro.funcionalidade == 'INTEGRACAO_RETIRADA_MATERIAL'"
+                                               for="admRdbPep{{$index}}"
+                                               type="radio" name="opcoes{{$index}}" id="admRdbPep{{$index}}"
+                                               value="{{OPERACAO_PEP}}"/> {{ResourceBundle["label_elemento_pep"]}}
+                                    </label>
+                                    <label for="admRdbDiagrama{{$index}}">
+                                        <input ng-model="objColetorCusto[$index]"
+                                               ng-disabled="objSelecionado.sincRegistro.funcionalidade == 'INTEGRACAO_RETIRADA_MATERIAL'"
+                                               ng-change="changeColetorCusto(DIAGRAMA_DE_REDE, $index)"
+                                               type="radio" name="opcoes{{$index}}" id="admRdbDiagrama{{$index}}"
+                                               value="{{DIAGRAMA_DE_REDE}}"/> {{ResourceBundle["label_diagrama_de_rede"]}}
+                                    </label>
+                                </div>
+
+                                <div id="admDivColetorCusto{{$index}}">
+                                    <input type="text" class="form-control" id="coletorCusto{{$index}}"
+                                           placeholder='{{ResourceBundle["label_coletor_custos"]}}' maxlength="24"
+                                           ng-disabled="objSelecionado.sincRegistro.funcionalidade == 'INTEGRACAO_RETIRADA_MATERIAL'"
+                                           name="coletorCusto{{$index}}" ng-model="obj.coletorCustos"
+                                           nx-limit-to="200"/>
+                                </div>
+                                <div id="admDivDiagrama{{$index}}" class="input-group">
+                                    <input type="text" id="diagramaRede{{$index}}"
+                                           name="diagramaRede{{$index}}" maxlength="12"
+                                           ng-model="obj.diagramaRede"
+                                           ng-disabled="objSelecionado.sincRegistro.funcionalidade == 'INTEGRACAO_RETIRADA_MATERIAL'"
+                                           nx-limit-to="200"
+                                           placeholder='{{ResourceBundle["label_diagrama_de_rede"]}}'
+                                           class="form-control input-sm">
+                                    <span class="input-group-btn" style="width:0px;"></span>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="operacao{{$index}}"
+                                           ng-disabled="objSelecionado.sincRegistro.funcionalidade == 'INTEGRACAO_RETIRADA_MATERIAL'"
+                                           name="operacao{{$index}}"
+                                           max="4" maxlength="4"
+                                           ng-model="obj.operacao"
+                                           placeholder='{{ResourceBundle["label_operacao"]}}'
+                                           nx-limit-to="200"/>
+                                </div>
+                            </span>
+                        </td>
+                        <td ng-if="objSelecionado.sincRegistro.funcionalidade !== 'INTEGRACAO_RETIRADA_MATERIAL'">
+                            {{obj.estaNoOrcamento === 'S' ? ResourceBundle['label_sim'] :
+                            obj.estaNoOrcamento === 'N' ? ResourceBundle['label_sim'] :
+                                    obj.estaNoOrcamento === 'V' ? ResourceBundle['label_verba'] : ""}}
+                        </td>
+                        <td ng-if="objSelecionado.sincRegistro.funcionalidade !== 'INTEGRACAO_RETIRADA_MATERIAL'">
+                            {{obj.valorOrcado}}
+                        </td>
+                        <td ng-if="objSelecionado.sincRegistro.funcionalidade !== 'INTEGRACAO_RETIRADA_MATERIAL'">
+                            {{obj.observacaoCusto}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+    </div>
+    <adm-lista-material-deposito-entrada ng-show="objSelecionado.sincRegistro.funcionalidade == sinc_equipamento"></adm-lista-material-deposito-entrada>
+    <adm-lista-material-transferencia-vo ng-show="objSelecionado.sincRegistro.funcionalidade == sinc_transf_equipamento"></adm-lista-material-transferencia-vo>
+    <adm-lista-rm-material  ng-show="objSelecionado.sincRegistro.funcionalidade == sinc_gera_cautela || objSelecionado.sincRegistro.funcionalidade == sinc_reserva"></adm-lista-rm-material>
+
+</nx-manut>

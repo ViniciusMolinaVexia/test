@@ -1,0 +1,84 @@
+<div class="row">
+    <form name="formManutencao" role="form" id="formManutencao{{idTela}}" class="form col-md-12"
+          ng-if='aba === undefined'>
+        <!--aba manut-->
+        <div ng-repeat="campoManut in listaCamposManut" class="col-md-4 divCampoDinamico">
+            <label for="{{campoManut.campo.id}}" ng-if="campoManut.campo.tipoCampo.nome !== BOOLEAN">
+                {{ResourceBundle[campoManut.campo.chaveLabel]}}
+            </label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"
+                  ng-if='campoManut.isObrigatorio === "S" && campoManut.campo.tipoCampo.nome !== BOOLEAN'></span>
+            <!--começa campos dinamicos-->
+            <!--primitivos-->
+            <!--Integer double string date-->
+            <primitivos ng-if="campoManut.isLabel === 'N'"></primitivos>
+            <!--autocoplete-->
+            <autocomplete ng-if="campoManut.isLabel === 'N'"></autocomplete>
+            <!--autocoplete-codigo-->
+            <autocomplete-codigo ng-if="campoManut.isLabel === 'N'"></autocomplete-codigo>
+            <!--autocoplete-pessoa-->
+            <autocomplete-pessoa ng-if="campoManut.isLabel === 'N'"></autocomplete-pessoa>
+            <!--combo-->
+            <combo-funcionalidade ng-if="campoManut.isLabel === 'N'"></combo-funcionalidade>
+            <!--combo-->
+            <combo-codigo-funcionalidade ng-if="campoManut.isLabel === 'N'"></combo-codigo-funcionalidade>
+            <!--textarea-->
+            <text-area ng-if="campoManut.isLabel === 'N'"></text-area>
+            <!--labels-->
+            <labels ng-if="campoManut.isLabel === 'S'"></labels>
+            <!--combo-aux-->
+            <combo-aux ng-if="campoManut.isLabel === 'N'"></combo-aux>
+            <!--combo-sim-nao-->
+            <combo-sim-nao ng-if="campoManut.isLabel === 'N'"></combo-sim-nao>
+            <!--combo eap multiEmpresa-->
+            <combo-eap-multi-empresa ng-if="campoManut.isLabel === 'N'"></combo-eap-multi-empresa>
+        </div>
+        <!--check list-->
+        <div ng-if="listaCamposChecklist.length > 0" class="col-md-4">
+            <div ng-repeat="campoManut in listaCamposChecklist">
+                <campos-checklist></campos-checklist>
+            </div>
+        </div>
+    </form>
+
+    <form name="formManutencao" role="form" id="formManutencao{{idTela}}{{aba.codigo}}" class="form col-md-12"
+          ng-if='aba.id'>
+        <div ng-repeat="campoManut in listaCamposAbas[aba.codigo].listaCamposManut" class="col-md-4 divCampoDinamico"
+             ng-if='campoManut.funcionalidade.id === aba.id'>
+            <label for="{{campoManut.campo.id}}">
+                {{ResourceBundle[campoManut.campo.chaveLabel]}}
+            </label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio" ng-if='campoManut.isObrigatorio === "S"'></span>
+            <!--começa campos dinamicos-->
+            <!--primitivos-->
+            <!--Integer double string date-->
+            <primitivos-aba ng-if="campoManut.isLabel === 'N'"></primitivos-aba>
+            <!--autocoplete-->
+            <autocomplete-aba ng-if="campoManut.isLabel === 'N'"></autocomplete-aba>
+            <!--autocoplete-codigo-->
+            <autocomplete-codigo-aba ng-if="campoManut.isLabel === 'N'"></autocomplete-codigo-aba>
+            <!--autocoplete-pessoa-->
+            <autocomplete-pessoa-aba ng-if="campoManut.isLabel === 'N'"></autocomplete-pessoa-aba>
+            <!--combo-->
+            <combo-funcionalidade-aba ng-if="campoManut.isLabel === 'N'"></combo-funcionalidade-aba>
+            <!--combo-codigo-->
+            <combo-codigo-funcionalidade-aba ng-if="campoManut.isLabel === 'N'"></combo-codigo-funcionalidade-aba>
+            <!--textarea-->
+            <text-area-aba ng-if="campoManut.isLabel === 'N'"></text-area-aba>
+            <!--labels-->
+            <labels-aba ng-if="campoManut.isLabel === 'S'"></labels-aba>
+            <!--combo-aux-->
+            <combo-aux-aba ng-if="campoManut.isLabel === 'N'"></combo-aux-aba>
+            <!--combo-sim-nao-->
+            <combo-sim-nao-aba ng-if="campoManut.isLabel === 'N'"></combo-sim-nao-aba>
+            <!--combo eap multiEmpresa-->
+            <combo-eap-multi-empresa-aba ng-if="campoManut.isLabel === 'N'"></combo-eap-multi-empresa-aba>
+        </div>
+        <!--check list-->
+        <div ng-repeat="campoManut in listaCamposAbas[aba.codigo].listaCamposChecklist" class="col-md-4"
+             ng-if="listaCamposAbas[aba.codigo].listaCamposChecklist.length > 0">
+            <campos-checklist-aba></campos-checklist-aba>
+        </div>
+
+    </form>
+</div>

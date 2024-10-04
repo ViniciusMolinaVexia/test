@@ -1,0 +1,57 @@
+<div class="form-group"
+     ng-if="campoManut.campo.tipoCampo.nome === OBJECT && campoManut.campo.modoExibicao === AUTOCOMPLETE">
+    <nx-auto-complete
+            id="{{campoManut.id}}"
+            ng-if='!campoManut.campo.propriedadeFiltro'
+            typeahead-on-select="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+            ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+            ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+            ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+            typeahead="{{campoManut.campo.propriedadeEntity}} as {{campoManut.campo.propriedadeExibicao}} for {{campoManut.campo.propriedadeEntity}} in getAutoComplete($viewValue, '{{campoManut.campo.propriedadeEntity}}', true, campoManut)"
+            ng-model="filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]">
+    </nx-auto-complete>
+
+    <!-- 3 nivel -->
+    <nx-auto-complete
+            id="{{campoManut.id}}"
+            ng-if="campoManut.campo.propriedadeFiltro"
+            typeahead="{{campoManut.campo.propriedadeAutoCompleteEnt}} as {{campoManut.campo.propriedadeAutoCompleteExb}} for {{campoManut.campo.propriedadeAutoCompleteEnt}} in getAutoComplete($viewValue, '{{campoManut.campo.propriedadeEntity}}', true, campoManut)"
+            ng-model="filtroCampos.funcionalidade[campoManut.campo.propriedadeFiltro]">
+    </nx-auto-complete>
+
+    <!--auto complte vai te que ficar com varios pois não conseguiria limpar o filtro-->
+    <!--nv 2-->
+    <!--    <nx-auto-complete
+            id="{{campoManut.id}}"
+            typeahead-on-select="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+            ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+            ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+            ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+            ng-if='campoManut.campo.propriedadeFiltro && campoManut.campo.propriedadeFiltro.length === 2'
+            typeahead="{{campoManut.campo.propriedadeAutoCompleteEnt}} as {{campoManut.campo.propriedadeAutoCompleteExb}} for {{campoManut.campo.propriedadeAutoCompleteEnt}} in getAutoComplete($viewValue, '{{campoManut.campo.propriedadeExibicao}}', true, campoManut)"
+            ng-model="filtroCampos.pessoa[campoManut.campo.propriedadeFiltro[1]]">
+        </nx-auto-complete>  -->
+
+    <!--nv 3-->
+    <!--    <nx-auto-complete
+            id="{{campoManut.id}}"
+            typeahead-on-select="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+            ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+            ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+            ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+            ng-if='campoManut.campo.propriedadeFiltro && campoManut.campo.propriedadeFiltro.length === 3'
+            typeahead="{{campoManut.campo.propriedadeAutoCompleteEnt}} as {{campoManut.campo.propriedadeAutoCompleteExb}} for {{campoManut.campo.propriedadeAutoCompleteEnt}} in getAutoComplete($viewValue, '{{campoManut.campo.propriedadeExibicao}}', true, campoManut)"
+            ng-model="filtroCampos.pessoa[campoManut.campo.propriedadeFiltro[1]][campoManut.campo.propriedadeFiltro[2]]" >
+        </nx-auto-complete>                       -->
+    <!--nv 4-->
+    <!--    <nx-auto-complete
+            id="{{campoManut.id}}"
+            typeahead-on-select="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+            ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+            ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+            ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+            ng-if='campoManut.campo.propriedadeFiltro && campoManut.campo.propriedadeFiltro.length === 4'
+            typeahead="{{campoManut.campo.propriedadeAutoCompleteEnt}} as {{campoManut.campo.propriedadeAutoCompleteExb}} for {{campoManut.campo.propriedadeAutoCompleteEnt}} in getAutoComplete($viewValue, '{{campoManut.campo.propriedadeExibicao}}', true, campoManut)"
+            ng-model="filtroCampos.pessoa[campoManut.campo.propriedadeFiltro[1]][campoManut.campo.propriedadeFiltro[2]][campoManut.campo.propriedadeFiltro[3]]" >
+        </nx-auto-complete>                       -->
+</div> 

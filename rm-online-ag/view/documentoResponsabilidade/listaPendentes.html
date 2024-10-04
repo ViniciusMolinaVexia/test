@@ -1,0 +1,87 @@
+<nx-paginacao 
+    num-paginas="numPaginas" 
+    pagina-atual="paginaAtiva" 
+    listar-pagina="irParaPaginaEspecifica"
+    qtde-paginas="15" > 
+    <div class="col-md-12">
+        <div class="table-responsive"> 
+            <table class="table table-hover table-striped table-bordered lista"> 
+                <thead class="fundo-cabecalho-tabela"> 
+                    <tr> 
+                        <th class="icone">{{ResourceBundle['label_selecionar']}}</th>
+                        <th ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true">
+                            {{ResourceBundle['label_eap_multi_empresa']}}
+                        </th>
+                        <th>{{ResourceBundle['label_numero']}}</th>
+                        <th>{{ResourceBundle['label_material']}}</th>
+                        <th>{{ResourceBundle['label_quantidade']}}</th>
+                        <th>{{ResourceBundle['label_usuario_cadastrante']}}</th>
+                        <th>{{ResourceBundle['label_requisitante']}}</th>
+                        <th>{{ResourceBundle['label_cf_responsavel']}}</th>
+                        <th>{{ResourceBundle['label_numero_protocolo']}}</th>
+                        <th>{{ResourceBundle['label_emissao']}}</th>
+                        <th>{{ResourceBundle['label_aplicacao']}}</th>
+                        <th>{{ResourceBundle['label_status']}}</th>
+                        <th>{{ResourceBundle['label_deposito']}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-click="chkMaterial(obj)" ng-repeat="obj in listaMaterial">
+                        <td class="text-center">
+                            <input type="checkbox" ng-click="selecionaMaterial(obj, $event)" id="selecionado" ng-model="obj.selecionado" value="option2">
+                        </td>
+                        <td ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true">
+                            {{obj.rmEapMultiEmpresaDescricao}}
+                        </td>
+                        <td>
+                            {{obj.numeroRm}}
+                        </td>
+                        <td>
+                            {{obj.materialCodigo}} - {{obj.materialNome}}
+                        </td>
+                        <td>
+                            {{obj.quantidade}}
+                        </td>
+                        <td>
+                            {{obj.usuarioReferencia}}
+                            {{obj.usuarioReferencia
+                            && obj.usuarioNome ? '-' : ''}}
+                            {{obj.usuarioNome}}
+                        </td>
+                        <td>
+                            {{obj.requisitanteReferencia}}
+                            {{obj.requisitanteReferencia && obj.requisitanteNome ? '-' : ''}}
+                            {{obj.requisitanteNome}}
+                        </td>
+                        <td>
+                            {{obj.cfResponsavel}}
+                        </td>
+                        <td>
+                            {{obj.protocoloResponsabilidade}}
+                        </td>
+                        <td>
+                            {{obj.dataEmissao| date: ResourceBundle['format_date']}}
+                        </td>
+                        <td>
+                            {{obj.dataAplicacao| date: ResourceBundle['format_date']}}
+                        </td>
+                        <td>
+                            {{obj.statusNome}}
+                        </td>
+                        <!-- Faço a verificação se o mesmo tem eap habilitada, se tiver, tem que exibir na coluna do lado do deposito -->
+                        <td ng-if="(configuracao.habilitaEapMultiEmpresa == null || (configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == false) || (configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true && obj.depositoEapMultiEmpresaDescricao == null))">
+                            <a>
+                                {{obj.depositoNome}}
+                            </a>
+                        </td>
+                        <td ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true && obj.depositoEapMultiEmpresaDescricao != null">
+                            <a>
+                                {{obj.depositoNome}} - {{obj.depositoEapMultiEmpresaDescricao}}
+                            </a>
+                        </td>
+                    </tr>
+                </tbody> 
+            </table> 
+        </div> 
+    </div>
+</nx-paginacao>

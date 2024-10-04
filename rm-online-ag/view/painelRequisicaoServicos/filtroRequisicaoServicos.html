@@ -1,0 +1,98 @@
+<nx-filtro>
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_centro']}}</label>
+        <nx-combo id="filtroCentro" ng-model="centroSelecionado"
+                 ng-options="Centro as Centro.nome for Centro in listaCentros track by Centro.centroId">
+       </nx-combo>
+
+    </div>
+    
+    <div class="form-group">
+        <label>{{ResourceBundle['label_numero']}}</label>
+        <input id="filtroPainelRequisicaoMateriaisNumero" class="form-control" ng-model="filtro.numero">
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_numero']}}</label>
+        <input id="filtroPainelRequisicaoMateriaisNumero" class="form-control" ng-model="filtro.numero">
+    </div>
+    
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_material']}}</label>
+        <nx-auto-complete
+            id="filtroPainelRequisicaoMateriaisMaterial"
+            ng-model="filtro.material"
+            typeahead="Material as '{{ResourceBundle['label_codigo']}}: ' + Material.codigo + '<br>{{ResourceBundle['label_nome']}}: ' + Material.nome + '<br>{{ResourceBundle['label_unidade_medida']}}: ' + Material.unidadeMedida.descricao for Material in getAutoCompleteMateriaisExistentes($viewValue)">
+        </nx-auto-complete>
+    </div>
+    
+    <div class="form-group">
+        <label>{{ResourceBundle['label_quantidade_solicitada']}}</label>
+        <input id="filtroPainelRequisicaoMateriaisQtdeSolicitada" class="form-control" ng-model="filtro.qtdeSolicitada">
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_data_emissao']}}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <nx-date-field id="filtroPainelRequisicaoMateriaisDataEmissao" placeholder="{{ResourceBundle['label_de']}}"
+                               ng-model="filtro.stDataEmissaoDe"></nx-date-field>
+            </div>
+            <div class="col-md-6">
+                <nx-date-field id="filtroPainelRequisicaoMateriaisDataAplicacao" placeholder="{{ResourceBundle['label_ate']}}"
+                               ng-model="filtro.stDataEmissaoAte"></nx-date-field>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_data_necessidade']}}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <nx-date-field id="filtroPainelRequisicaoMateriaisDataNecessidadeDe" placeholder="{{ResourceBundle['label_de']}}"
+                               ng-model="filtro.stDataNecessidadeDe"></nx-date-field>
+            </div>
+            <div class="col-md-6">
+                <nx-date-field id="filtroPainelRequisicaoMateriaisDataNecessidadeAte" placeholder="{{ResourceBundle['label_ate']}}"
+                               ng-model="filtro.stDataNecessidadeAte"></nx-date-field>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_requisitante']}}</label>
+        <nx-auto-complete
+            id="filtroPainelRequisicaoMateriaisRequisitante"
+            ng-model="filtro.requisitante"
+                          typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)">
+        </nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_usuario_cadastrante']}}</label>
+        <nx-auto-complete id="filtroPainelRequisicaoMateriaisUsuarioCadastrante" ng-model="filtro.usuarioCadastrante"
+                          typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)">
+        </nx-auto-complete>
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_coletor_custos']}}</label>
+        <input id="filtroPainelRequisicaoMateriaisColetorCusto" class="form-control" ng-model="filtro.coletorCusto">
+    </div>
+    
+    <div class="form-group">
+        <label>{{ResourceBundle["label_compra"]}} / {{ResourceBundle["label_reserva"]}}</label>
+        <nx-combo id="filtroPainelRequisicaoMateriaisTipoRequisicao" name="filtroPainelRequisicaoMateriaisTipoRequisicao" ng-model="filtro.tipoRequisicao"
+            ng-options="TipoRequisicao as TipoRequisicao.descricao for TipoRequisicao in listaTipoRequisicao track by TipoRequisicao.tipoRequisicaoId">
+        </nx-combo>
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_prioridade_requisicao']}}</label>
+        <nx-combo id="filtroPainelRequisicaoMateriaisPrioridade" name="prioridadecombo" ng-model="filtro.prioridade"
+                  ng-options="prioridade as prioridade.descricao for prioridade in listaPrioridades | unique: 'descricao'" >
+        </nx-combo>
+    </div>
+    
+</nx-filtro>

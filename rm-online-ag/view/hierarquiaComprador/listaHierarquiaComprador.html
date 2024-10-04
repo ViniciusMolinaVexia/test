@@ -1,0 +1,32 @@
+<nx-paginacao
+        num-paginas="numPaginas"
+        pagina-atual="paginaAtiva"
+        listar-pagina="irParaPaginaEspecifica"
+        qtde-paginas="15">
+    <nx-lista>
+        <div class="col-md-12 listaObjetos">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered lista">
+                    <thead class="fundo-cabecalho-tabela">
+                    <tr>
+                        <th>{{ResourceBundle['label_comprador']}}</th>
+                        <th ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true">
+                            {{ResourceBundle['label_eap_multi_empresa']}}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="comprador in lista">
+                        <td ng-click="editar(comprador)">{{comprador.nome}}</td>
+                        <td ng-click="editar(comprador)"
+                            ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true">
+                            {{comprador.eapMultiEmpresa.descricao}}
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </nx-lista>
+</nx-paginacao>

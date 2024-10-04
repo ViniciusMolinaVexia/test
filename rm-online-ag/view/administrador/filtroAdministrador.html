@@ -1,0 +1,30 @@
+<nx-filtro>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_rma_separe_por_ponto_e_virgula_as_rmas']}}</label>
+        <input id="cadastroRmaNumeroRma" class="form-control" ng-model="filtro.numeroRm">
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_status']}}</label> 
+        <nx-combo class="form-control" id="status" 
+                  name="status" ng-model="filtro.status">
+            <option value="{{todos}}">{{ResourceBundle['label_todos']}}</option>
+            <!--SAP-->
+            <option value="{{compra_mat}}">{{ResourceBundle['label_erro_envio_requisicao_compra']}}</option>
+            <option value="{{retirada_mat}}">{{ResourceBundle['label_erro_envio_retirada']}}</option>
+
+            <!--CPWEB-->
+            <option value="{{sinc_equipamento}}" ng-if="usuario.flAdmin == 'S'">{{ResourceBundle['label_erro_envio_equipamento']}}</option>
+            <option value="{{sinc_transf_equipamento}}" ng-if="usuario.flAdmin == 'S'">{{ResourceBundle['label_erro_envio_transf_equip']}}</option>
+            <option value="{{sinc_gera_cautela}}" ng-if="usuario.flAdmin == 'S'">{{ResourceBundle['label_erro_envio_cautela']}}</option>
+            <option value="{{sinc_reserva}}" ng-if="usuario.flAdmin == 'S'">{{ResourceBundle['label_erro_envio_reserva']}}</option>
+        </nx-combo>
+    </div>
+    <div class="form-group" ng-if="usuario.flAdmin == 'S'">
+        <label>{{ResourceBundle['label_sistema']}}</label>
+        <nx-combo class="form-control" id="comboSistema" name="comboSistema" ng-model="filtro.sistema">
+            <option value="{{todos}}">{{ResourceBundle['label_todos']}}</option>
+            <option value="CPWEB">CPWEB</option>
+            <option value="SAP">SAP</option>
+        </nx-combo>
+    </div>
+</nx-filtro>

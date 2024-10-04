@@ -1,0 +1,276 @@
+.botaoFullCol {
+    min-width: 100%;
+}
+
+.modalConfirmacao {
+    padding-left: 15px !important;
+}
+
+#rowMsg {
+    min-height: 38px;
+}
+
+#textAreaObsReprov {
+    min-height: 140px;
+}
+
+.linkMenu:hover {
+    cursor: pointer;
+}
+
+.padding-left-nx-menu {
+    padding-top: 0px;
+}
+
+.roleManut {
+    display: initial;
+}
+
+.navbar-nav>li>.dropdown-menu {
+    border-radius: 4px;
+}
+
+
+/* Barra de Progresso */
+
+.progressbar {
+    //min-width: 2000px; 
+    margin: 20px auto;
+    text-align: center;
+    display: inline-flex;
+}
+
+.progressbar .circle {
+    display: inline-block;
+}
+
+.progressbar .bar {
+    display: inline-block;
+    border: 1px solid #d5d5da;
+    position: relative;
+    width: 65px;
+    height: 6px;
+    margin: 0 -30px 30px -31px;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    margin-top: 90px;
+}
+
+.progressbar .circle .label {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 40px;
+    margin-top: 3px;
+    color: #b5b5ba;
+    font-size: 17px;
+}
+
+.progressbar .title {
+    color: #FFF;
+    height: 60px;
+}
+
+
+/* Done */
+
+.progressbar .bar.done {
+    background: #8bc435;
+}
+
+.progressbar .circle.done .label {
+    color: #FFF;
+    background: #8bc435;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, .2);
+}
+
+.progressbar .title.done {
+    color: #444;
+}
+
+
+/* Active */
+
+.progressbar .bar.active {
+    background: #0c95be;
+}
+
+.progressbar .circle.active .label {
+    color: #FFF;
+    background: #0c95be;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, .2);
+}
+
+.progressbar .title.active {
+    color: #444;
+}
+
+
+/* cancel */
+
+.progressbar .bar.cancel {
+    background: #BF0F0F;
+}
+
+.progressbar .circle.cancel .label {
+    color: #FFF;
+    background: #BF0F0F;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, .2);
+}
+
+.progressbar .title.cancel {
+    color: #444;
+}
+
+
+/* Default */
+
+.progressbar .bar.default {
+    background: #FFF;
+}
+
+.progressbar .circle.default .label {
+    color: #CCC;
+    background: #FFF;
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, .2);
+}
+
+.progressbar .title.default {
+    color: #CCC;
+}
+
+.btn-lg {
+    padding: 20px 28px !important;
+    font-size: 24px !important;
+    line-height: 1.33 !important;
+    border-radius: 6px !important;
+}
+
+.nx-bg-1 {
+    text-shadow: 0 1px 0 #fff;
+    background-image: -webkit-linear-gradient(top, #ffffff 0%, #e0e0e0 100%);
+    background-image: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%);
+    background-repeat: repeat-x;
+    border-color: #dbdbdb;
+    border-color: #ccc;
+    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe0e0e0', GradientType=0);
+    filter: progid: DXImageTransform.Microsoft.gradient(enabled=false);
+}
+
+.nx-bg-1:hover {
+    border-color: #9d0707 !important;
+    color: #9d0707;
+}
+
+.nx-color-1 {
+    color: #9d0707;
+}
+
+.nx-hr-1 {
+    color: #9d0707;
+    background-color: #9d0707;
+    height: 1px;
+    margin-top: 0px;
+    margin-bottom: 7px;
+}
+
+.panel-menu-home-rma span {
+    font-size: 14px !important;
+}
+
+.red a {
+    color: red !important;
+}
+
+.usuario-logado {
+    position: absolute;
+    right: 15px;
+    top: 7px;
+    z-index: 5;
+    text-align: right;
+}
+
+
+/*HM*/
+
+.autocomplete-grande {
+    max-width: none !important;
+    width: 100% !important;
+}
+
+.autocomplete-grande>input {
+    max-width: none !important;
+}
+
+.textarea-grande>input {
+    max-width: none !important;
+}
+
+.btn-custom .nx-fonte-btn {
+    color: #fff !important;
+}
+
+.nav>li>a.active {
+    text-decoration: none;
+    background-color: #F5F5F5;
+}
+
+@media (max-width: 767px) {
+    body {
+        padding-top: 50px;
+    }
+    .usuario-logado {
+        position: absolute;
+        right: 15px;
+        top: 17px;
+        left: 15px;
+        z-index: 5;
+        text-align: right;
+    }
+    .usuario-logado .nomeUsuario {
+        position: absolute;
+        top: -15px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        z-index: 1;
+    }
+}
+
+
+/*
+.menuHome {
+/*    display: table;
+    min-height: 120px;
+    min-width: 183px;
+}
+
+.menuHome > img {
+    vertical-align: middle;
+    display: table-cell;
+    margin-right: 1em;
+}
+.menuHome > span {
+    vertical-align: middle;
+    display: table-cell;
+}
+
+@media (max-width: 500px){
+    .menuHome {
+        display: block;
+    }    
+}*/
+
+.fonte-vermelha {
+    color: red;
+}
+
+.colunaMaterialRelatorioEstInc {
+    min-width: 596px !important;
+}
+
+.table>thead>tr>th {
+    vertical-align: top;
+}

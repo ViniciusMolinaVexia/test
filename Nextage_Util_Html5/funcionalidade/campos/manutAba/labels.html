@@ -1,0 +1,18 @@
+<div class="alturaLabelDinamicoPessoa"
+     ng-if="campoManut.campo.tipoCampo.nome === DATE && campoManut.campo.nivelConsulta === 1">
+    {{objSelecionadoAba[aba.codigo][campoManut.campo.propriedadeEntity]| date: ResourceBundle["format_date"]}}
+</div>
+<div class="alturaLabelDinamicoPessoa"
+     ng-if="campoManut.campo.tipoCampo.nome !== DATE && campoManut.campo.nivelConsulta === 1">
+    {{objSelecionadoAba[aba.codigo][campoManut.campo.propriedadeEntity]}}
+</div>
+<div class="alturaLabelDinamicoPessoa"
+     ng-if="campoManut.campo.tipoCampo.nome === DATE && campoManut.campo.nivelConsulta !== 1">
+    {{formataLabel(objSelecionadoAba[aba.codigo][campoManut.campo.propriedadeEntity],
+    campoManut.campo.propriedadeExibicao) | date: ResourceBundle["format_date"]}}
+</div>
+<div class="alturaLabelDinamicoPessoa"
+     ng-if="campoManut.campo.tipoCampo.nome !== DATE && campoManut.campo.nivelConsulta !== 1">
+    {{formataLabel(objSelecionadoAba[aba.codigo][campoManut.campo.propriedadeEntity],
+    campoManut.campo.propriedadeExibicao)}}
+</div>

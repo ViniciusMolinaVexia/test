@@ -1,0 +1,23 @@
+<nx-tela-padrao id="{{idTela}}">
+    <nx-titulo titulo="{{ResourceBundle[funcionalidade.titulo]}}"></nx-titulo>
+    <nx-alert></nx-alert>
+    <nx-loading></nx-loading>
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-novo">
+        <nx-btn2 label="{{ResourceBundle['label_novo']}}" icone="glyphicon glyphicon-plus"
+                 ng-click="novo()"
+                 ng-show="(state === 'STATE_MANUT' || state === 'STATE_LISTA') && listaCamposManut.length > 0"></nx-btn2>
+
+        <nx-btn-gerar-excel icone="glyphicon glyphicon-ok"
+                            label="{{ResourceBundle['label_excel']}}"
+                            ng-click="gerarRelatorioExcel()"
+                            ng-show="((state === 'STATE_MANUT' || state === 'STATE_LISTA'))">
+
+        </nx-btn-gerar-excel>
+    </nx-botoes-padrao>
+    <filtro-funcionalidade></filtro-funcionalidade>
+    <manut-funcionalidade ng-init="carregarFuncionalidade()"></manut-funcionalidade>
+    <lista-funcionalidade></lista-funcionalidade>
+    <nx-modal-confirmacao-exclusao></nx-modal-confirmacao-exclusao>
+    <nx-modal id='modalConfirmaFilho'
+              mensagem="{{ResourceBundle['msg_deseja_excluir']}}" funcao='excluirFilho()'></nx-modal>
+</nx-tela-padrao>

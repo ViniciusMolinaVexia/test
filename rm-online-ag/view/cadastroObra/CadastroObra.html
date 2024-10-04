@@ -1,0 +1,56 @@
+<nx-tela-padrao id="telaCadastroObra"> 
+    <nx-titulo titulo="{{ResourceBundle['label_cadastro_obra']}}"></nx-titulo>
+    <nx-alert></nx-alert> 
+    
+    <nx-pop-up id="modalCadastroObra" titulo="{{ tituloModal }} - {{  centro.descricao }}">
+    	<div class="form-novo">
+    		<nx-float-group cols="3" ng-repeat="p in prioridades">
+    			<div class="form-group">
+    				<label>{{ p.descricao }}</label>
+    				<input type="number" ng-model="p.confDiasPrevEntrega" class="form-control">
+    			</div>
+    			<div></div>
+    			<div></div>
+    		</nx-float-group>
+    	
+	    	{{ ResourceBundle['label_area'] }}s
+	    	<div style="height:200px;overflow:auto;border:1px solid #C0C0C0">
+	    		<div ng-repeat="area in $parent.areas">
+	    			<label>{{ area.nome }}</label>
+	    		</div>
+	    	</div>
+	    	<div style="padding-top:10px;">
+	    		<div>
+	    			<a class="btn btn-default btn-espaco" 
+			           label="{{ResourceBundle['label_salvar']}}" 
+			           ng-click="salvar()">
+			        	<span>{{ResourceBundle['label_salvar']}}</span>
+			        </a>
+	    		</div>
+	    	</div>
+	    </div>
+    </nx-pop-up>
+    
+    <table class="table-novo">
+	    	<thead>
+		    	<tr>
+		    		<th>{{ResourceBundle['label_opcoes']}}</th>
+		    		<th>{{ResourceBundle['label_nome']}}</th>
+		    	</tr>
+		    </thead>
+		    <tbody>
+		    	<tr ng-repeat="centro in centros">
+		    		<td>
+		    			<div>
+		    				<div>
+		    					<nx-btn-2 title="{{ResourceBundle['label_editar']}}"
+	                                  icone="glyphicon glyphicon-edit"
+	                                  ng-click="editarCentro(centro)"></nx-btn-2>
+		    				</div>
+		    			</div>
+		    		</td>
+		    		<td align="right">{{ centro.nome }}</td>
+		    	</tr>
+		    </tbody>
+	    </table>
+</nx-tela-padrao>

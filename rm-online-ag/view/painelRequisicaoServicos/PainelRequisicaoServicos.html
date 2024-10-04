@@ -1,0 +1,219 @@
+<nx-tela-padrao id="telaPainelRequisicaoMateriais">
+    <nx-titulo titulo="{{ResourceBundle['label_painel_requisicao_materais']}}"></nx-titulo>
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-novo;nx-btn-excluir">
+        <a class="btn btn-default btn-espaco" label="{{ResourceBundle['label_enviar_para_sap']}}" ng-click="enviarParaSAP()">
+            <span>{{ResourceBundle['label_enviar_para_sap']}}</span>
+        </a>
+    </nx-botoes-padrao>
+
+    <filtro-requisicao-materiais></filtro-requisicao-materiais>
+    <lista-requisicao-materiais></lista-requisicao-materiais>
+    <nx-alert></nx-alert>
+    <nx-loading></nx-loading>
+
+    <nx-pop-up id="modalConfirmarEnvioSap" titulo="{{ResourceBundle['label_enviar_para_sap']}}">
+        <div class="form-novo">
+            <div style="height:200px;overflow:auto;border:1px solid #C0C0C0">
+                <div ng-repeat="item in enviarSap">
+                    <label>{{ item.numero }}</label>
+                </div>
+            </div>
+            <div style="padding-top:10px;">
+                <div>
+                    <a class="btn btn-default btn-espaco" label="{{ResourceBundle['label_enviar']}}" ng-click="enviarParaSAPConfirmado()">
+                        <span>{{ResourceBundle['label_enviar']}}</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <nx-pop-up id="modalEditRequisicao" titulo="{{ResourceBundle['label_requisicao_material']}}">
+        <style>
+            .tabela_requisitante {
+                width: 100%;
+            }
+            
+            .tabela_requisitante td {
+                padding: 10px;
+            }
+        </style>
+        <table class="tabela_requisitante">
+            <tr>
+                <td>
+                    <div class="form-group" style="width:40%">
+                        <label>{{ResourceBundle['label_centro']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.centro">
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_numero']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.numero">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_numero_pedido_compra_sap']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.numeroSap">
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_material']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.material">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group" ng-show="rmMaterial.codigo == 'C'">
+                        <label>{{ResourceBundle['label_tipo_material']}}</label>
+                        <input disabled="disabled" class="form-control" value="{{ ResourceBundle['label_cautelado'] }}">
+                    </div>
+                    <div class="form-group" ng-show="rmMaterial.codigo == 'NC'">
+                        <label>{{ResourceBundle['label_tipo_material']}}</label>
+                        <input disabled="disabled" class="form-control" value="{{ ResourceBundle['label_nao_cautelado'] }}">
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_quantidade_solicitada']}}</label>
+                        <input class="form-control" ng-model="rmMaterial.quantidade">
+                    </div>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_recebimento_solicitacao']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.recebimentoSolicitado">
+                    </div>
+                </td>
+
+                <td>
+                    <div style="width: 100%">
+                        <div class="form-group">
+                            <label>{{ResourceBundle["label_deposito_para_entrega"]}}</label>
+                            <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+
+                            <br />
+
+                            <select id="depositoCadastroRma" ng-model="codigoDepositoSelecionado" style="width: 100%;" ng-change="changeDeposito()">
+							<option ng-selected="{{deposito.codigo == codigoDepositoSelecionado}}"
+									ng-repeat="deposito in listaDepositos"
+									value="{{deposito.codigo}}">
+							  {{ deposito.codigo + '|' + deposito.centro + ' - ' + deposito.nome + ' - ' + (deposito.quantidade ? deposito.quantidade:0) }}
+							</option>
+						</select>
+
+                        </div>
+                    </div>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_data_emissao']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.dataEmissao">
+                    </div>
+                </td>
+
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_data_aplicacao']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.dataAplicacao">
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_requisitante']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.requisitante">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_usuario_cadastrante']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.cadastrante">
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_fluxo_material']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.fluxoMaterial">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_coletor_custos']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.coletorCusto">
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_data_avaliacao']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.dataAvaliacao">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_status']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.status">
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_status_item']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.statusItem">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_tipo_requisicao']}}</label>
+                        <input disabled="disabled" class="form-control" ng-model="rmMaterial.tipoRequisicao">
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_justificativa']}}</label>
+                        <textarea cols="80" rows="5" class="form-control" ng-model="rmMaterial.justificativaReprovacao"></textarea>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+        <div style="padding-top:10px;">
+            <div>
+                <a class="btn btn-default btn-espaco" label="{{ResourceBundle['label_salvar']}}" ng-click="salvarAlteracao()">
+                    <span>{{ResourceBundle['label_salvar']}}</span>
+                </a>
+                <a class="btn btn-default btn-espaco btn-danger btn-custom" label="{{ResourceBundle['label_reprovar']}}" ng-click="reprovar()">
+                    <span>{{ResourceBundle['label_reprovar']}}</span>
+                </a>
+            </div>
+        </div>
+        </div>
+    </nx-pop-up>
+</nx-tela-padrao>

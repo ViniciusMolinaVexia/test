@@ -1,0 +1,88 @@
+<nx-filtro>
+    <div class="form-group"
+         ng-if="configuracao.habilitaEapMultiEmpresa && configuracao.habilitaEapMultiEmpresa == true">
+        <label>{{ResourceBundle['label_eap_multi_empresa']}}</label>
+        <nx-combo id="filtroEapMultiEmpresa" ng-model="filtro.eapMultiEmpresa"
+                  ng-options="eapMultiEmpresa as eapMultiEmpresa.descricao for eapMultiEmpresa in listaTodasEapMultiEmpresa track by eapMultiEmpresa.id">
+        </nx-combo>
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_rma_separe_por_ponto_e_virgula_as_rmas']}}</label>
+        <input id="filtroGestaoRmaNumeroRma" class="form-control" ng-model="filtro.numeroRm">
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_material']}}</label>
+        <nx-auto-complete
+                id="filtroGestaoRmaMaterial"
+                ng-model="filtro.material"
+                typeahead="Material as '{{ResourceBundle['label_codigo']}}: ' + Material.codigo + '<br>{{ResourceBundle['label_nome']}}: ' + Material.nome + '<br>{{ResourceBundle['label_unidade_medida']}}: ' + Material.unidadeMedida.descricao for Material in getAutoCompleteMateriaisExistentes($viewValue)">
+        </nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_material_chave']}}</label>
+        <input id="filtroGestaoRmaMaterialChave" class="form-control" ng-model="filtro.materialChave">
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_requisitante']}}</label>
+        <nx-auto-complete id="filtroGestaoRmaRequisitante" ng-model="filtro.requisitante"
+                          typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)">
+        </nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_aprovador']}}</label>
+        <nx-auto-complete id="filtroGestaoRmaAprovador" ng-model="filtro.aprovador"
+                          typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)">
+        </nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_setor']}}</label>
+        <nx-auto-complete id="filtroGestaoRmaSetor" ng-model="filtro.setor"
+                          typeahead="Setor as Setor.descricao for Setor in getAutoCompleteSetor($viewValue)">
+        </nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_subarea']}}</label>
+        <nx-auto-complete id="filtroGestaoRmaSubarea" ng-model="filtro.subArea"
+                          typeahead="Subarea as Subarea.descricao for Subarea in getAutoCompleteSubarea($viewValue)">
+        </nx-auto-complete>
+    </div>
+    <div class="form-group">
+                  <label>{{ResourceBundle["label_compra"]}} / {{ResourceBundle["label_reserva"]}}</label>  
+                  <nx-combo id="filtroComboTipoRequisicao" name="tipoRequisicaoCombo" ng-model="filtro.tipoRequisicao"
+                  ng-options="TipoRequisicao as TipoRequisicao.descricao for TipoRequisicao in listaTipoRequisicao track by TipoRequisicao.tipoRequisicaoId">
+    </nx-combo>
+                </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_prioridade']}}</label>
+        <nx-combo id="filtroGestaoPrioridade" ng-model="filtro.prioridade"
+                  ng-options="prioridade as prioridade.descricao for prioridade in listaPrioridades | unique: 'descricao'">
+        </nx-combo>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_data_emissao']}}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <nx-date-field id="gestaoRmaDataEmissaoDe" placeholder="{{ResourceBundle['label_de']}}"
+                               ng-model="filtro.stDataEmissaoDe"></nx-date-field>
+            </div>
+            <div class="col-md-6">
+                <nx-date-field id="gestaoRmaDataEmissaoAte" placeholder="{{ResourceBundle['label_ate']}}"
+                               ng-model="filtro.stDataEmissaoAte"></nx-date-field>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_necessidade']}}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <nx-date-field id="gestaoRmaDataNecessidadeDe" placeholder="{{ResourceBundle['label_de']}}"
+                               ng-model="filtro.stDataNecessidadeDe"></nx-date-field>
+            </div>
+            <div class="col-md-6">
+                <nx-date-field id="gestaoRmaDataNecessidadeAte" placeholder="{{ResourceBundle['label_ate']}}"
+                               ng-model="filtro.stDataNecessidadeAte"></nx-date-field>
+            </div>
+        </div>
+    </div>
+</nx-filtro>

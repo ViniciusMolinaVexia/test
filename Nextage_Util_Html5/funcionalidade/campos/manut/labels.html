@@ -1,0 +1,27 @@
+<div class="alturaLabelDinamicoPessoa"
+     ng-if="campoManut.campo.tipoCampo.nome === DATE && campoManut.campo.nivelConsulta === 1">
+    {{objSelecionado[campoManut.campo.propriedadeEntity]| date: ResourceBundle["format_date"]}}
+</div>
+<div class="alturaLabelDinamicoPessoa"
+     ng-if="campoManut.campo.tipoCampo.nome !== DATE && campo.campo.modoExibicao !== COMBOSIMNAO && campoManut.campo.nivelConsulta === 1">
+    {{objSelecionado[campoManut.campo.propriedadeEntity]}}
+</div>
+<label ng-if="campo.campo.tipoCampo.nome !== DATE && campo.campo.modoExibicao === COMBOSIMNAO && campo.campo.nivelConsulta === 1"
+       class="alturaLabelDinamicoPessoa">
+    {{ResourceBundle[(obj[campo.campo.propriedadeEntity] === "CAD" ? "label_cadastrada" : "")]}}
+    {{ResourceBundle[(obj[campo.campo.propriedadeEntity] === "EAN" ? "label_emandamento" : "")]}}
+    {{ResourceBundle[(obj[campo.campo.propriedadeEntity] === "APR" ? "label_aprovada" : "")]}}
+    {{ResourceBundle[(obj[campo.campo.propriedadeEntity] === "REP" ? "label_reprovada" : "")]}}
+    {{ResourceBundle[(obj[campo.campo.propriedadeEntity] === "CAN" ? "label_cancelada" : "")]}}
+    {{ResourceBundle[(obj[campo.campo.propriedadeEntity] === "EAV" ? "label_em_avaliacao" : "")]}}
+    {{ResourceBundle[(obj[campo.campo.propriedadeEntity] === "AVF" ? "label_avaliacao_finalizada" : "")]}}
+</label>
+<div class="alturaLabelDinamicoPessoa"
+     ng-if="campoManut.campo.tipoCampo.nome === DATE && campoManut.campo.nivelConsulta !== 1">
+    {{formataLabel(objSelecionado[campoManut.campo.propriedadeEntity], campoManut.campo.propriedadeExibicao) | date:
+    ResourceBundle["format_date"]}}
+</div>
+<div class="alturaLabelDinamicoPessoa"
+     ng-if="campoManut.campo.tipoCampo.nome !== DATE && campoManut.campo.nivelConsulta !== 1">
+    {{formataLabel(objSelecionado[campoManut.campo.propriedadeEntity], campoManut.campo.propriedadeExibicao)}}
+</div>

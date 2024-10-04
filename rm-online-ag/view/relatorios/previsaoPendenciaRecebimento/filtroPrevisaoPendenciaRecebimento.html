@@ -1,0 +1,66 @@
+<nx-filtro>
+    <div class="form-group"
+         ng-if="configuracao.habilitaEapMultiEmpresa && configuracao.habilitaEapMultiEmpresa == true">
+        <label>{{ResourceBundle['label_eap_multi_empresa']}}</label>
+        <nx-combo id="filtroEapMultiEmpresa" ng-model="filtro.eapMultiEmpresa"
+                  ng-options="eapMultiEmpresa as eapMultiEmpresa.descricao for eapMultiEmpresa in listaTodasEapMultiEmpresa track by eapMultiEmpresa.id">
+        </nx-combo>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_rma_separe_por_ponto_e_virgula_as_rmas']}}</label>
+        <input id="filtroRmaNumeroRma" class="form-control" ng-model="filtro.numeroRm">
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_requisitante']}}</label>
+        <nx-auto-complete id="filtroRmaRequisitante" ng-model="filtro.requisitante"
+                          typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)"></nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_material']}}</label>
+        <nx-auto-complete 
+            id="filtroRmaMaterial" 
+            ng-model="filtro.material"
+            typeahead="Material as '{{ResourceBundle['label_codigo']}}: ' + Material.codigo + '<br>{{ResourceBundle['label_nome']}}: ' + Material.nome + '<br>{{ResourceBundle['label_unidade_medida']}}: ' + Material.unidadeMedida.descricao + '<br>{{ResourceBundle['label_ncm']}}: ' + Material.ncm + '<br>{{ResourceBundle['label_ultimo_valor_negociado']}}: ' + Material.ultimoValorNegociado for Material in getAutoCompleteMateriais($viewValue)">
+        </nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_deposito']}}</label>  
+        <multi-select 
+            id="filtroRmaDepositos"
+            input-model="listaDepositos"
+            button-label="nome"
+            item-label="nome"
+            tick-property="selected"
+            disable-property="disabled">
+        </multi-select>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_dias_previstos']}}</label>
+        <input id="filtroRmaDiasPrevistos" somente-numero class="form-control" ng-model="filtro.diasPrevistos">
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_tipo_pendencia']}}</label> 
+        <nx-combo class="form-control" id="filtroRmaTipoPendencia" 
+                  name="filtroRmaTipoPendencia" ng-model="filtro.tipoPendencia">
+            <option value="{{TIPO_PENDENCIA_TODAS}}">{{ResourceBundle['label_todas']}}</option>
+            <option value="{{TIPO_PENDENCIA_ATRASADAS}}">{{ResourceBundle['label_atrasadas']}}</option>
+            <option value="{{TIPO_PENDENCIA_DENTRO_PRAZO}}">{{ResourceBundle['label_dentro_do_prazo']}}</option>
+        </nx-combo>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_material_chave']}}</label>
+        <input id="cadastroRmaMaterialChave" class="form-control" ng-model="filtro.materialChave">
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_data_previsao_entrega']}}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <nx-date-field id="filtroRmaDataPrevisaoChegadaDe" placeholder="{{ResourceBundle['label_de']}}" ng-model="filtro.stDataPrevisaoChegadaInicio"></nx-date-field>
+            </div>
+            <div class="col-md-6">
+                <nx-date-field id="filtroRmaDataPrevisaoChegadaAte" placeholder="{{ResourceBundle['label_ate']}}" ng-model="filtro.stDataPrevisaoChegadaFim"></nx-date-field>
+            </div>
+        </div>
+    </div>
+
+</nx-filtro>

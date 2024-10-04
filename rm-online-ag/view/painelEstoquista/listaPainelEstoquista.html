@@ -1,0 +1,74 @@
+<nx-paginacao 
+    num-paginas="numPaginas" 
+    pagina-atual="paginaAtiva" 
+    listar-pagina="irParaPaginaEspecifica"
+    qtde-paginas="15" > 
+    <div class="col-md-12">
+        <div class="table-responsive"> 
+            <table class="table table-hover table-striped table-bordered lista"> 
+                <thead class="fundo-cabecalho-tabela"> 
+                    <tr> 
+                        <th ng-if="ALTERAR_MATERIAL">{{ResourceBundle['label_opcoes']}}</th>
+                        <th>{{ResourceBundle['label_centro']}}</th>
+                        <th>{{ResourceBundle['label_numero']}}</th>
+                        <th>{{ResourceBundle['label_numero_pedido_compra_sap']}}</th>
+                        <th>{{ResourceBundle['label_material']}}</th>
+                        <th>{{ResourceBundle['label_tipo_material']}}</th>
+                        <th>{{ResourceBundle['label_quantidade_solicitada']}}</th>
+                        <th>{{ResourceBundle['label_recebimento_solicitacao']}}</th>
+                        <th>{{ResourceBundle['label_data_aplicacao']}}</th>
+                        <th>{{ResourceBundle['label_requisitante']}}</th>
+                        <th>{{ResourceBundle['label_usuario_cadastrante']}}</th>
+                        <th>{{ResourceBundle['label_fluxo_material']}}</th>
+                        <th>{{ResourceBundle['label_coletor_custos']}}</th>
+                        <th>{{ResourceBundle['label_data_avaliacao']}}</th>
+                        <th>{{ResourceBundle['label_status']}}</th>
+                        <th>{{ResourceBundle['label_status_item']}}</th>
+                        <th>{{ResourceBundle['label_tipo_requisicao']}}</th>
+                        <th>{{ResourceBundle['label_observacao']}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="obj in lista">
+                        <td ng-if="ALTERAR_MATERIAL">
+                            <div><nx-btn-2 title="{{ResourceBundle['label_alterar_material']}}"
+                                  icone="glyphicon glyphicon-edit"
+                                           ng-click="alterarMaterial(obj)"
+                                           ng-show="(obj.materialDepositoSaidaReserva.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' ||
+                                           obj.materialDepositoSaidaReserva.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_RET_EM_ESTOQ') &&
+                                           (!obj.materialDepositoSaidaReserva.status.length >0)"></nx-btn-2>
+                            </div> <!--' &&
+                                           obj.materialDepositoSaidaReserva.status !== 'A' && obj.materialDepositoSaidaReserva.status !== 'R' &&
+                                           !obj.materialDepositoSaidaReserva.status.length >0-->
+                        </td>
+                        <td ng-click="editar(obj)"
+                            ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true">
+                            {{obj.materialDepositoSaidaReserva.rmMaterial.rm.eapMultiEmpresa.descricao}}
+                        </td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.rmMaterial.rm.numeroRm}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.rmMaterial.numeroPedidoCompra}}</td>
+                        <td title="{{obj.materialDepositoSaidaReserva.rmMaterial.material.nomeCompleto}}" ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.rmMaterial.material.codigo}} - {{obj.materialDepositoSaidaReserva.rmMaterial.material.nome}}</td>
+                        <td ng-click="editar(obj)">
+                            {{obj.materialDepositoSaidaReserva.rmMaterial.material.tipoMaterial.codigo === 'C' ?
+                            ResourceBundle['label_cautelado'] :
+                            obj.materialDepositoSaidaReserva.rmMaterial.material.tipoMaterial.codigo === 'NC' ?
+                            ResourceBundle['label_nao_cautelado'] : ''}}
+                        </td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.quantidadeSolicitada}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.dataSaida| date:ResourceBundle['format_date_hora_minuto_segundo']}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.rmMaterial.rm.dataAplicacao| date:ResourceBundle['format_date']}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.rmMaterial.rm.requisitante.nome}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.rmMaterial.rm.usuario.pessoa.nome}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.rmMaterial.fluxoMaterial}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.rmMaterial.coletorCustos ? obj.materialDepositoSaidaReserva.rmMaterial.coletorCustos : obj.materialDepositoSaidaReserva.rmMaterial.diagramaRede || obj.materialDepositoSaidaReserva.rmMaterial.operacao ? obj.materialDepositoSaidaReserva.rmMaterial.diagramaRede + " - " + obj.materialDepositoSaidaReserva.rmMaterial.operacao : obj.materialDepositoSaidaReserva.rmMaterial.coletorOrdem}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.dataAvaliacao|date:ResourceBundle['format_date']}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.status === 'A' ? ResourceBundle['label_aprovado'] : obj.materialDepositoSaidaReserva.status === 'R' ? ResourceBundle['label_reprovado'] : ResourceBundle['label_pendente']}}</td>
+                        <td ng-click="editar(obj)">{{obj.rmMaterialStatus.status.nome}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.rmMaterial.rm.tipoRequisicao.descricao}}</td>
+                        <td ng-click="editar(obj)">{{obj.materialDepositoSaidaReserva.observacaoPainelEstoquista}}</td>
+                    </tr>
+                </tbody> 
+            </table> 
+        </div> 
+    </div>
+</nx-paginacao>

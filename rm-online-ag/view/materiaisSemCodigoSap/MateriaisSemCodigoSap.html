@@ -1,0 +1,82 @@
+<nx-tela-padrao id="telaMateriaisSemCodigoSap"> 
+    <nx-titulo titulo="{{ResourceBundle['label_materiais_sem_codigo_sap']}}"></nx-titulo> 
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-novo;nx-btn-salvar">
+        <nx-btn-2 ng-show="state === 'STATE_MANUT' && operacao === 'codigo'" ng-click="salvarConfirma()" 
+                  ng-disabled="!objSelecionado.codigo || objSelecionado.codigo.length === 0"
+                  label="{{ResourceBundle['label_salvar_codigo_sap']}}" 
+                  title="{{ResourceBundle['label_salvar_codigo_sap']}}" 
+                  icone="glyphicon glyphicon-ok"></nx-btn-2>
+
+        <nx-btn-2 ng-show="state === 'STATE_MANUT' && operacao === 'dePara'" ng-click="realizarDeParaConfirma()" 
+                  ng-disabled="!deParaVo.materialPara.materialId"
+                  label="{{ResourceBundle['label_alterar_material_para']}}" 
+                  title="{{ResourceBundle['label_alterar_material_para']}}" 
+                  icone="glyphicon glyphicon-transfer"></nx-btn-2>
+
+    </nx-botoes-padrao> 
+    <filtro-materiais-sem-codigo-sap></filtro-materiais-sem-codigo-sap> 
+    <manut-materiais-sem-codigo-sap btns-padrao-disable="nx-btn-novo;nx-btn-salvar"></manut-materiais-sem-codigo-sap> 
+    <lista-materiais-sem-codigo-sap></lista-materiais-sem-codigo-sap>
+    <nx-alert></nx-alert> 
+    <nx-loading></nx-loading>
+
+    <div class="modal fade" id="modalConfirmaRealizarDePara" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog  modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;</button>
+                    <h3 class="modal-title modalConfirmacao" id="H2">{{mensagem}}</h3>
+                </div>
+                <div class="modal-body">
+                    <form name="formConfirma" role="form" id="formConfirma">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                    <a ng-click="realizarDePara()" class="btn btn-success botaoFullCol" data-dismiss="modal">
+                                        <span class="glyphicon glyphicon-ok">
+                                        </span> {{ResourceBundle["label_sim"]}}</a>
+                                </div>
+                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                    <a type="button" class="btn btn-danger botaoFullCol" data-dismiss="modal">
+                                        <span class="glyphicon glyphicon-remove">
+                                        </span> {{ResourceBundle["label_nao"]}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalConfirmaSalvar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog  modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;</button>
+                    <h3 class="modal-title modalConfirmacao" id="H2">{{mensagem}}</h3>
+                </div>
+                <div class="modal-body">
+                    <form name="formConfirma" role="form" id="formConfirma">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                    <a ng-click="salvar()" class="btn btn-success botaoFullCol" data-dismiss="modal">
+                                        <span class="glyphicon glyphicon-ok">
+                                        </span> {{ResourceBundle["label_sim"]}}</a>
+                                </div>
+                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                    <a type="button" class="btn btn-danger botaoFullCol" data-dismiss="modal">
+                                        <span class="glyphicon glyphicon-remove">
+                                        </span> {{ResourceBundle["label_nao"]}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</nx-tela-padrao>

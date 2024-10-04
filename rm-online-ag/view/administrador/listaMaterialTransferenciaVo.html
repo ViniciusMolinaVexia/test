@@ -1,0 +1,36 @@
+<nx-manut id="listaRmMaterialTransferenciaVo">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped not-fix">
+                <thead class="fundo-cabecalho-tabela">
+                    <tr>
+                        <th>{{ResourceBundle['label_numero_rm']}}</th>
+                        <th>{{ResourceBundle['label_material']}}</th>
+                        <th>{{ResourceBundle['label_descricao']}}</th>
+                        <th>{{ResourceBundle['label_unidade_medida']}}</th>
+                        <th>{{ResourceBundle['label_quantidade_solicitada']}}</th>
+                        <th>{{ResourceBundle['label_quantidade_transferida']}}</th>
+                        <th>{{ResourceBundle['label_deposito_origem']}}</th>
+                        <th>{{ResourceBundle['label_deposito_destino']}}</th>
+                        <th>{{ResourceBundle['label_observacao']}}</th>
+                        <th>{{ResourceBundle['label_usuario']}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr >
+                        <td>{{objSelecionado.objeto.rmMaterial.rm.numeroRm}}</td>
+                        <td>{{objSelecionado.objeto.material.codigo}}</td>
+                        <td>{{objSelecionado.objeto.material.nome}}</td>
+                        <td>{{objSelecionado.objeto.material.unidadeMedida.descricao}}</td>
+                        <td>{{objSelecionado.objeto.quantidadeSolicitada}}</td>
+                        <td>{{objSelecionado.objeto.quantidadeTransferencia}}</td>
+                        <td>{{objSelecionado.objeto.depositoOrigem.nome}}</td>
+                        <td>{{objSelecionado.objeto.depositoDestino.nome}}</td>
+                        <td>{{objSelecionado.objeto.observacao}}</td>
+                        <td>{{objSelecionado.objeto.nomeUsuario}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</nx-manut>

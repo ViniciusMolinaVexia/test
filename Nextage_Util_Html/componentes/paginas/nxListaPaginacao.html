@@ -1,0 +1,48 @@
+<!-- Diretiva padrão para lista na plataforma Nextage. 
+
+  ng-transclude permite a inclusão de HTML onde a diretiva é usada. O Html será incluído dentro da DIV 
+que conter o atributo ng-transclude -->
+<div class="">
+
+    <div ng-transclude></div>
+    <ul class="pagination base nxpaginacao" ng-if="(montaPaginacao().length !== 0)">
+        <li>
+            <a ng-click="topoPagina()" title="Topo">
+                <i class="glyphicon glyphicon-arrow-up"></i>
+            </a>
+        </li>
+
+        <li id="firstPage" ng-show="paginaAtiva !== 1">
+            <a ng-click="paginaEspecifica(1);
+                topoPagina()" title="{{ResourceBundle['label_pagina']}} 1">&laquo;&laquo;</a>
+        </li>
+
+        <li ng-show="paginaAtiva !== 1">
+            <a ng-click="paginaAnterior();
+                topoPagina()" title="{{ResourceBundle['label_pagina_anterior']}}">&laquo;</a>
+        </li>
+
+
+        <li id="pag{{pagina}}" ng-class="(pagina === paginaAtiva ? 'active' : '')"
+            ng-repeat="pagina in montaPaginacao()">
+            <a id="{{pagina}}" ng-click="paginaEspecifica(pagina);
+                    topoPagina()" title="{{ResourceBundle['label_pagina'] + ' ' + pagina}}">{{pagina}}</a>
+        </li>
+
+
+        <li ng-show="paginaAtiva !== montaPaginacao().length">
+            <a ng-click="paginaSucessiva();
+                topoPagina()" title="{{ResourceBundle['label_proxima_pagina']}}">&raquo;</a>
+        </li>
+
+        <li id="lastPage" ng-show="paginaAtiva !== numPaginas">
+            <a ng-click="paginaEspecifica(numPaginas);
+                topoPagina()" title="{{ResourceBundle['label_pagina'] + ' ' + numPaginas}}">&raquo;&raquo;</a>
+        </li>
+
+        <span class="nuRegistros">
+            &nbsp;<b>{{numPaginas + ' Pg'}}.</b>
+        </span>
+
+    </ul>
+</div>

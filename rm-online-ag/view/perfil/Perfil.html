@@ -1,0 +1,70 @@
+<nx-tela-padrao id="telaCadastroPerfil"> 
+    <nx-titulo titulo="{{ResourceBundle['label_perfil']}}"></nx-titulo>
+    
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-filtro;nx-btn-novo;nx-btn-listar;nx-btn-limpar">
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_novo']}}" 
+           ng-click="novo()">
+        	<span>{{ResourceBundle['label_novo']}}</span>
+        </a>
+    </nx-botoes-padrao>
+    <nx-loading></nx-loading>
+    <nx-alert></nx-alert> 
+    <nx-pop-up id="modalCadastroPerfil" titulo="{{ tituloModal }}">
+    	<div class="form-novo">
+	    	<div>
+	    		<div>
+	    			<label for="perfil_nome">{{ResourceBundle['label_nome']}}</label>	
+	    		</div>
+	    		<div>
+	    			<input ng-model="$parent.nomePerfil" name="perfil_nome" id="perfil_nome" />
+	    		</div>
+	    	</div>
+	    	{{ ResourceBundle['label_permissoes'] }}
+	    	<div style="height:200px;overflow:auto;border:1px solid #C0C0C0">
+	    		<div ng-repeat="role in $parent.roles">
+	    			<input type="checkbox" ng-model="role.checked" />
+	    			<label>{{ role.nome }}</label>
+	    		</div>
+	    	</div>
+	    	<div style="padding-top:10px;">
+	    		<div>
+	    			<a class="btn btn-default btn-espaco" 
+			           label="{{ResourceBundle['label_salvar']}}" 
+			           ng-click="salvarPerfil()">
+			        	<span>{{ResourceBundle['label_salvar']}}</span>
+			        </a>
+	    		</div>
+	    	</div>
+	    </div>
+    </nx-pop-up>
+    
+	    <table class="table-novo">
+	    	<thead>
+		    	<tr>
+		    		<th>{{ResourceBundle['label_opcoes']}}</th>
+		    		<th>{{ResourceBundle['label_nome']}}</th>
+		    	</tr>
+		    </thead>
+		    <tbody>
+		    	<tr ng-repeat="perfil in perfis">
+		    		<td>
+		    			<div>
+		    				<div>
+		    					<nx-btn-2 title="{{ResourceBundle['label_editar_perfil']}}"
+	                                  icone="glyphicon glyphicon-edit"
+	                                  ng-click="editarPerfil(perfil)"></nx-btn-2>
+		    				</div>
+		    				<div>
+		    					<nx-btn-2 title="{{ResourceBundle['label_excluir_perfil']}}"
+	                                  icone="glyphicon glyphicon-remove"
+	                                  ng-click="excluirPerfil(perfil)"></nx-btn-2>
+		    				</div>
+		    			</div>
+		    		</td>
+		    		<td align="right">{{ perfil.nome }}</td>
+		    	</tr>
+		    </tbody>
+	    </table>
+    
+</nx-tela-padrao>

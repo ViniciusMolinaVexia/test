@@ -1,0 +1,50 @@
+<nx-paginacao 
+    num-paginas="numPaginas" 
+    pagina-atual="paginaAtiva" 
+    listar-pagina="irParaPaginaEspecifica"
+    qtde-paginas="15" > 
+    <div class="col-md-12">
+        <div class="table-responsive"> 
+        	<table class="table table-hover table-bordered lista">
+                    <thead class="fundo-cabecalho-tabela">
+                        <tr> 
+                            <th><input 
+                                id="listaRequisicaoMateriaisSelectAll"
+                                type="checkbox" 
+                                ng-if="permitirSelecionarTodos()"
+                                ng-click="selecionarTodos()" /></th>
+	                        <th>{{ResourceBundle['label_centro']}}</th>
+	                        <th>{{ResourceBundle['label_numero']}}</th>
+	                        <th>{{ResourceBundle['label_material']}}</th>
+                            <th>{{ResourceBundle['label_tipo_requisicao']}}</th>
+                            <th>{{ResourceBundle['label_prioridade']}}</th>
+	                        <th>{{ResourceBundle['label_quantidade_solicitada']}}</th>
+                            <th>{{ResourceBundle['label_emissao']}}</th>
+                            <th>{{ResourceBundle['label_necessidade']}}</th>
+	                        <th>{{ResourceBundle['label_requisitante']}}</th>
+	                        <th>{{ResourceBundle['label_usuario_cadastrante']}}</th>
+	                        <th>{{ResourceBundle['label_coletor_custos']}}</th>	                        
+                            <th>{{ResourceBundle['label_observacao']}}</th>
+	                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in lista">
+                        	<td><input type="checkbox" ng-model="item.selected" ng-change="verificarTipo(item); marcarDesmarcarTodos()" /></td>
+                            <td ng-click="edit(item)">{{ item.centro }}</td>
+                            <td ng-click="edit(item)">{{ item.numero }}</td>
+                            <td ng-click="edit(item)">{{ item.material }}</td>
+                            <td ng-click="edit(item)">{{ item.tipoRequisicaoCodigo }}</td>
+                            <td ng-click="edit(item)">{{ item.prioridadeDesc }}</td>
+                            <td ng-click="edit(item)">{{ item.quantidade }}</td>
+                            <td ng-click="edit(item)">{{ item.dataEmissao|date:ResourceBundle['format_date'] }}</td>
+                            <td ng-click="edit(item)">{{ item.dataAplicacao|date:ResourceBundle['format_date'] }}</td>
+                            <td ng-click="edit(item)">{{ item.requisitante }}</td>
+                            <td ng-click="edit(item)">{{ item.cadastrante }}</td>
+                            <td ng-click="edit(item)">{{ item.coletorCustos ? item.coletorCustos: item.diagramaRede }}</td>                            
+                            <td ng-click="edit(item)">{{ item.observacao }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</nx-paginacao>

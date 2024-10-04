@@ -1,0 +1,37 @@
+<nx-filtro>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_centro']}}</label>
+        <nx-combo id="filtroCentro" ng-model="filtro.centro" ng-options="centro as centro.nome for centro in listaCentros">
+        </nx-combo>
+    </div>
+    <div class="form-group">
+        <label for="numeroRm">{{ResourceBundle["label_rma_separe_por_ponto_e_virgula_as_rmas"]}}</label>
+        <input type="text" class="form-control" id="numeroRm" name="numeroRm" ng-model="filtro.numeroRma" />
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_requisitante']}}</label>
+        <nx-auto-complete id="filtroRmAprovacaoRequisitante" ng-model="filtro.solicitante" typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)">
+        </nx-auto-complete>
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_usuario_cadastrante']}}</label>
+        <nx-auto-complete id="filtroPainelEstoquistaCadastrante" ng-model="filtro.cadastrante" typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)">
+        </nx-auto-complete>
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle['label_tipo_requisicao']}}</label>
+        <nx-combo id="filtroPainelEstoquistaTipoRequisicao" ng-model="filtro.tipoRequisicao" ng-options="tipoRequisicao as tipoRequisicao.descricao for tipoRequisicao in listaTipoRequisicao track by tipoRequisicao.tipoRequisicaoId">
+        </nx-combo>
+    </div>
+    <div class="form-group">
+        <label for="tipoRm">Tipo</label>
+        <select name="tipoRm" id="tipoRm" ng-model="filtro.tipoRm" class="form-control xgh select-readonly">
+                <option value=""></option>
+                <option value="MAT">Material</option>
+                <option value="SER">Servi&ccedil;o</option>
+        </select>
+    </div>
+</nx-filtro>

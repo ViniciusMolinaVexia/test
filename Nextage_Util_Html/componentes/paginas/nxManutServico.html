@@ -1,0 +1,22 @@
+<!-- Diretiva padrão para Manut na plataforma Nextage. -->
+
+<!--  ng-transclude permite a inclusão de HTML onde a diretiva é usada. O Html será incluído dentro da DIV 
+que conter o atributo ng-transclude -->
+<div id="formCadastroRmaServico" class="panel panel-default  popup-manutencao-servico " ng-show="state === 'STATE_MANUT'">
+    <div ng-transclude>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="btnsTelaManut" btns-tela-manut>
+                    <div class="form-group">
+                        <nx-btn-salvar nx-btn-salvar ng-click="salvar(objSelecionado)" ng-show="state === 'STATE_MANUT'"></nx-btn-salvar>
+                        <nx-btn-novo nx-btn-novo ng-click="novo()" ng-show="state === 'STATE_MANUT' || state === 'STATE_LISTA'"></nx-btn-novo>
+                        <nx-btn-excluir nx-btn-excluir ng-click="excluirConfirma(objSelecionado)" ng-show="objSelecionado.id > 0 && state === 'STATE_MANUT'"></nx-btn-excluir>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="popup-backdrop fade in hidden-sm hidden-xs" ng-show="state === 'STATE_MANUT'"></div>

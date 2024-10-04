@@ -1,0 +1,145 @@
+<nx-paginacao
+        num-paginas="numPaginas"
+        pagina-atual="paginaAtiva"
+        listar-pagina="irParaPaginaEspecifica"
+        qtde-paginas="15" >
+    <div class="col-md-12" style="margin-top: 10px;">
+        <div class="form-inline">
+            <div class="form-group">
+                <label>{{ResourceBundle['label_data_previsao_entrega']}}</label>
+                <nx-date-field id="listaCompradorInputDataPrevistaEntregaCopia"
+                               ng-model="objAux.dataPrevistaEntrega"></nx-date-field>
+
+                <nx-btn-2 ng-click="replicarDataPrevistaEntrega()"
+                          ng-disabled="!objAux.dataPrevistaEntrega"
+                          label="{{ResourceBundle['label_replicar_data_para_todos']}}"
+                          title="{{ResourceBundle['label_replicar_data_para_todos']}}"
+                          icone="glyphicon glyphicon-list-alt"
+                ></nx-btn-2>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered lista">
+                <thead class="fundo-cabecalho-tabela">
+                <tr>
+                    <th>{{ResourceBundle['label_enviar_para_sap']}}</th>
+                    <th>{{ResourceBundle['label_concluida_comprador']}}</th>
+                    <th>{{ResourceBundle['label_gerar_documento']}}</th>
+                    <th class="icone">{{ResourceBundle['label_opcoes']}}</th>
+                    <th>{{ResourceBundle['label_centro']}}</th>
+                    <th>{{ResourceBundle['label_numero_rma']}}</th>
+                    <th>{{ResourceBundle['label_prioridade']}}</th>
+                    <th>{{ResourceBundle['label_numero_pedido']}}</th>
+                    <th>{{ResourceBundle['label_material']}}</th>
+                    <th>{{ResourceBundle['label_quantidade']}}</th>
+                    <th>{{ResourceBundle['label_unidade_medida']}}</th>
+                    <th>{{ResourceBundle['label_observacao']+' '+ResourceBundle['label_rma']}}</th>
+                    <th>{{ResourceBundle['label_observacao']+' '+ResourceBundle['label_material']}}</th>
+                    <th>{{ResourceBundle["label_ultimo_valor_negociado"]}}</th>
+                    <th>{{ResourceBundle['label_tipo_material']}}</th>
+                    <th>{{ResourceBundle['label_requisitante']}}</th>
+                    <th>{{ResourceBundle['label_atribuido_para_compra']}}</th>
+                    <th>{{ResourceBundle['label_emissao']}}</th>
+                    <th>{{ResourceBundle['label_aplicacao']}}</th>
+                    <th>{{ResourceBundle['label_data_nota_fiscal']}}</th>
+                    <th>{{ResourceBundle['label_numero_requisicao_sap']}}</th>
+                    <th>{{ResourceBundle['label_item_requisicao_sap']}}</th>
+                    <th>{{ResourceBundle['label_deposito_para_entrega']}}</th>
+                    <th>{{ResourceBundle['label_local_entrega']}}</th>
+                    <th>{{ResourceBundle["label_coletor_custos"]}}</th>
+                    <th>{{ResourceBundle['label_gerente_area']}}</th>
+                    <th>{{ResourceBundle['label_data_previsao_entrega']}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="obj in lista">
+                    <td>
+                        <input type="checkbox"
+                               ng-if="!obj.material.isServico"
+                               ng-show="(obj.numeroRequisicaoSap ? false : (obj.agrupadorErro ? false : true))"
+                               id="selecionar{{$index}}" ng-click="selecionarRmMaterial($index, obj)"
+                               name="selecionar{{$index}}"
+                               ng-model="objAux.listaCheck[$index]">
+                    </td>
+                    <td>
+                        <input type="checkbox"
+                               id="selecionarConcluirComprador"
+                               name="selecionarConcluirComprador"
+                               ng-click="salvarConcluirComprador(obj)"
+                               ng-model="obj.concluidaComprador">
+                    </td>
+                    <td>
+                        <input type="checkbox"
+                               id="checkBoxGerarDoc{{$index}}"
+                               ng-click="selecionarGerarDoc($index,obj)"
+                               name="checkBoxGerarDoc{{$index}}"
+                               ng-model="obj.gerarDoc">
+                    </td>
+                    <td>
+                        <nx-btn-2 ng-show="!obj.material.isServico && (obj.material.codigo == null || obj.material.codigo.length == 0)"
+                                  title="{{ResourceBundle['label_adicionar_codigo_material']}}"
+                                  icone="glyphicon glyphicon-pencil" ng-show="obj.material.codigo == null || obj.material.codigo.length == 0"
+                                  ng-click="adicionarMaterialCodigo(obj)"></nx-btn-2>
+
+                        <nx-btn-2 ng-show="!obj.material.isServico"
+                                  title="{{ResourceBundle['label_alterar_material']}}"
+                                  icone="glyphicon glyphicon-edit" ng-show="EDITAR_QUANTIDADE_ITEM"
+                                  ng-click="alterarMaterial(obj)"></nx-btn-2>
+                        <nx-btn-2 ng-show="!obj.material.isServico"
+                                  title="{{ResourceBundle['label_alterar_coletor_custos']}}"
+                                  icone="glyphicon glyphicon-usd" ng-show="EDITAR_QUANTIDADE_ITEM"
+                                  ng-click="alterarColetor(obj)"></nx-btn-2>
+                        <nx-btn-2 title="{{ResourceBundle['label_detalhar_rm']}}"
+                                  icone="glyphicon glyphicon-zoom-in"
+                                  ng-click="detalharRm(obj)"></nx-btn-2>
+                        <nx-btn-2 ng-show="obj.material.isServico"
+                                  title="{{ResourceBundle['label_atribuir_material_como_comprado']}}"
+                                  icone="glyphicon glyphicon-new-window"
+                                  ng-click="abrirModalAtribuirComprado(obj)"></nx-btn-2>
+
+                        <nx-btn-2 title="{{ResourceBundle['label_anexo_material']}}"
+                                  icone="glyphicon glyphicon-paperclip"
+                                  ng-if="obj.possuiAnexoMaterial"
+                                  ng-click="abrirModalAnexoRmMaterial('RM_MATERIAL', obj.rmMaterialId, obj.numeroRequisicaoSap)"></nx-btn-2>
+                        <nx-btn-2 title="{{ResourceBundle['label_anexo_requisicao']}}"
+                                  icone="glyphicon glyphicon-paperclip"
+                                  ng-if="obj.possuiAnexoRm"
+                                  ng-click="abrirModalAnexoRm('RM', obj.rm.rmId)"></nx-btn-2>
+                    </td>
+                    <td ng-click="selecionarRmMaterial($index, obj)"
+                        ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true">
+                        {{obj.rm.eapMultiEmpresa.descricao}}
+                    </td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.rm.numeroRm}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.rm.prioridade.descricao}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.numeroPedidoCompra}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.material.codigo}} - {{obj.material.nome}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.quantidade}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.material.unidadeMedida.sigla}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.rm.observacao}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.observacao}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.material.ultimoValorNegociado | currency : 'R$ ':2}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.material.tipoMaterial.codigo === 'C' ? ResourceBundle['label_cautelado'] : obj.material.tipoMaterial.codigo === 'NC' ? ResourceBundle['label_nao_cautelado'] : ''}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.rm.requisitante.referencia + " - " + obj.rm.requisitante.nome}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.dataAtribuirComprador| date: ResourceBundle['format_date']}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.rm.dataEmissao| date: ResourceBundle['format_date']}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.rm.dataAplicacao| date: ResourceBundle['format_date']}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.dataUltimaNotaFiscal| date:ResourceBundle['format_date']}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.numeroRequisicaoSap ? obj.numeroRequisicaoSap : (obj.agrupadorErro ? "Erro no envio ao SAP" : "")}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.itemRequisicaoSap}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.deposito.nome}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.localEntrega}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.coletorCustos ? obj.coletorCustos : obj.diagramaRede|| obj.operacao ? obj.diagramaRede + " - " + obj.operacao : obj.coletorEstoque ? ResourceBundle['label_estoque'] : ""}}</td>
+                    <td ng-click="selecionarRmMaterial($index, obj)">{{obj.rm.gerenteArea.nome}}</td>
+                    <td>
+                        <nx-date-field id="listaCompradorInputDataPrevistaEntrega"
+                                       ng-model="obj.stDataPrevistaEntrega"
+                                       ng-change="adicionarItemDataPrevista(obj)"
+                                       nome-dinamico="{{$index}}"></nx-date-field>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</nx-paginacao>

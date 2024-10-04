@@ -1,0 +1,87 @@
+<nx-pop-up id="modalRetirarMaterial" titulo="{{ResourceBundle['label_retirar_material']}}">
+    <form id="formModalRetirarMaterial" novalidate>
+
+        <!-- Lista de Materiais no materialDepositoSaida para retirada -->
+        <div class="table">
+            <h4>{{ResourceBundle['msg_necessario_selecionar_deposito']}}:</h4>
+            <table class="table table-bordered table-hover table-striped not-fix">
+                <thead class="fundo-cabecalho-tabela">
+                    <tr>
+                        <th></th>
+                        <th>{{ResourceBundle['label_quantidade']}}</th>
+                        <th>{{ResourceBundle['label_deposito']}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="obj in listaMatDepositoSaida">
+                        <td>
+                            <label for="selecionar{{$index}}">
+                                <input ng-model="objCopiaMatDepositoSaida.radio" 
+                                       required
+                                       ng-click="alteraQuantidadeRetirada(obj.quantidade)"
+                                       type="radio" name="opcoes{{$index}}" id="selecionar{{$index}}" 
+                                       ng-value="{{obj}}"/>
+                            </label>
+                        </td>
+                        <td>{{obj.quantidade | number : 3}}</td>
+                        <td>{{obj.materialDeposito.deposito.nome}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> 
+
+        <nx-float-group cols="2">
+
+            <div class="form-group">
+                <label>{{ResourceBundle['label_quantidade_solicitada']}}:</label><br>
+                <label>{{objSelecionado.materialDepositoSaidaReserva.quantidadeSolicitada}}</label>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle['label_material']}}:</label><br>
+                <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.codigo}} - {{objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.nome}}</label>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle['label_quantidade']}}</label>
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                <nx-numero id="manutCadastroRmaQuantidade" m-dec="3" ng-model="quantidadeRetirada.quantidade"
+                           allow-negative="false"
+                           ng-required="true" required ng-disabled="!objCopiaMatDepositoSaida.radio.materialDeposito"></nx-numero>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle['label_retirado_por']}}</label>
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                <nx-auto-complete id="filtroPainelEstoquistaRequisitante" ng-model="retiradoPor.pessoa"
+                                  ng-disabled="!objCopiaMatDepositoSaida.radio.materialDeposito" required
+                                  typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)">
+                </nx-auto-complete>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle['label_deposito']}}:</label><br>
+                <label>{{objCopiaMatDepositoSaida.radio.materialDeposito.deposito.nome}}</label>
+            </div>
+
+        </nx-float-group>
+
+        <div style="height:25px;"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="abrirModalRetirarMaterialComBiometria()" icone="glyphicon glyphicon-share-alt" 
+                             ng-disabled="!objCopiaMatDepositoSaida.radio.materialDeposito"
+                             label="{{ResourceBundle['label_retirar_com_biometria']}}"></nx-btn2>
+                    <nx-btn2 ng-click="abrirModalRetirarMaterialNaoPresencial()" icone="glyphicon glyphicon-share-alt" 
+                             ng-disabled="!objCopiaMatDepositoSaida.radio.materialDeposito"
+                             label="{{ResourceBundle['label_retirar_nao_presencial']}}"></nx-btn2>
+                    <nx-btn2 data-dismiss="modal" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+</nx-pop-up>

@@ -1,0 +1,11 @@
+<nx-tela-padrao id="telaGestaoRma"> 
+    <nx-titulo titulo="{{ResourceBundle['label_relatorio_gestao_rma']}}"></nx-titulo> 
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-novo;nx-btn-excluir;">
+        <nx-btn-gerar-excel ng-click="gerarXls()" 
+                            ng-show="(listaRmMaterial.length > 0)"></nx-btn-gerar-excel>
+    </nx-botoes-padrao>
+    <filtro-gestao-rma></filtro-gestao-rma>
+    <lista-gestao-rma></lista-gestao-rma>
+    <nx-alert></nx-alert> 
+    <nx-loading></nx-loading>
+</nx-tela-padrao>

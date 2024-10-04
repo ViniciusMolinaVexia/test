@@ -1,0 +1,22 @@
+<div class="form-group"
+     ng-if="campoManut.campo.tipoCampo.nome === OBJECT && campoManut.campo.modoExibicao === TEXTAREA">
+    <!--<span class="glyphicon glyphicon-asterisk obrigatorio" ng-if='campoManut.obrigatorio === "S"'></span>--> 
+    <textarea class="form-control textarea-funcionalidade"
+              ng-if='!campoManut.campo.propriedadeFiltro'
+              id="{{campoManut.id}}"
+              ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+              ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+              ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+              ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+              ng-model="filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]"
+    ></textarea>
+    <textarea class="form-control textarea-funcionalidade"
+              ng-if='campoManut.campo.propriedadeFiltro'
+              id="{{campoManut.id}}"
+              ng-model="filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]"
+              ng-change="(campoManut.eventos.length > 0 ? [eventoNgChange(campoManut),setaPropFiltro(campoManut)] : setaPropFiltro(campoManut))"
+              ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+              ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+              ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+    ></textarea>
+</div> 

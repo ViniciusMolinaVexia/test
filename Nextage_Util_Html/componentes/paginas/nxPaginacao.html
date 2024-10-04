@@ -1,0 +1,36 @@
+<div>
+    <div class="row" ng-transclude></div>
+    <div class="paginas">
+        <span ng-if="(montaPaginacao().length !== 0)">&nbsp;&nbsp;&nbsp;Pagina {{paginaAtual}} de {{numPaginas}}.</span>
+        <ul class="pagination base nxpaginacao" ng-if="(montaPaginacao().length !== 0)">
+            <li>
+                <a ng-click="topoPagina()" title="goTop">
+                    <i class="glyphicon glyphicon-arrow-up"></i>
+                </a>
+            </li>
+            <li id="firstPage" ng-show="paginaAtual !== 1">
+                <a ng-click="listarPagina(1); topoPagina()"
+                   title="{{ResourceBundle['label_pagina']}} 1">&laquo;&laquo;</a>
+            </li>
+            <li ng-show="paginaAtual !== 1">
+                <a ng-click="listarPagina(paginaAtual - 1);
+                    topoPagina()" title="{{ResourceBundle['label_pagina_anterior']}}">&laquo;</a>
+            </li>
+            <li id="pag{{pagina}}" ng-class="(pagina === paginaAtual ? 'active' : '')"
+                ng-repeat="pagina in montaPaginacao()">
+                <a id="{{pagina}}" ng-click="paginaAtual === pagina ? '' : [listarPagina(pagina), topoPagina()]"
+                   title="{{ResourceBundle['label_pagina'] + ' ' + pagina}}">{{pagina}}</a>
+            </li>
+            <li ng-show="paginaAtual !== numPaginas">
+                <a ng-click="listarPagina(paginaAtual + 1);
+                    topoPagina()" title="{{ResourceBundle['label_proxima_pagina']}}">&raquo;</a>
+            </li>
+            <li id="lastPage" ng-show="paginaAtual !== numPaginas">
+                <a ng-click="listarPagina(numPaginas);
+                    topoPagina()" title="{{ResourceBundle['label_pagina'] + ' ' + numPaginas}}">&raquo;&raquo;</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>

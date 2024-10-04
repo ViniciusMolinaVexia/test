@@ -1,0 +1,77 @@
+<!--campos fixos do tipo Date-->
+<div class="form-group" ng-if="campoManut.campo.tipoCampo.nome === DATE">
+    <nx-date-field id="{{campoManut.id}}"
+                   ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+                   ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+                   ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+                   ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+                   ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && campoManut.sempreEditavel !== 'S'"
+                   nome-dinamico="{{campoManut.campo.propriedadeEntity}}"
+                   ng-model="objSelecionado[campoManut.campo.propriedadeEntityDate]"></nx-date-field>
+</div>
+<!--campos fixos do tipo Double ou float-->
+<div class="form-group" ng-if="campoManut.campo.tipoCampo.nome === DOUBLE || campoManut.campo.tipoCampo.nome === FLOAT">
+    <nx-numero id="{{campoManut.id}}"
+               ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+               ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+               ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+               ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+               ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && (campoManut.sempreEditavel !== 'S')"
+               nome-dinamico="{{campoManut.campo.propriedadeEntity}}"
+               ng-model="objSelecionado[campoManut.campo.propriedadeEntity]"
+               allow-negative="{{campoManut.campo.allowNegative}}">
+    </nx-numero>
+</div>
+<!--campos fixos do tipo integer-->
+<div class="form-group" ng-if="campoManut.campo.tipoCampo.nome === INTEGER">
+    <nx-numero id="{{campoManut.id}}"
+               ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+               ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+               ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+               ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+               allow-negative="{{campoManut.campo.allowNegative}}"
+               ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && (campoManut.sempreEditavel !== 'S')"
+               ng-model="objSelecionado[campoManut.campo.propriedadeEntity]"
+               nome-dinamico="{{campoManut.campo.propriedadeEntity}}"
+               somente-numero="true"
+               max-char="15">
+    </nx-numero>
+</div>
+<!--campos fixos do tipo String-->
+<div class="form-group" ng-if="campoManut.campo.tipoCampo.nome === STRING">
+    <input type="text" class="form-control" id="{{campoManut.id}}"
+           ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && (campoManut.sempreEditavel !== 'S')"
+           ng-if="campoManut.campo.maxChar"
+           name="{{campoManut.campo.propriedadeEntity}}"
+           ng-model="objSelecionado[campoManut.campo.propriedadeEntity]"
+           nx-limit-to="{{campoManut.campo.maxChar}}"
+           ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+           ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+           ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+           ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"/>
+
+    <input type="text" class="form-control" id="{{campoManut.id}}"
+           ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && (campoManut.sempreEditavel !== 'S')"
+           ng-if="!campoManut.campo.maxChar"
+           name="{{campoManut.campo.propriedadeEntity}}"
+           ng-model="objSelecionado[campoManut.campo.propriedadeEntity]"
+           ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+           ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+           ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+           ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"/>
+</div>
+<div class="form-group no-margin-bottom alturaLabelDinamico"
+     ng-if="campoManut.campo.tipoCampo.nome === BOOLEAN && campoManut.campo.modoExibicao === NORMAL">
+    <div class="checkbox-inline padding-top-30px">
+        <label>
+            <input type="checkbox"
+                   ng-model="objSelecionado[campoManut.campo.propriedadeEntity]"
+                   ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && (campoManut.sempreEditavel !== 'S')"
+                   name="{{campoManut.campo.propriedadeEntity}}"
+                   ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+                   ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+            >
+            {{ResourceBundle[campoManut.campo.chaveLabel]}}
+        </label>
+    </div>
+</div>

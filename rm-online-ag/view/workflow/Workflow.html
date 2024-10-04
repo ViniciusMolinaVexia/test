@@ -1,0 +1,141 @@
+<nx-tela-padrao id="telaWorkflow"> 
+    <nx-titulo titulo="{{ResourceBundle['label_workflow']}}"></nx-titulo>
+    
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-filtro;nx-btn-novo;nx-btn-listar;nx-btn-limpar">
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_novo']}}" 
+           ng-click="novoWorkflow()">
+        	<span>{{ResourceBundle['label_novo']}}</span>
+        </a>
+    </nx-botoes-padrao>
+    <nx-loading></nx-loading>
+    <nx-alert></nx-alert> 
+    <nx-pop-up id="modalWorkflow" titulo="{{ tituloModal }}">
+    	<form id="formWorkflow">
+    		<nx-float-group cols="2">
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_centro']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-combo 
+                    	name="workflowCentro" 
+                    	id="workflowCentro"
+    					ng-options="centro as centro.nome for centro in centros track by centro.centroId"
+    					ng-model="centroSelecionado"
+    					class="form-control"
+    					ng-change="atualizarAreas(centroSelecionado)" required>
+    				</nx-combo>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_area']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-combo 
+                    	name="workflowArea" 
+                    	id="workflowArea"
+    					ng-options="Area as Area.nome for Area in listaAreas track by Area.areaId"
+    					ng-model="areaSelecionado"
+    					class="form-control"
+    					ng-change="marcarArea(areaSelecionado)" required>
+    				</nx-combo>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" ng-model="escolherArea" />
+                    <label>{{ResourceBundle['label_aprovador_area']}}</label>
+                    <multi-select
+                            id="inputArea"
+                            input-model="aprovadoresAreas"
+                            button-label="nome"
+                            item-label="nome"
+                            tick-property="selected"
+                            disable-property="disabled"
+                            is-disabled="!escolherArea"
+                            max-labels="6">
+                    </multi-select>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_aprovador_gerente_area']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <multi-select
+                            required="required"
+                            class="required"
+                            id="inputGerenteArea"
+                            input-model="aprovadoresGerenteAreas"
+                            button-label="nome"
+                            item-label="nome"
+                            tick-property="selected"
+                            disable-property="disabled"
+                            is-disabled="false"
+                            max-labels="6">
+                    </multi-select>
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" ng-model="escolherCusto" />
+                    <label>{{ResourceBundle['label_aprovador_custo']}}</label>
+                    <multi-select
+                            id="inputCusto"
+                            input-model="aprovadoresCustos"
+                            button-label="nome"
+                            item-label="nome"
+                            tick-property="selected"
+                            disable-property="disabled"
+                            is-disabled="!escolherCusto"
+                            max-labels="6">
+                    </multi-select>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_aprovador_emergencial']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <multi-select
+                    		required
+                            id="inputEmergencial"
+                            input-model="aprovadoresEmergenciais"
+                            button-label="nome"
+                            item-label="nome"
+                            tick-property="selected"
+                            disable-property="disabled"
+                            is-disabled="false"
+                            max-labels="6">
+                    </multi-select>
+                </div>
+              
+               </nx-float-group>
+               <div class="form-group">
+                	<a class="btn btn-default btn-espaco" 
+			           label="{{ResourceBundle['label_salvar']}}" 
+			           ng-click="salvarWorkflow()">
+			        	<span>{{ResourceBundle['label_salvar']}}</span>
+			        </a>
+                </div>
+    	</form>
+    </nx-pop-up>
+    
+	    <table class="table-novo">
+	    	<thead>
+		    	<tr>
+		    		<th></th>
+		    		<th>{{ResourceBundle['label_centro']}}</th>
+		    		<th>{{ResourceBundle['label_area']}}</th>
+		    	</tr>
+		    </thead>
+		    <tbody>
+		    	<tr ng-repeat="work in works">
+		    		<td>
+		    			<div>
+		    				<div>
+		    					<nx-btn-2 title="{{ResourceBundle['label_editar']}}"
+	                                  icone="glyphicon glyphicon-edit"
+	                                  ng-click="editarWorkflow(work)"></nx-btn-2>
+		    				</div>
+		    				<div>
+		    					<nx-btn-2 title="{{ResourceBundle['label_excluir']}}"
+	                                  icone="glyphicon glyphicon-remove"
+	                                  ng-click="excluirWorkflow(work)"></nx-btn-2>
+		    				</div>
+		    			</div>
+		    		</td>
+		    		<td>{{ work.centro.nome }}</td>
+		    		<td>{{ work.area.nome }}</td>
+		    	</tr>
+		    </tbody>
+	    </table>
+    
+</nx-tela-padrao>

@@ -1,0 +1,15 @@
+<nx-tela-padrao id="telaHierarquiaComprador" >
+    <nx-titulo titulo="{{ResourceBundle['label_hierarquia_comprador']}}"></nx-titulo>
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-excluir" >
+    </nx-botoes-padrao>
+    <filtro-hierarquia-comprador></filtro-hierarquia-comprador>
+    <manut-hierarquia-comprador ng-show="manutHierarquiaComprador === true" btns-padrao-disable="nx-btn-salvar;nx-btn-novo;nx-btn-excluir"><!-- MODAL HIERARQUIA COMPRADOR -->
+       </manut-hierarquia-comprador>
+    <lista-hierarquia-comprador></lista-hierarquia-comprador>
+    <nx-alert></nx-alert>
+    <nx-loading></nx-loading>
+
+    <nx-modal id="modalExcluirHierarquiaComprador"
+              mensagem="{{ResourceBundle['label_deseja_remover_hierarquia']}}"
+              funcao="excluirHierarquia()"></nx-modal>
+</nx-tela-padrao>

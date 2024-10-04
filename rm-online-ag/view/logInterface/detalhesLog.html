@@ -1,0 +1,303 @@
+	<div class="modal fade" id="modalDetailLog1" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" ng-click="closeModal(1)" aria-hidden="true">&times;</button>
+					<h3 class="modal-title modalConfirmacao" >{{ResourceBundle["label_detalhes"]}}</h3>
+				</div>
+				<div class="modal-body">
+					<div class=" table-responsive">
+						<table class="table table-hover table-striped table-bordered lista" id="tableModalDetailLog1"  not-fix="true">
+							<thead class="fundo-cabecalho-tabela">
+							<tr>
+								<th class="col-md-4">
+									<a >
+										{{ResourceBundle["label_campo"]}}
+									</a>
+								</th>
+								<th class="col-md-8">
+									<a >
+										{{ResourceBundle["label_valor"]}}
+									</a>
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="objDet in getLista1() track by objDet.numObj" >
+								<td  >
+									<a>
+										{{objDet.nome}}
+									</a>
+								</td>
+
+								<td  >
+									<a>
+										<div>
+											<label>{{objDet.valor}}</label>
+
+											<nx-btn2  icone="glyphicon glyphicon-plus" label="" ng-show="objDet.subItens != null"
+													  ng-click="openModalDetalhes(2,objDet.subItens)"></nx-btn2>
+										</div>
+									</a>
+
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<nx-btn2 ng-click="closeModal(1)" icone="glyphicon glyphicon-arrow-left"
+										 label="{{ResourceBundle['label_fechar']}}"></nx-btn2>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modalDetailLog2" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" ng-click="closeModal(2)" aria-hidden="true">&times;</button>
+					<h3 class="modal-title modalConfirmacao" >{{ResourceBundle["label_detalhes"]}}</h3>
+				</div>
+				<div class="modal-body">
+					<div class=" table-responsive">
+						<table class="table table-hover table-striped table-bordered lista" id="tableModalDetailLog2"  not-fix="true">
+							<thead class="fundo-cabecalho-tabela">
+							<tr>
+								<th class="col-md-4">
+									<a >
+										{{ResourceBundle["label_campo"]}}
+									</a>
+								</th>
+								<th class="col-md-8">
+									<a >
+										{{ResourceBundle["label_valor"]}}
+									</a>
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="objDet in lista2 track by objDet.numObj" >
+								<td  >
+									<a>
+										{{objDet.nome}}
+									</a>
+								</td>
+
+								<td  >
+									<a>
+										<div>
+											<label>{{objDet.valor}}</label>
+
+											<nx-btn2  icone="glyphicon glyphicon-plus" label="" ng-show="objDet.subItens != null"
+													  ng-click="openModalDetalhes(3,objDet.subItens)"></nx-btn2>
+										</div>
+									</a>
+
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<nx-btn2 ng-click="closeModal(2)" icone="glyphicon glyphicon-arrow-left"
+										 label="{{ResourceBundle['label_fechar']}}"></nx-btn2>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modalDetailLog3" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" ng-click="closeModal(3)" aria-hidden="true">&times;</button>
+					<h3 class="modal-title modalConfirmacao" >{{ResourceBundle["label_detalhes"]}}</h3>
+				</div>
+				<div class="modal-body">
+					<div class=" table-responsive">
+						<table class="table table-hover table-striped table-bordered lista" id="tableModalDetailLog3"  not-fix="true">
+							<thead class="fundo-cabecalho-tabela">
+							<tr>
+								<th class="col-md-4">
+									<a >
+										{{ResourceBundle["label_campo"]}}
+									</a>
+								</th>
+								<th class="col-md-8">
+									<a >
+										{{ResourceBundle["label_valor"]}}
+									</a>
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="objDet in lista3 track by objDet.numObj" >
+								<td  >
+									<a>
+										{{objDet.nome}}
+									</a>
+								</td>
+
+								<td  >
+									<a>
+										<div>
+											<label>{{objDet.valor}}</label>
+
+											<nx-btn2  icone="glyphicon glyphicon-plus" label="" ng-show="objDet.subItens != null"
+													  ng-click="openModalDetalhes(4,objDet.subItens)"></nx-btn2>
+										</div>
+									</a>
+
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<nx-btn2 ng-click="closeModal(3)" icone="glyphicon glyphicon-arrow-left"
+										 label="{{ResourceBundle['label_fechar']}}"></nx-btn2>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modalDetailLog4" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" ng-click="closeModal(4)" aria-hidden="true">&times;</button>
+					<h3 class="modal-title modalConfirmacao" >{{ResourceBundle["label_detalhes"]}}</h3>
+				</div>
+				<div class="modal-body">
+					<div class=" table-responsive">
+						<table class="table table-hover table-striped table-bordered lista" id="tableModalDetailLog4"  not-fix="true">
+							<thead class="fundo-cabecalho-tabela">
+							<tr>
+								<th class="col-md-4">
+									<a >
+										{{ResourceBundle["label_campo"]}}
+									</a>
+								</th>
+								<th class="col-md-8">
+									<a >
+										{{ResourceBundle["label_valor"]}}
+									</a>
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="objDet in lista4 track by objDet.numObj" >
+								<td  >
+									<a>
+										{{objDet.nome}}
+									</a>
+								</td>
+
+								<td  >
+									<a>
+										<div>
+											<label>{{objDet.valor}}</label>
+
+											<nx-btn2  icone="glyphicon glyphicon-plus" label="" ng-show="objDet.subItens != null"
+													  ng-click="openModalDetalhes(5,objDet.subItens)"></nx-btn2>
+										</div>
+									</a>
+
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<nx-btn2 ng-click="closeModal(4)" icone="glyphicon glyphicon-arrow-left"
+										 label="{{ResourceBundle['label_fechar']}}"></nx-btn2>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modalDetailLog5" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" ng-click="closeModal(5)" aria-hidden="true">&times;</button>
+					<h3 class="modal-title modalConfirmacao" >{{ResourceBundle["label_detalhes"]}}</h3>
+				</div>
+				<div class="modal-body">
+					<div class=" table-responsive">
+						<table class="table table-hover table-striped table-bordered lista" id="tableModalDetailLog5"  not-fix="true">
+							<thead class="fundo-cabecalho-tabela">
+							<tr>
+								<th class="col-md-4">
+									<a >
+										{{ResourceBundle["label_campo"]}}
+									</a>
+								</th>
+								<th class="col-md-8">
+									<a >
+										{{ResourceBundle["label_valor"]}}
+									</a>
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="objDet in lista5 track by objDet.numObj" >
+								<td  >
+									<a>
+										{{objDet.nome}}
+									</a>
+								</td>
+
+								<td  >
+									<a>
+										<div>
+											<label>{{objDet.valor}}</label>
+											<label ng-show="objDet.subItens != null">Object...</label>
+										</div>
+									</a>
+
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="form-group pull-right">
+								<nx-btn2 ng-click="closeModal(5)" icone="glyphicon glyphicon-arrow-left"
+										 label="{{ResourceBundle['label_fechar']}}"></nx-btn2>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

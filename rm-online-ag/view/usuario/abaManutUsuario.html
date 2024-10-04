@@ -1,0 +1,126 @@
+
+        <form id="formManutencao">
+            <nx-float-group cols="4">
+            	<!--<div class="form-group">
+                    <label>{{ResourceBundle["label_centro"]}}</label>
+                     <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <select 
+                    	name="obraSelect" 
+                    	id="obraSelect"
+    					ng-options="option.nome for option in obras track by option.nome"
+    					ng-model="obra"
+    					class="form-control"
+    					ng-change="alterarObra(obra)">
+    				</select>
+                </div>-->
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_centro"]}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <multi-select
+                            id="centroSelect"
+                            input-model="objSelecionado.centro"
+                            button-label="descricao"
+                            item-label="descricao"
+                            tick-property="selected"
+                            disable-property="disabled"
+                            is-disabled="false"
+                            max-labels="3">
+                    </multi-select>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_area"]}}</label>
+                     <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <select 
+                    	name="areaSelect" 
+                    	id="areaSelect"
+    					ng-options="option.nome for option in areas track by option.nome"
+    					ng-model="objSelecionado.usuario.area"
+    					class="form-control"
+    					ng-change="alterarArea(objSelecionado.usuario.area)">
+    				</select>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_nome"]}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <input id="inputNome" type="text" maxlength="255"
+                           ng-model="objSelecionado.usuario.nome" class="form-control uppercase required">
+                </div>
+
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_login"]}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <input id="inputLogin" type="text" maxlength="255"
+                           ng-model="objSelecionado.usuario.login" class="form-control required">
+                </div>
+
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_senha"]}}</label>
+                    <input id="inputSenha" type="password" maxlength="255"
+                           ng-model="objSelecionado.usuario.senha" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_comfirmar_senha"]}}</label>
+                    <input id="inputConfirmarSenha" type="password" maxlength="255"
+                           ng-model="objSelecionado.usuario.confirmarSenha" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_ativo"]}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-combo class="form-control" id="comboAtivo" name="comboAtivo" ng-model="objSelecionado.usuario.ativo">
+                        <option value="S">{{ResourceBundle['label_sim']}}</option>
+                        <option value="N">{{ResourceBundle['label_nao']}}</option>
+                    </nx-combo>
+                </div>
+                
+                <!-- 
+                <div class="form-group" ng-show="obra">
+                    <label>{{ResourceBundle['label_comprador']}}</label>
+                    <nx-combo id="inputComprador" ng-model="objSelecionado.comprador"
+                              ng-options="Comprador as Comprador.nome for Comprador in listaComboComprador track by Comprador.compradorId">
+                    </nx-combo>
+                </div>-->
+
+                <div class="form-group" ng-sh>
+                    <label>{{ResourceBundle['label_pessoa']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-auto-complete id="inputPessoa" ng-model="objSelecionado.usuario.pessoa" class="required" required="required"
+                                      typeahead="Pessoa as Pessoa.nome  + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompletePessoa($viewValue)">
+                    </nx-auto-complete>
+                </div>
+
+
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_tipo_requisicao"]}}</label>
+                    <multi-select
+                            id="inputTipoReq"
+                            input-model="objSelecionado.tipoRequisicoes"
+                            button-label="descricao"
+                            item-label="descricao"
+                            tick-property="selected"
+                            disable-property="disabled"
+                            is-disabled="false"
+                            max-labels="6">
+                    </multi-select>
+                </div>
+				
+				<!-- 
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_deposito']}}</label>
+                    <multi-select
+                            id="inputEapMultiEmpresa"
+                            input-model="objSelecionado.eapMultiEmpresas"
+                            button-label="descricao"
+                            item-label="descricao"
+                            tick-property="selected"
+                            disable-property="disabled"
+                            is-disabled="false"
+                            max-labels="6">
+                    </multi-select>
+                </div>
+                -->
+                
+            </nx-float-group>
+        </form>
+

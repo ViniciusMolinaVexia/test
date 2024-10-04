@@ -1,0 +1,23 @@
+<!-- Diretiva padrão para Filtros na plataforma Nextage. -->
+<!--<div class="container-filtro-toogle">-->
+<!--  ng-transclude permite a inclusão de HTML onde a diretiva é usada. O Html será incluído dentro da DIV 
+que conter o atributo ng-transclude -->
+<div class="panel panel-default  popup-filtro nx-popup" ng-show="state === 'STATE_FILTRO'">
+    <div class="container-fluid">
+        <form id="formFiltro">
+            <div class="row">
+                <div class="col-md-12" ng-transclude></div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <!--FILTRO -->
+                    <nx-btn-listar btn-close ng-show="state === 'STATE_FILTRO'"></nx-btn-listar>
+
+                    <nx-btn-limpar ng-show="state === 'STATE_FILTRO'"></nx-btn-limpar>
+                    <!--FILTRO -->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--</div>-->

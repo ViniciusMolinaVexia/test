@@ -1,0 +1,13 @@
+<div class="form-group" ng-if="campoManut.campo.tipoCampo.nome === OBJECT && campoManut.campo.modoExibicao === COMBO">
+    <nx-combo id="{{campoManut.id}}"
+              ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+
+              ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+              ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+              ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && (campoManut.sempreEditavel !== 'S')"
+              ng-model="objSelecionadoAba[aba.codigo][campoManut.campo.propriedadeEntity]"
+              ng-options="{{campoManut.campo.propriedadeExibicao}} for {{campoManut.campo.propriedadeEntity}} in listaCombos.{{campoManut.campo.propriedadeEntity}} track by {{campoManut.campo.propriedadeId}}">
+        <option value=""
+                ng-if="objSelecionadoAba[aba.codigo][campoManut.campo.propriedadeEntity] && campoManut.isObrigatorio !== 'S'"></option>
+    </nx-combo>
+</div> 

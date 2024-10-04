@@ -1,0 +1,42 @@
+<nx-paginacao 
+    num-paginas="numPaginas" 
+    pagina-atual="paginaAtiva" 
+    listar-pagina="irParaPaginaEspecifica"
+    qtde-paginas="15"> 
+    <div class="col-md-12">
+        <div class="table-responsive"> 
+            <table class="table table-hover table-striped table-bordered lista"> 
+                <thead class="fundo-cabecalho-tabela"> 
+                    <tr>
+                        <th style="max-width: 20px;">{{ResourceBundle['label_excluir']}}</th>
+                        <th>{{ResourceBundle['label_nome']}}</th>
+                        <th>{{ResourceBundle['label_login']}}</th>
+                        <th>{{ResourceBundle['label_ativo']}}</th>
+                        <!--<th>{{ResourceBundle['label_comprador']}}</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="obj in listaUsuario">
+                        <td >
+                            <nx-btn-2 ng-click="excluirConfirma(obj)"
+                                      icone="glyphicon glyphicon-remove">
+                            </nx-btn-2>
+                        </td>
+                        <td ng-click="editar(obj.usuarioId)">
+                            {{obj.nome}}
+                        </td>
+                        <td ng-click="editar(obj.usuarioId)">
+                            {{obj.login}}
+                        </td>
+                        <td ng-click="editar(obj.usuarioId)">
+                            {{obj.ativo}}
+                        </td>
+                        <!--<td ng-click="editar(obj.usuarioId)">
+                            {{obj.comprador.nome}}
+                        </td>-->
+                    </tr>
+                </tbody> 
+            </table> 
+        </div> 
+    </div>
+</nx-paginacao>

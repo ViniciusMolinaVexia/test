@@ -1,0 +1,11 @@
+<nx-tela-padrao id="telaPrevisaoPendenciaRecebimento"> 
+    <nx-titulo titulo="{{ResourceBundle['label_previsao_pendencia_recebimento']}}"></nx-titulo> 
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-novo;nx-btn-excluir;">
+        <nx-btn-gerar-excel ng-click="gerarXls()" 
+                            ng-show="(listaRmMaterial.length > 0)"></nx-btn-gerar-excel>
+    </nx-botoes-padrao>
+    <filtro-previsao-pendencia-recebimento></filtro-previsao-pendencia-recebimento> 
+    <lista-previsao-pendencia-recebimento></lista-previsao-pendencia-recebimento>
+    <nx-alert></nx-alert> 
+    <nx-loading></nx-loading>
+</nx-tela-padrao>

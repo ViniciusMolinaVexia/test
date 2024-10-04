@@ -1,0 +1,40 @@
+<nx-manut>
+    <div class="panel-body tab-container">
+
+        <nx-tab id="abasManutUsuario">
+            <nx-tab-item
+                    aba-interna
+                    btn-close="false"
+                    active="true"
+                    tab-pane="paneManutUsuario"
+                    item-value="ResourceBundle['label_manutencao']"
+                    tab-template="<aba-manut-usuario></aba-manut-usuario>"
+                    id="abaManutUsuario"
+            ></nx-tab-item>
+
+            <nx-tab-item
+                    id='abaPermissoes'
+                    aba-interna
+                    btn-close="false"
+                    ng-show="objSelecionado.usuario.usuarioId > 0"
+                    tab-pane="panePermissoes"
+                    item-value="ResourceBundle['label_permissoes']"
+                    tab-template="<aba-permissoes></aba-permissoes>"
+            ></nx-tab-item>
+
+            <nx-tab-item
+                    id='abaTipoAtuacao'
+                    aba-interna
+                    btn-close="false"
+                    ng-show="objSelecionado.usuario.usuarioId > 0"
+                    ng-click="habilitaAbaTipoAtuacao()"
+                    tab-pane="paneTipoAtuacao"
+                    item-value="ResourceBundle['label_atuacao']"
+                    tab-template="<aba-tipo-atuacao></aba-tipo-atuacao>"
+            ></nx-tab-item>
+
+        </nx-tab>
+        <nx-tab-content>
+        </nx-tab-content>
+    </div>
+</nx-manut>

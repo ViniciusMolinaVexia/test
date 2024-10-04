@@ -1,0 +1,22 @@
+<nx-filtro>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_nome']}}</label>
+        <input id="inputUsuarioNome" class="form-control" ng-model="filtro.nome">
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle["label_login"]}}</label>
+        <input id="inputLoginFiltro" type="text" maxlength="255"
+               ng-model="filtro.login" class="form-control ">
+    </div>
+
+    <div class="form-group">
+        <label>{{ResourceBundle["label_ativo"]}}</label>
+        <nx-combo class="form-control" id="comboAtivoFiltro" name="comboAtivoFiltro" ng-model="filtro.ativo">
+            <option value="S">{{ResourceBundle['label_sim']}}</option>
+            <option value="N">{{ResourceBundle['label_nao']}}</option>
+        </nx-combo>
+    </div>
+
+
+</nx-filtro>

@@ -1,0 +1,59 @@
+<div class="row" id="transferenciaPainelEstoquista">
+    <br>
+    <form id="formTransferencia">
+        <nx-float-group cols="4">
+            <div class="form-group">
+                <label>{{ResourceBundle['label_material']}}</label>
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                <nx-auto-complete 
+                    class="autocomplete-grande"
+                    id="manutCadastroRmaMaterial" 
+                    ng-model="objTransf.material"
+                    typeahead="Material as (Material.nomeCompleto || Material.nome) + ' - {{ResourceBundle['label_codigo']}}: ' + Material.codigo + ' - {{ResourceBundle['label_unidade_medida']}}: ' + Material.unidadeMedida.descricao for Material in getAutoCompleteMateriais($viewValue)"
+                    ng-required="true" 
+                    ng-disabled="bloquearCampos"
+                    typeahead-on-select="alterarDepositoOrigem()">
+                </nx-auto-complete>
+            </div>
+            <div class="form-group">
+                <label>{{ResourceBundle['label_deposito_origem']}}</label>  
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>                    
+                <nx-combo id="manutCadastroRmaPrioridade" ng-model="objTransf.depositoOrigem" 
+                          ng-change="alterarDepositoOrigem()"
+                          ng-options="Deposito as Deposito.nome for Deposito in listaDepositos track by Deposito.depositoId" 
+                          required>
+                </nx-combo>
+            </div>
+            
+            <div class="form-group">
+                <label>{{ResourceBundle['label_deposito_destino']}}</label>  
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>                    
+                <nx-combo id="manutCadastroRmaPrioridade" ng-model="objTransf.depositoDestino" 
+                          ng-options="Deposito as Deposito.nome for Deposito in listaDepositos track by Deposito.depositoId" 
+                          required></nx-combo>
+            </div>
+            <div class="form-group">
+                <label>{{ResourceBundle['label_quantidade_solicitada']}}</label>
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                <nx-numero id="manutCadastroRmaQuantidade" m-dec="3"  ng-model="objTransf.quantidadeTransferencia" 
+                           ng-required="true" required></nx-numero>
+            </div>
+            <div class="form-group">
+                <label>{{ResourceBundle['label_quantidade_disponivel']}}:</label><br>
+                <label>{{objTransf.quantidadeDisponivel}}</label>
+            </div>
+            <div class="form-group">
+                <label>{{ResourceBundle['label_observacao']}}</label>
+                <textarea id="manutCadastroMaterialRmaObservacao" rows="3" ng-model="objTransf.observacao" 
+                          class="form-control"></textarea>
+            </div>
+
+        </nx-float-group>
+        <div class="form-group">
+            <nx-btn-2 ng-click="salvarTransferencia()" 
+                      label="{{ResourceBundle['label_salvar']}}" 
+                      title="{{ResourceBundle['label_salvar']}}" 
+                      icone="glyphicon glyphicon-ok"></nx-btn-2>
+        </div>
+    </form>
+</div>

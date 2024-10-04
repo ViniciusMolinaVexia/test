@@ -1,0 +1,14 @@
+<div class="form-group no-margin-bottom">
+    <div class="checkbox-inline">
+        <label>
+            <input type="checkbox"
+                   ng-model="objSelecionadoAba[aba.codigo][campoManut.campo.propriedadeEntity]"
+                   ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && (campoManut.sempreEditavel !== 'S')"
+                   name="{{campoManut.campo.propriedadeEntity}}"
+                   ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+                   ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+            >
+            {{ResourceBundle[campoManut.campo.chaveLabel]}}
+        </label>
+    </div>
+</div>

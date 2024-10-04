@@ -1,0 +1,14 @@
+<div class="form-group"
+     ng-if="campoManut.campo.tipoCampo.nome === OBJECT && campoManut.campo.modoExibicao === COMBOSIMNAO">
+    <nx-combo id="{{campoManut.id}}"
+              ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+
+              ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+              ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+              ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && (campoManut.sempreEditavel !== 'S')"
+              ng-model="objSelecionado[campoManut.campo.propriedadeEntity]">
+        <option value=""></option>
+        <option value="S">{{ResourceBundle['label_sim']}}</option>
+        <option value="N">{{ResourceBundle['label_nao']}}</option>
+    </nx-combo>
+</div> 

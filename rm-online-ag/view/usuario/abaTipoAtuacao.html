@@ -1,0 +1,44 @@
+
+        <form id="formTipoAtuacao">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                    	<a class="btn btn-default btn-espaco" 
+				           label="{{ResourceBundle['label_marcar_todos']}}" 
+				           ng-click="setAllTipoAtuacaoValueCheck(true)"
+				           title="{{ResourceBundle['label_marcar_todos']}}">
+				        	<span>{{ResourceBundle['label_marcar_todos']}}</span>
+				        </a>
+				        <a class="btn btn-default btn-espaco" 
+				           label="{{ResourceBundle['label_desmarcar_todos']}}" 
+				           ng-click="setAllTipoAtuacaoValueCheck(false)"
+				           title="{{ResourceBundle['label_desmarcar_todos']}}">
+				        	<span>{{ResourceBundle['label_desmarcar_todos']}}</span>
+				        </a>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped table-bordered lista">
+                        <thead class="fundo-cabecalho-tabela">
+                        <tr>
+                            <th class="col-md-6">{{ResourceBundle['label_tipo_atuacao']}}</th>
+                            <th class="col-md-6">{{ResourceBundle['label_selecao']}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="obj in listaTipoAtuacao">
+
+                            <td>
+                                {{obj.descricao}}
+                            </td>
+                            <td >
+                                <input type="checkbox" ng-model="obj.selected">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+

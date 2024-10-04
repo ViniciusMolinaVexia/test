@@ -1,0 +1,113 @@
+<nx-tela-padrao id="telaLogInterface"> 
+	<nx-titulo titulo="{{ResourceBundle['label_log_interface']}}"></nx-titulo> 
+	<nx-botoes-padrao></nx-botoes-padrao> 
+	<filtro-log-interface></filtro-log-interface> 
+	<manut-log-interface></manut-log-interface> 
+	<lista-log-interface></lista-log-interface> 
+	<nx-alert></nx-alert> 
+	<nx-loading></nx-loading>
+
+
+	<nx-pop-up id="modalDetalhesPrincipal" data-backdrop="static" titulo="{{ResourceBundle['label_detalhes']}}">
+
+		<div class="form-group col-md-4">
+			<label>{{ResourceBundle['label_sistema']}}:</label>
+			<label>{{logSelecionado.sistema}}</label><br>
+		</div>
+		<div class="form-group  col-md-4">
+			<label>{{ResourceBundle['label_interface_exec']}}:</label>
+			<label>{{logSelecionado.interfaceExec}}</label><br>
+		</div>
+		<div class="form-group  col-md-4">
+			<label>{{ResourceBundle['label_num_rma']}}:</label>
+			<label>{{logSelecionado.numRma}}</label><br>
+		</div>
+		<div class="form-group  col-md-4">
+			<label>{{ResourceBundle['label_codigo_deposito']}}:</label>
+			<label>{{logSelecionado.codigoDeposito}}</label><br>
+		</div>
+		<div class="form-group  col-md-4">
+			<label>{{ResourceBundle['label_item_requisicao_sap']}}:</label>
+			<label>{{logSelecionado.itemRequisicaoSap}}</label><br>
+		</div>
+		<div class="form-group  col-md-4">
+			<label>{{ResourceBundle['label_num_requisicao_sap']}}:</label>
+			<label>{{logSelecionado.numRequisicaoSap}}</label><br>
+		</div>
+		<div class="form-group  col-md-4">
+			<label>{{ResourceBundle['label_num_pedido_sap']}}:</label>
+			<label>{{logSelecionado.numPedidoSap}}</label><br>
+		</div>
+		<div class="form-group  col-md-4">
+			<label>{{ResourceBundle['label_data_hora_inclusao_log']}}:</label>
+			<label>{{logSelecionado.dataHoraInclusaoLog | date: ResourceBundle["format_date_hora_minuto_segundo"]}}</label><br>
+		</div>
+		<div class="form-group col-md-4">
+			<label>{{ResourceBundle['label_usuario_inclusao']}}:</label>
+			<label>{{logSelecionado.usuarioInclusao}}</label><br>
+		</div>
+		<div class="form-group col-md-4">
+			<label>{{ResourceBundle['label_mensagem']}}:</label>
+			<label>{{logSelecionado.mensagem}}</label><br>
+		</div>
+		<div class="form-group col-md-4">
+			<label>{{ResourceBundle['label_tipo_mensagem']}}:</label>
+			<label>{{logSelecionado.tipoMensagem}}</label><br>
+		</div>
+		<div class="form-group col-md-4">
+			<label>{{ResourceBundle['label_erro_mensagem']}}:</label>
+			<label>{{logSelecionado.erroMensagem}}</label><br>
+		</div>
+
+		<div class=" table-responsive" id="tabelaDetalhesLogPrincipal">
+			<table class="table table-hover table-striped table-bordered lista" not-fix="true">
+				<thead class="fundo-cabecalho-tabela">
+					<tr>
+						<th class="col-md-4">
+							<a ng-click="ordemLista = 'logInterface.sistema'; reverse = false">
+								{{ResourceBundle["label_campo"]}}
+							</a>
+						</th>
+						<th class="col-md-8">
+							<a ng-click="ordemLista = 'logInterface.interfaceExec'; reverse = false">
+								{{ResourceBundle["label_valor"]}}
+							</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="obj in listaDetalhes track by obj.numObj " >
+						<td class="col-md-4" >
+							<a>
+								{{obj.nome}}
+							</a>
+						</td>
+						<td class="col-md-8"  >
+							<a>
+								<div>
+									<label ng-show="obj.valor != null">{{obj.valor}}</label>
+									<nx-btn2  icone="glyphicon glyphicon-plus" label="" ng-show="obj.subItens != null"
+										ng-click="showModalDetalhes(obj.subItens)"></nx-btn2>
+
+								</div>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+
+			<div class="row">
+			<div class="col-md-12">
+				<div class="form-group pull-right">
+					<nx-btn2 data-dismiss="modal" icone="glyphicon glyphicon-arrow-left"
+							 label="{{ResourceBundle['label_fechar']}}"></nx-btn2>
+
+				</div>
+			</div>
+		</div>
+	</nx-pop-up>
+
+	<detalhes-log-interface></detalhes-log-interface>
+</nx-tela-padrao>

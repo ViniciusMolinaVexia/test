@@ -1,0 +1,66 @@
+<nx-paginacao 
+    num-paginas="numPaginas" 
+    pagina-atual="paginaAtiva" 
+    listar-pagina="irParaPaginaEspecifica"
+    qtde-paginas="15" > 
+    <div class="col-md-12">
+        <div class="table-responsive"> 
+            <table class="table table-hover table-striped table-bordered lista">
+                <thead class="fundo-cabecalho-tabela"> 
+                    <tr>
+                        <th><a>{{ResourceBundle["label_codigo_material"]}}</a></th>
+                        <th class="colunaMaterialRelatorioEstInc"><a>{{ResourceBundle["label_material"]}}</a></th>
+                        <th><a>{{ResourceBundle["label_deposito"]}}</a></th>
+                        <th><a>{{ResourceBundle["label_quantidade_sap"]}}</a></th>
+                        <th><a>{{ResourceBundle["label_quantidade_rma"]}}</a></th>
+                        <th><a>{{ResourceBundle["label_quantidade_cp"]}}</a></th>
+                        <th><a>{{ResourceBundle["label_unidade_medida"]}}</a></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="obj in listaRelatorioEstoqueInconsistencia">
+                        <td title="{{formataTitleInconsistencia(obj)}}">
+                            <span class="glyphicon glyphicon-asterisk" ng-if="obj.inconsistenteRmaCp" style="color: red"></span>
+                            <span class="glyphicon glyphicon-asterisk" ng-if="obj.inconsistenteRmaSap" style="color : green"></span>
+                            <span class="glyphicon glyphicon-asterisk" ng-if="obj.inconsistenteCpSap" style="color: blue"></span>
+                            <a>
+                                {{obj.codMaterial}}
+                            </a>
+                        </td>
+                        <td class="colunaMaterialRelatorioEstInc"
+                        title="{{formataTitleInconsistencia(obj)}}">
+                            <a> 
+                                {{obj.nomeMaterial}}
+                            </a> 
+                        </td>
+                        <td title="{{formataTitleInconsistencia(obj)}}">
+                            <a> 
+                                {{obj.nomeDeposito}}
+                            </a> 
+                        </td>
+                        <td class="col-md-1">
+                            <a>
+                                {{obj.qtdeSap | number : 3}}
+                            </a>
+                        </td>
+                        <td title="{{formataTitleInconsistencia(obj)}}">
+                            <a>
+                                {{obj.qtdeRma | number : 3}}
+                            </a> 
+                        </td>
+                        <td title="{{formataTitleInconsistencia(obj)}}">
+                            <a>
+                                {{obj.qtdeCp | number : 3}}
+                            </a> 
+                        </td>
+                        <td title="{{formataTitleInconsistencia(obj)}}">
+                            <a>
+                                {{obj.unidadeMedida}}
+                            </a>
+                        </td>
+                    </tr>
+                </tbody> 
+            </table> 
+        </div> 
+    </div>
+</nx-paginacao>

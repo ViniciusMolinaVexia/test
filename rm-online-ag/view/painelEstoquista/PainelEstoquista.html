@@ -1,0 +1,268 @@
+<ul class="nav navbar-nav">
+    <li>
+        <a ng-class="{'active': divPainelEstoquistaManutencao === true }"
+           ng-click="alteraDivPainelEstoquista(true)">{{ResourceBundle['label_requisicoes']}}</a>
+    </li>
+    <li>
+        <a ng-class="{'active': divPainelEstoquistaManutencao === false }"
+           ng-click="alteraDivPainelEstoquista(false)">{{ResourceBundle['label_transferencia_estoque']}}</a>
+    </li>
+</ul>
+<br>
+<nx-tela-padrao id="telaPainelEstoquista">
+    <nx-titulo titulo="{{ResourceBundle['label_painel_requisicao_materais']}}"></nx-titulo>
+    <nx-alert></nx-alert>
+    <nx-loading></nx-loading>
+    <nx-botoes-padrao ng-show="divPainelEstoquistaManutencao === true" btns-padrao-disable="nx-btn-salvar;nx-btn-novo;nx-btn-excluir">
+        <nx-btn-2 ng-if="state === 'STATE_MANUT' && habilitarBotaoAceitarMaterial()"
+                  ng-click="aceitarMaterial()"
+                  label="{{ResourceBundle['label_aceitar_material']}}"
+                  title="{{ResourceBundle['label_aceitar_material']}}"
+                  icone="glyphicon glyphicon-ok"></nx-btn-2>
+        <nx-btn ng-if="state === 'STATE_MANUT' && habilitarBotaoRecusarMaterial()"
+                funcao="recusarMaterial()"
+                label="{{labelBotaoRecusar()}}"
+                title="{{labelBotaoRecusar()}}"
+                icone="{{glyphiconBotaoRecusar()}}"></nx-btn>
+        <nx-btn-2 ng-show="state === 'STATE_MANUT' && habilitarBotaoSolicitarTransferencia()"
+                  ng-click="modalSolicitarTransferencia()"
+                  label="{{ResourceBundle['label_solicitar_transferencia']}}"
+                  title="{{ResourceBundle['label_solicitar_transferencia']}}"
+                  icone="glyphicon glyphicon-send"></nx-btn-2>
+        <nx-btn-2 ng-show="state === 'STATE_MANUT'" ng-click="abrirModalReceberMaterial()"
+                  ng-if="habilitarBotaoReceberMaterial()"
+                  label="{{ResourceBundle['label_receber_material']}}"
+                  title="{{ResourceBundle['label_receber_material']}}"
+                  icone="glyphicon glyphicon-import"></nx-btn-2>
+        <nx-btn-2 ng-show="state === 'STATE_MANUT'" ng-if="habilitarBotaoRetirarMaterial()"
+                  ng-click="validaEquipamentoEpi()"
+                  label="{{ResourceBundle['label_retirar_material']}}"
+                  title="{{ResourceBundle['label_retirar_material']}}"
+                  icone="glyphicon glyphicon-export"></nx-btn-2>
+    </nx-botoes-padrao>
+    <filtro-painel-estoquista ng-show="divPainelEstoquistaManutencao === true"></filtro-painel-estoquista>
+    <manut-painel-estoquista ng-show="divPainelEstoquistaManutencao === true" btns-padrao-disable="nx-btn-salvar;nx-btn-novo;nx-btn-excluir"></manut-painel-estoquista>
+    <transferencia-painel-estoquista ng-show="divPainelEstoquistaManutencao === false" btns-padrao-disable="nx-btn-salvar;nx-btn-excluir;nx-btn-novo;nx-btn-filtro"></transferencia-painel-estoquista>
+    <lista-painel-estoquista ng-show="divPainelEstoquistaManutencao === true"></lista-painel-estoquista>
+
+    <nx-pop-up id="modalAprovarMaterial" titulo="{{ResourceBundle['label_aceitar_material']}}">
+        <div id="formModalAprovarMaterial">
+            <nx-float-group cols="2">
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_quantidade_solicitada']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.quantidadeSolicitada}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_material']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.nome}}</label>
+                </div>
+                <div ng-show="tipoRequisicaoCampo" class="form-group">
+                    <label>{{ResourceBundle['label_usuario_cadastrante']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.rm.usuario.pessoa.nome}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_quantidade_aceite']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                    <input id="manutCadastroRmaCodigo" type="text" m-dec="3"
+                           ng-model="objSelecionado.materialDepositoSaidaReserva.rmMaterial.qtdRetirado" class="form-control required">
+                </div>
+
+                <div ng-show="tipoRequisicaoCampo && objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.tipoMaterial.codigo == 'C'" class="form-group">
+                    <label>{{ResourceBundle['label_cf_responsavel']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.pessoaResponsavel.referencia}} -
+                        {{objSelecionado.materialDepositoSaidaReserva.rmMaterial.pessoaResponsavel.nome}}</label>
+                </div>
+
+                <div ng-show="tipoRequisicaoCampo" class="form-group">
+                    <label>{{ResourceBundle['label_local_estoque']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                    <nx-combo id="manutCadastroDeposito" ng-model="objSelecionado.materialDepositoSaidaReserva.deposito"
+                              ng-options="Deposito as Deposito.nome for Deposito in listaDepositosTemporarios track by Deposito.depositoId">
+                    </nx-combo>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_justificativa']}}</label>
+                    <span class=""
+                          ng-class="{'glyphicon glyphicon-asterisk obrigatorio': objSelecionado.materialDepositoSaidaReserva.rmMaterial.qtdRetirado !== objSelecionado.materialDepositoSaidaReserva.rmMaterial.quantidade}"
+                          ng-show="objSelecionado.materialDepositoSaidaReserva.rmMaterial.qtdRetirado !== objSelecionado.materialDepositoSaidaReserva.rmMaterial.quantidade"></span>
+                    <textarea id="manutCadastroRmaObservacao" rows="3" class="form-control"
+                              ng-model="objSelecionado.materialDepositoSaidaReserva.rmMaterial.observacaoEstoquista"
+                              ></textarea>
+                </div>
+
+
+                <div ng-if="objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.tipoMaterial.codigo == 'C' && objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.patrimoniado == 'S'" ng-class="form-group">
+                    <label>{{ResourceBundle["label_prefixo_do_equipamento"]}}</label>
+                    <nx-auto-complete id="manutCadastroRmaRequisitante"
+                                      ng-model="prefixoEquipamento.value"
+                                      typeahead="PrefixoEquipamento as PrefixoEquipamento for PrefixoEquipamento in getAutoCompletePrefixoEquipamento($viewValue)"
+                                      typeahead-on-select="adicionarListaPrefixoEquipamento()"
+                                      ng-disabled="bloquearCampos"></nx-auto-complete>
+                    <br></br>
+
+                    <table class="table table-bordered table-hover table-striped fix">
+                        <thead class="fundo-cabecalho-tabela">
+                        <tr>
+                            <th></th>
+                            <th>{{ResourceBundle['label_prefixo_do_equipamento']}}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="prefixoEquipamento in listaPrefixoEquipamento">
+                            <td><nx-btn-2
+                            ng-click="removerListaPrefixoEquipamento($index)"
+                            icone="glyphicon glyphicon-remove"></nx-btn-2></td>
+                            <td>{{prefixoEquipamento}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </nx-float-group>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group pull-right">
+                        <nx-btn2 ng-click="fecharModalAprovarMaterial()" icone="glyphicon glyphicon-arrow-left"
+                                 label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                        <nx-btn2 ng-click="salvarAceite()" icone="glyphicon glyphicon-share-alt"
+                                 label="{{ResourceBundle['label_salvar_aceite']}}"></nx-btn2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nx-pop-up>
+
+    <nx-pop-up id="modalReprovarMaterial" titulo="{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_MANUTENCAO'|| objSelecionado.materialDepositoSaidaReserva.rmMaterial.rm.tipoRequisicao.codigo == 'TIP_REQ_MAT' ? ResourceBundle['label_enviar_para_compra'] : ResourceBundle['label_recusar_material']}}">
+        <div id="formModalReprovarMaterial">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_justificativa']}}</label>
+                        <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                        <textarea id="manutCadastroRmaObservacao" rows="3" class="form-control required" maxlength="1000"
+                                  ng-model="objSelecionado.materialDepositoSaidaReserva.rmMaterial.observacaoEstoquista"
+                                  ></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group pull-right">
+                        <nx-btn2 ng-click="fecharModalReprovarMaterial()" icone="glyphicon glyphicon-arrow-left"
+                                 label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                        <nx-btn funcao="salvarRecusa()" icone="glyphicon glyphicon-share-alt"
+                                label="{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_MANUTENCAO'|| objSelecionado.materialDepositoSaidaReserva.rmMaterial.rm.tipoRequisicao.codigo == 'TIP_REQ_MAT' ? ResourceBundle['label_enviar_para_compra'] : ResourceBundle['label_recusar_material']}}"></nx-btn>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <nx-pop-up id="modalSolicitarTransferencia" titulo="{{ResourceBundle['label_solicitar_transferencia']}}">
+        <div id="formModalSolicitarTransferencia">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_justificativa']}}</label>
+                        <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                        <textarea id="manutCadastroRmaObservacao" rows="3" class="form-control required"
+                                  ng-model="objSelecionado.materialDepositoSaidaReserva.rmMaterial.observacaoEstoquista"
+                                  ></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group pull-right">
+                        <nx-btn2 ng-click="fecharModalSolicitarTransferencia()" icone="glyphicon glyphicon-arrow-left"
+                                 label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                        <nx-btn2 ng-click="solicitarTransferenciaModal()" icone="glyphicon glyphicon-send"
+                                 label="{{ResourceBundle['label_solicitar_transferencia']}}"></nx-btn2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!-- MODAL ALTERAR MATERIAL -->
+    <nx-pop-up id="modalAlterarMaterialPainelEstoquista" titulo="{{ResourceBundle['label_alterar_material']}}">
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_material_atual']}}:</label>
+            <label>{{objAlterarMaterialAux.material.nome}}</label><br>
+            <label>{{ResourceBundle['label_quantidade_solicitada']}}:</label>
+            <label>{{vwMaterialDepositoSaidaReservaAux.materialDepositoSaidaReserva.quantidadeSolicitada}}</label>
+            <label ng-show="vwMaterialDepositoSaidaReservaAux.materialDepositoSaidaReserva.quantidadeSolicitada">
+                {{vwMaterialDepositoSaidaReservaAux.rmMaterial.material.unidadeMedida.sigla}}</label>
+
+
+            <br>
+        </div>
+
+        <div class="form-group">
+
+            <label>{{ResourceBundle['label_novo_material']}}</label>
+            <nx-auto-complete
+                    id="manutAlterarMaterial"
+                    ng-model="objAlterarMaterial.material"
+                    typeahead="Material as (Material.nomeCompleto || Material.nome) + ' - {{ResourceBundle['label_codigo']}}: ' + Material.codigo + ' - {{ResourceBundle['label_unidade_medida']}}: ' + Material.unidadeMedida.descricao for Material in getAutoCompleteMateriais($viewValue)"
+                    ng-required="true"
+                    typeahead-on-select="verificaMaterialIndisponivel()">
+            </nx-auto-complete><br>
+
+
+            <label>{{ResourceBundle['label_quantidade_novo_material']}}:</label>
+            <label>{{quantidadeMaterialAlterado}}</label><br>
+            <label ng-show="quantidadeMaterialAlterado">
+                {{objAlterarMaterialAux.material.unidadeMedida.sigla}}</label>
+
+
+        </div>
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_justificativa']}}</label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+            <textarea id="manutAlterarMaterial" rows="3" maxlength="500"
+                      ng-model="objAlterarMaterial.justificativaAlteracaoMaterial"
+                      class="form-control"></textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 data-dismiss="modal" icone="glyphicon glyphicon-arrow-left"
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="salvarAlterarMaterial()" icone="glyphicon glyphicon-share-alt"
+                             label="{{ResourceBundle['label_salvar']}}"
+                             ng-disabled="!objAlterarMaterial.material ||
+                                         objAlterarMaterial.material.materialId < 0 ||
+                                         !objAlterarMaterial.justificativaAlteracaoMaterial ||
+                                         objAlterarMaterial.justificativaAlteracaoMaterial.length < 5 ||
+                                         materialAlteradoIndisponivel">
+                    </nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <modal-receber-material-painel-estoquista></modal-receber-material-painel-estoquista>
+    <modal-retirar-material-painel-estoquista></modal-retirar-material-painel-estoquista>
+    <!-- Modal Finalizar Serviço -->
+    <nx-modal id="modalConfirmaRecebimentoMaterial"
+              mensagem="{{ResourceBundle['msg_receber_material']}}"
+              funcao="salvarRecebimentoMaterial()"></nx-modal>
+    <!-- Modal Finalizar Serviço -->
+    <nx-modal id="modalConfirmaEfetuarRetiradaMaterialComBiometrica"
+              mensagem="{{ResourceBundle['msg_retirar_com_biometria']}}"
+              funcao="retirarMaterialComBiometria()"></nx-modal>
+    <!-- Modal Finalizar Serviço -->
+    <nx-modal id="modalConfirmaEfetuarRetiradaMaterialNaoPresencial"
+              mensagem="{{ResourceBundle['msg_retirar_nao_presencial']}}"
+              funcao="retirarMaterialNaoPresencial()"></nx-modal>
+    <!-- Modal Finalizar Serviço -->
+    <nx-modal id="modalConfirmaReservarMaterial"
+              mensagem="{{ResourceBundle['modalConfirmaReservarMaterial']}}"
+              funcao="receberMaterial()"></nx-modal>
+</nx-tela-padrao>

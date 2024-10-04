@@ -1,0 +1,135 @@
+
+body {
+    width: 800px;
+    height: 600px;
+
+}
+
+#main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -400px;
+    margin-top: -300px;
+    width: 800px;
+    height: 600px;
+    background-image: url(../images/Fundo_800_596.png);
+    background-repeat: no-repeat;
+    -moz-background-size: 800px 600px;
+    -webkit-background-size: 800px 600px;
+    background-size: 800px 600px;
+    background-position: center;
+
+}
+
+#plataforma {
+    width: 400px;
+    height: 49px;
+    background-image: url(../images/Plataforma_400_49.png);
+    background-repeat: no-repeat;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    background-position: center;
+}
+
+#direita {
+    background-image: url(../images/3/Box_167_598.png);
+    background-repeat: no-repeat;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 167px;
+    height: 600px;
+}
+
+#divTextoDireita {
+    position: absolute;
+    top: 75px;
+    left: 8px;
+    font-family: "Calibri Light", "Khmer UI";
+    color: white;
+}
+
+#divMapaBrasil {
+    position: absolute;
+    top: 195px;
+    right: 0px;
+    left: 0px;
+}
+
+#relogio {
+    position: absolute;
+    font-family: "HelveticaNeueLT Std Thin", "Calibri Light", "Khmer UI";
+    top: 0;
+    right: 0px;
+    width: 167px;
+    height: 80px;
+}
+
+#logoNextage {
+    background-image: url(../images/LogoNextage_116_30.png);
+    background-repeat: no-repeat;
+    -moz-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    position: absolute;
+    bottom: 20px;
+    width: 116px;
+    height: 30px;
+    left: 20px;
+}
+
+#divMenu {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    top: 80px;
+    width: 633px;
+    height: 551px;
+    text-align: center;
+}
+
+.bgEnable {
+    width: 200px;
+    height: 130px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.bgDisable {
+    width: 200px;
+    height: 130px;
+    position: absolute;
+}
+
+.escrita {
+    width: 200px;
+}
+
+.menu {
+    width: 100px;
+    height: 102px;
+    margin-left: 6%;
+    margin-top: 6%;
+    cursor: pointer;
+
+}
+
+.menuDesativado {
+    width: 100px;
+    height: 102px;
+    margin-left: 6%;
+    margin-top: 6%;
+}
+
+.menuLabel {
+    font-family: "Calibri Light", "Khmer UI";
+    font-size: 16px;
+    color: #6e7d85;
+    font-weight: bold;
+}

@@ -1,0 +1,84 @@
+<nx-manut id="manutHierarquiaComprador">
+    <div class="panel-body" ng-show="manutHierarquiaComprador === true">
+        <form id="formManutencao">
+            <nx-float-group cols="4">
+                <div class="col-md-12 listaObjetos">
+                    <!--comprador-->
+                    <div class="form-inline">
+                        <tr>
+                            <th >{{ResourceBundle['label_comprador']}}:</th>
+                        </tr>
+                        <tr>
+                            <th ng-if="compradorNome"><b>{{compradorNome}}</b></th>
+                            <nx-combo ng-if="!compradorNome" id="compradorCombo" ng-model="compradorCombo.comprador"
+                                      ng-options="Comprador as Comprador.nome for Comprador in listaComboComprador track by Comprador.compradorId"
+                                      ng-change="comboSelecionado(compradorCombo.comprador)">
+                            </nx-combo>
+                        </tr>
+                    </div>
+                    <hr>
+                    <br>
+                    <!--buscar-->
+                    <div class="form-inline">
+                        <fieldset class="scheduler-border col-md-6" style="border:1px solid #bbb !important;border-radius:5px;">
+                            <legend style="margin-bottom:10px;border-bottom:0px; width:34%">{{ResourceBundle["label_adicionar_hierarquia"]}}</legend>
+
+                                <input id="manutHierarquiaCompradorAddHierarquia"
+                                       ng-model="objManut.hierarquiaAdicionar"
+                                       class="form-control ng-pristine ng-valid"
+                                       style="width:100%">
+                                <nx-btn-2 ng-click="adicionarHierarquia()"
+                                          label="{{ResourceBundle['label_adicionar']}}"
+                                          title="{{ResourceBundle['label_adicionar']}}"
+                                          icone="glyphicon glyphicon-plus"></nx-btn-2>
+
+                            <!--</div>-->
+                        </fieldset>
+                        <fieldset class="scheduler-border col-md-6" style="border:1px solid #bbb !important;border-radius:5px;">
+                           <!-- <div class="form-group" style="margin-top:10px;"> -->
+                            <legend style="margin-bottom:10px;border-bottom:0px; width:30%">{{ResourceBundle["label_buscar_hierarquia"]}}</legend>
+                                <input id="manutHierarquiaCompradorListaHierarquia"
+                                       ng-model="filtroHierarquiaComprador.hierarquiaBuscar"
+                                       class="form-control ng-pristine ng-valid"
+                                       style="width:100%">
+                                <nx-btn-2 ng-click="buscarHierarquia()"
+                                          label="{{ResourceBundle['label_buscar']}}"
+                                          title="{{ResourceBundle['label_buscar']}}"
+                                          icone="glyphicon glyphicon-search" ></nx-btn-2>
+
+                            <!--</div>-->
+                        </fieldset>
+                    </div>
+
+                    <!--lista-->
+                    <nx-paginacao num-paginas="numPaginasManut"
+                                  pagina-atual="paginaAtivaManut"
+                                  listar-pagina="irParaPaginaEspecificaManut"
+                                  qtde-paginas="15">
+                        <div class="table-responsive">
+                            <br>
+                            <table class="table table-hover table-bordered lista" not-fix="true">
+                                <thead class="fundo-cabecalho-tabela">
+                                <tr>
+                                    <th>{{ResourceBundle['label_excluir']}}</th>
+                                    <th>{{ResourceBundle['label_hierarquia']}}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="hierarquiaComprador in listaHierarquiaComprador">
+                                    <td >
+                                        <nx-btn-2 ng-click="excluir(hierarquiaComprador)"
+                                                  icone="glyphicon glyphicon-remove">
+                                        </nx-btn-2>
+                                    </td>
+                                    <td class="col-md-12">{{hierarquiaComprador.hierarquia}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </nx-paginacao>
+                </div>
+            </nx-float-group>
+        </form>
+    </div>
+</nx-manut>

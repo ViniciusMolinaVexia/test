@@ -1,0 +1,21 @@
+<!--campos fixos do tipo Date-->
+<div class="row">
+    <div class="col-md-6 form-group">
+        <nx-date-field id="{{dataManut.campo.id}}"
+                       nome-dinamico="{{dataManut.campo.propriedadeEntity}}inicio"
+                       ng-model="dataManut.stDataInicio"
+                       ng-change="validaDataFiltro(dataManut)"
+                       placeholder="{{ResourceBundle['label_inicio']}}"
+                       ng-disabled="dataManut.dataNull !== null && dataManut.dataNull">
+        </nx-date-field>
+    </div>
+    <div class="col-md-6 form-group">
+        <nx-date-field id="{{dataManut.campo.id}}"
+                       nome-dinamico="{{dataManut.campo.propriedadeEntity}}fim"
+                       ng-model="dataManut.stDataFim"
+                       ng-change="validaDataFiltro(dataManut)"
+                       placeholder="{{ResourceBundle['label_fim']}}"
+                       ng-disabled="dataManut.dataNull !== null && dataManut.dataNull">
+        </nx-date-field>
+    </div>
+</div>

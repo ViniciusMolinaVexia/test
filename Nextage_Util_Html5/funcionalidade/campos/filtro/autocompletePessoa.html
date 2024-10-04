@@ -1,0 +1,13 @@
+<div class="form-group"
+     ng-if="campoManut.campo.tipoCampo.nome === OBJECT && campoManut.campo.modoExibicao === AUTOCOMPLETEPESSOA">
+    <nx-auto-complete
+            id="{{campoManut.id}}"
+            placeholder="{{ResourceBundle['label_buscar_pessoa']}}"
+            typeahead-on-select="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+            ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+            ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+            ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+            typeahead="pessoa as '{{ResourceBundle['label_nome']}}*:* ' + pessoa.nome+'<br> {{ResourceBundle['label_referencia']}}*:* ' + pessoa.referencia + '<br> {{ResourceBundle['label_documento']}}*:* '+pessoa.cpf for pessoa in getAutoComplete($viewValue, 'pessoa', true)"
+            ng-model="filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]">
+    </nx-auto-complete>
+</div> 

@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel-body tab-container">
+
+            <nx-tab id="abasNxFoto">
+                <nx-tab-item
+                        aba-interna
+                        btn-close="false"
+                        active="true"
+                        tab-pane="abaupload"
+                        item-value="ResourceBundle['label_upload']"
+                        tab-template="<nx-upload  ng-model='{{model}}' tela='{{tela}}'></nx-upload>"
+                        id="nxUpload"
+                ></nx-tab-item>
+
+                <nx-tab-item
+                        aba-interna
+                        btn-close="false"
+                        id="nxCamera"
+                        tab-pane="abaCamera"
+                        item-value="ResourceBundle['label_camera']"
+                        tab-template="<nx-camera ng-model='{{model}}' tela='{{tela}}'></nx-camera>"
+                ></nx-tab-item>
+            </nx-tab>
+            <nx-tab-content>
+            </nx-tab-content>
+        </div>
+    </div>
+</div>

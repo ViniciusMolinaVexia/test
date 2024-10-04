@@ -1,0 +1,113 @@
+<nx-manut id="manutPainelEstoquista">
+    <div ng-show="divPainelEstoquistaManutencao === true">
+        <form id="formManutencao">
+            <nx-float-group cols="4">
+                <div class="form-group"
+                     ng-if="configuracao.habilitaEapMultiEmpresa && configuracao.habilitaEapMultiEmpresa == true">
+                    <label>{{ResourceBundle['label_eap_multi_empresa']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.rm.eapMultiEmpresa.descricao}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_numero_rma']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.rm.numeroRm}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_codigo_material']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.codigo}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_material']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.nome}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_recebimento_solicitacao']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.dataSaida| date:ResourceBundle['format_date']}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_data_aplicacao']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.rm.dataAplicacao| date:ResourceBundle['format_date']}}</label>
+                </div>
+                <div ng-show="tipoRequisicaoCampo && objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.tipoMaterial.codigo == 'C'" class="form-group">
+                    <label>{{ResourceBundle['label_cf_responsavel']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.pessoaResponsavel.referencia}} -
+                        {{objSelecionado.materialDepositoSaidaReserva.rmMaterial.pessoaResponsavel.nome}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_quantidade_solicitada']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.quantidadeSolicitada}}</label>
+                </div>
+                
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_quantidade_disponivel']}}:</label><br>
+                    <label>{{quantidadeDisponivelEstoque}}</label>
+                </div>
+                
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_requisitante']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.rm.requisitante.nome}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_usuario_cadastrante']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.rm.usuario.pessoa.nome}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_data_avaliacao']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.dataAvaliacao|date:ResourceBundle['format_date']}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_status']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.status === 'A' ? ResourceBundle['label_aprovado'] : objSelecionado.materialDepositoSaidaReserva.status === 'R' ? ResourceBundle['label_reprovado'] : ResourceBundle['label_pendente']}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_observacao']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.observacaoPainelEstoquista}}</label>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_estoque']}}:</label><br>
+                    <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.deposito.nome}}</label>
+                </div>
+            </nx-float-group>
+        </form>
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_nome_completo_material']}}:</label><br>
+            <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.nomeCompleto}}</label>
+        </div>
+
+        <div class="col-md-6" ng-if="materialSelecionado.indisponivel && listaDepositosDisponiveis.length > 0">
+            <div class="table-responsive"> 
+                <span>{{ResourceBundle['label_depositos_com_quantidade_disponivel']}}</span>
+                <table class="table table-hover table-striped table-bordered lista"> 
+                    <thead class="fundo-cabecalho-tabela"> 
+                        <tr> 
+                            <th>{{ResourceBundle['label_deposito']}}</th>
+                            <th>{{ResourceBundle['label_quantidade']}}</th>
+                            <th ng-if="materialSelecionado.isTransferencia" class="icone">{{ResourceBundle['label_opcoes']}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="obj in listaDepositosDisponiveis">
+                            <td>{{obj.deposito.nome}}</td>
+                            <td>{{obj.quantidade}}</td>
+                            <td ng-if="materialSelecionado.isTransferencia">
+                                <div>
+                                    <nx-btn-2 title="{{ResourceBundle['label_gerar_transferencia']}}" 
+                                              icone="glyphicon glyphicon-share-alt" 
+                                              label="{{ResourceBundle['label_gerar_transferencia']}}"
+                                              ng-click="abrirTelaTransferencia(obj)"></nx-btn-2>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody> 
+                </table> 
+            </div> 
+        </div>
+        <div class="row padding" ng-if="materialSelecionado.indisponivel && listaDepositosDisponiveis.length === 0">
+            <div class="col-md-12 ">
+                <div class="form-group">
+                    <h4>{{ResourceBundle['label_nenhum_estoque_com_este_item_disponivel']}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</nx-manut>

@@ -1,0 +1,193 @@
+.jumbotron {
+    margin-bottom: 40px;
+    background-color: #F4F4F4;
+}
+
+h1 {
+    font-family: 'Roboto Slab', sans-serif;
+    color: #000 !important;
+}
+
+h2 {
+    margin-bottom: 24px;
+    color: #A43E41 !important;
+}
+
+h5 {
+    border-bottom: 1px solid #CCC;
+    margin: 3px 0 10px 0;
+    padding-bottom: 2px;
+    font-weight: 700;
+}
+
+.my-drop-zone {
+    border: dotted 3px lightgray;
+}
+
+.ng-file-over {
+    border: dotted 3px red;
+}
+
+.another-file-over-class {
+    border: dotted 3px green;
+}
+
+#canvas {
+    background-color: #f3f3f3;
+    -webkit-box-shadow: 3px 3px 3px 0 #e3e3e3;
+    -moz-box-shadow: 3px 3px 3px 0 #e3e3e3;
+    box-shadow: 3px 3px 3px 0 #e3e3e3;
+    border: 1px solid #c3c3c3;
+    height: 100px;
+    margin: 6px 0 0 6px;
+}
+
+.img-editar-ocorrencia {
+    max-width: 150px;
+}
+
+textarea {
+    max-width: 100%;
+    min-height: 100px;
+}
+
+.style-checkbox {
+    margin: 5px 0 0 0;
+    display: block;
+    height: 20px;
+    width: 20px;
+}
+
+.app-loading-container {
+    height: 100px;
+    width: 100px;
+    margin-left: 30%;
+    position: absolute;
+    top: 80%;
+}
+
+.app-loading-animation {
+    -webkit-transition: all 0.25s linear;
+    background: url(loader2.gif) center center no-repeat;
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 0 auto;
+}
+
+.app-loading-animation.ready {
+    opacity: 0;
+}
+
+.app-loading-animation,
+.app-loading-animation.loading {
+    opacity: 1;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.42;
+    border-radius: 15px;
+}
+
+.passos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.passos li {
+    display: inline-block;
+    margin: 0 4px 0 0;
+}
+
+.ativado {
+    background: #000;
+}
+
+.fundo_azul {
+    color: #ffffff !important;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+}
+
+.fundo_cinza {
+    color: #333 !important;
+    background-color: #cccccc !important;
+
+}
+
+.transparent {
+    background-color: transparent;
+}
+
+.exibe-ocorrencia hr {
+    margin: 2px 0px 5px 0px;
+}
+
+.fundo-cinza-claro {
+    background: #ddd;
+}
+
+.well-transparent {
+    background: transparent;
+}
+
+.nav-tabs > li.active > a {
+
+    color: #ffffff;
+    background-color: #428bca;
+}
+
+.lista a {
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: #428bca;
+}
+
+.selected a {
+    color: #FFF;
+}
+
+.modal-body table tr td a {
+    color: #333;
+    text-decoration: none;
+}
+
+@media (min-width: 768px) {
+    .input-group-addon, .input-group-btn {
+        width: auto;
+    }
+}
+
+/* COMBO MAGICSUGGEST */
+.ms-ctn, .ms-res-ctn {
+    width: auto !important;
+    height: auto !important;
+}
+
+fieldset.scheduler-border {
+    border: 1px solid #ddd !important;
+    padding: 0 1.0em 1.0em 1.0em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto;
+    padding: 0 10px;
+    border-bottom: none;
+    color: #555;
+}

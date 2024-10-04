@@ -1,0 +1,79 @@
+<nx-paginacao 
+    num-paginas="numPaginas" 
+    pagina-atual="paginaAtiva" 
+    listar-pagina="irParaPaginaEspecifica"
+    qtde-paginas="15" > 
+    <div class="col-md-12">
+        <div class="table-responsive"> 
+            <table class="table table-hover table-striped table-bordered lista"> 
+                <thead class="fundo-cabecalho-tabela">
+                <tr>
+                    <th ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true">
+                        {{ResourceBundle['label_eap_multi_empresa']}}
+                    </th>
+                        <th><a>{{ResourceBundle["label_numero"]}}</a></th> 
+                        <th><a>{{ResourceBundle["label_requisitante"]}}</a></th> 
+                        <th><a>{{ResourceBundle["label_codigo_material"]}}</a></th> 
+                        <th><a>{{ResourceBundle["label_material"]}}</a></th> 
+                        <th><a>{{ResourceBundle["label_deposito"]}}</a></th> 
+                        <th><a>{{ResourceBundle["label_quantidade"]}}</a></th> 
+                        <th><a>{{ResourceBundle["label_data_previsao_entrega"]}}</a></th> 
+                        <th><a>{{ResourceBundle["label_dias_previstos"]}}</a></th> 
+                    </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="obj in listaRmMaterial | orderBy:ordemLista:reverse"
+                    ng-class="{'red':obj.diasPrevistos < 0}">
+                    <td class="col-md-1"
+                        ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true"
+                        ng-class="{'red':obj.diasPrevistos < 0}">
+                        <a>
+                            {{obj.rmMaterial.rm.eapMultiEmpresa.descricao}}
+                        </a>
+                    </td>
+                    <td class="col-md-1" ng-class="{'red':obj.diasPrevistos < 0}">
+                            <a> 
+                                {{obj.rmMaterial.rm.numeroRm}} 
+                            </a> 
+                        </td>
+                        <td class="col-md-1" ng-class="{'red':obj.diasPrevistos < 0}"> 
+                            <a> 
+                                {{obj.rmMaterial.rm.requisitante.nome}} 
+                            </a> 
+                        </td>
+                        <td class="col-md-1" ng-class="{'red':obj.diasPrevistos < 0}"> 
+                            <a> 
+                                {{obj.rmMaterial.material.codigo}} 
+                            </a> 
+                        </td>
+                        <td class="col-md-1" ng-class="{'red':obj.diasPrevistos < 0}"> 
+                            <a> 
+                                {{obj.rmMaterial.material.nome}} 
+                            </a> 
+                        </td>
+                        <td class="col-md-1" ng-class="{'red':obj.diasPrevistos < 0}"> 
+                            <a> 
+                                {{obj.rmMaterial.deposito.nome}} 
+                            </a> 
+                        </td>
+                        <td class="col-md-1" ng-class="{'red':obj.diasPrevistos < 0}"> 
+                            <a> 
+                                {{obj.rmMaterial.quantidade}} 
+                            </a> 
+                        </td>
+                        <td class="col-md-1" ng-class="{'red':obj.diasPrevistos < 0}"> 
+                            <a> 
+                                {{obj.rmMaterial.dataPrevisaoChegada| date:ResourceBundle["format_date"]}} 
+                            </a> 
+                        </td>
+                        <td class="col-md-1" ng-class="{'red':obj.diasPrevistos < 0}"> 
+                            <a> 
+                                {{obj.diasPrevistos}} 
+                            </a> 
+                        </td>
+                    </tr> 
+                </tbody> 
+            </table> 
+        </div> 
+    </div>
+</nx-paginacao>

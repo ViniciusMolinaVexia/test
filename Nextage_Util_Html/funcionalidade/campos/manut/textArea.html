@@ -1,0 +1,11 @@
+<div class="form-group"
+     ng-if="campoManut.campo.tipoCampo.nome === OBJECT && campoManut.campo.modoExibicao === TEXTAREA">
+    <textarea class="form-control textarea-funcionalidade"
+              ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && (campoManut.sempreEditavel !== 'S')"
+              id="{{campoManut.id}}" ng-model="objSelecionado[campoManut.campo.propriedadeEntity]"
+              ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+              ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+              ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+              ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"></textarea>
+</div> 
+                

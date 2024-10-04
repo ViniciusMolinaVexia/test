@@ -1,0 +1,107 @@
+<nx-tela-padrao id="telaRmAprovacao">
+    <nx-titulo titulo="{{ResourceBundle['label_aprovacao_requisicao']}}"></nx-titulo>
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-novo;nx-btn-excluir">
+        <!-- btn aprovar servico-->
+        <nx-btn label="{{ResourceBundle['label_aprovar_servico']}}" class="btn-success btn-custom" funcao="aprovarConfirmaServico()" ng-show="objSelecionado.rmAprovador.aprovadorVez && state === 'STATE_MANUT' && objSelecionado.rmAprovador.rm.tipoRm == 'SER'"
+            ng-if="!frenteDeServico && !bloquearBotaoAprovarReprovar"></nx-btn>
+        <!-- btn aprovar material-->
+        <nx-btn label="{{ResourceBundle['label_aprovar_material']}}" class="btn-success btn-custom" funcao="aprovarConfirma()" ng-show="objSelecionado.rmAprovador.aprovadorVez && state === 'STATE_MANUT' && objSelecionado.rmAprovador.rm.tipoRm == 'MAT'" ng-if="!frenteDeServico && !bloquearBotaoAprovarReprovar"></nx-btn>
+        <!-- btn salvar -->
+        <nx-btn label="{{ResourceBundle['label_salvar']}}" class="btn-success btn-custom" funcao="salvar()" ng-show="objSelecionado.rmAprovador.aprovadorVez && state === 'STATE_MANUT'" ng-if="(aprovadorLiderCustos || aprovadorCustos) && frenteDeServico"></nx-btn>
+        <!-- btn reprovar material-->
+        <nx-btn label="{{ResourceBundle['label_reprovar']}}" funcao="reprovarConfirma()" class="btn-danger btn-custom" ng-show="objSelecionado.rmAprovador.aprovadorVez && state === 'STATE_MANUT' && objSelecionado.rmAprovador.rm.tipoRm == 'MAT'" ng-if="!frenteDeServico && !bloquearBotaoAprovarReprovar"
+            icone="glyphicon glyphicon-remove"></nx-btn>
+        <!-- btn reprovar servico-->
+        <nx-btn label="{{ResourceBundle['label_reprovar_servico']}}" funcao="reprovarConfirmaServico()" class="btn-danger btn-custom" ng-show="objSelecionado.rmAprovador.aprovadorVez && state === 'STATE_MANUT' && objSelecionado.rmAprovador.rm.tipoRm == 'SER'"
+            ng-if="!frenteDeServico && !bloquearBotaoAprovarReprovar" icone="glyphicon glyphicon-remove"></nx-btn>
+
+        <!-- btn encaminhar estoquista -->
+        <nx-btn label="{{ResourceBundle['label_encaminhar_ao_estoquista']}}" funcao="encaminharEstoquistaConfirma()" class="btn-success btn-custom" ng-show="objSelecionado.rmAprovador.aprovadorVez && state === 'STATE_MANUT'" ng-if="(aprovadorLiderCustos || aprovadorCustos) && frenteDeServico"></nx-btn>
+
+        <!-- btn voltar para equipe de custos -->
+        <nx-btn label="{{ResourceBundle['label_voltar_para_custos']}}" funcao="voltarCustosConfirma()" class="btn-primary btn-custom" ng-show="objSelecionado.rmAprovador.aprovadorVez && state === 'STATE_MANUT'" icone="glyphicon glyphicon-arrow-left" ng-if="aprovadorGerenteCustos"></nx-btn>
+
+        <!--Anexo Material-->
+        <nx-btn-2 ng-show="objSelecionado.rmAprovador.aprovadorVez && state === 'STATE_MANUT' && objSelecionado.rmAprovador.rm.tipoRm == 'MAT'" ng-click="abrirModalAnexo('RM', objSelecionado.rmAprovador.rm.rmId)" label="{{ResourceBundle['label_anexos']}}" title="{{ResourceBundle['label_anexos']}}"
+            ng-if="objSelecionado.rmAprovador.rm.rmId" icone="glyphicon glyphicon-paperclip"></nx-btn-2>
+
+        <!--Anexo Serviço-->
+        <nx-btn-2 ng-show="objSelecionado.rmAprovador.aprovadorVez && state === 'STATE_MANUT' && objSelecionado.rmAprovador.rm.tipoRm == 'SER'" ng-click="abrirModalAnexoServico('RM', objSelecionado.rmAprovador.rm.rmId)" label="{{ResourceBundle['label_anexos_servico']}}"
+            title="{{ResourceBundle['label_anexos_servico']}}" ng-if="objSelecionado.rmAprovador.rm.rmId" icone="glyphicon glyphicon-paperclip"></nx-btn-2>
+    </nx-botoes-padrao>
+    <filtro-rm-aprovacao></filtro-rm-aprovacao>
+    <manut-rm-aprovacao btns-padrao-disable="nx-btn-salvar;nx-btn-novo;nx-btn-excluir"></manut-rm-aprovacao>
+    <lista-rm-aprovacao></lista-rm-aprovacao>
+    <nx-alert></nx-alert>
+    <nx-loading></nx-loading>
+
+    <!-- MODAL'S -->
+    <nx-modal id="modalConfirmaAprovarRm" mensagem="{{ResourceBundle['label_deseja_aprovar']}}" ng-show="objSelecionado.rmAprovador.rm.tipoRm == 'MAT'" funcao="aprovar()"></nx-modal>
+
+    <nx-modal id="modalConfirmaAprovarRmServico" mensagem="{{ResourceBundle['label_deseja_aprovar_servico']}}" ng-show="objSelecionado.rmAprovador.rm.tipoRm == 'SER'" funcao="aprovarServico()"></nx-modal>
+
+    <nx-modal id="modalConfirmaSalvarRm" mensagem="{{ResourceBundle['label_deseja_aprovar_custo']}}" funcao="aprovar()"></nx-modal>
+    <!--Material-->
+    <nx-modal id="modalConfirmaReprovarRm" mensagem="{{ResourceBundle['label_deseja_reprovar']}}" funcao="reprovar()"></nx-modal>
+    <!--Servico-->
+    <nx-modal id="modalConfirmaReprovarServicoRm" mensagem="{{ResourceBundle['label_deseja_reprovar']}}" funcao="reprovarServico()"></nx-modal>
+
+    <nx-modal id="modalConfirmaVoltarCustos" mensagem="{{ResourceBundle['label_deseja_voltar_para_custos']}}" funcao="voltarCustos()"></nx-modal>
+
+    <nx-modal id="modalConfirmaAtribuirEquipeCusto" mensagem="{{ResourceBundle['msg_deseja_atribuir_esta_requisicao_para_equipe_custos']}}" funcao="atribuirEquipeCustos()"></nx-modal>
+
+    <nx-modal id="modalConfirmaEncaminharEstoquista" mensagem="{{ResourceBundle['msg_deseja_encaminhar_ao_estoquista']}}" funcao="encaminharEstoquista()"></nx-modal>
+
+    <!--MODAL ANEXO MATERIAL -->
+    <nx-pop-up id="modalAnexo" titulo="{{ResourceBundle['label_anexos']}}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2" ng-repeat="obj in listaAnexo">
+                        <nx-arquivo nome="{{obj.nome}}" nx-click="carregarAnexo(obj)">
+                            <nx-btn2 title="{{ResourceBundle['label_download']}}" icone="glyphicon glyphicon-download-alt" ng-click="carregarAnexo(obj)"></nx-btn2>
+                        </nx-arquivo>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL ANEXO SERVICO-->
+    <nx-pop-up id="modalAnexoServico" titulo="{{ResourceBundle['label_anexos_servico']}}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2" ng-repeat="obj in listaAnexo">
+                        <nx-arquivo nome="{{obj.nome}}" nx-click="carregarAnexoServico(obj)">
+                            <nx-btn2 title="{{ResourceBundle['label_download']}}" icone="glyphicon glyphicon-download-alt" ng-click="carregarAnexoServico(obj)"></nx-btn2>
+                        </nx-arquivo>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+    <!-- Modal Gerente Obra -->
+    <nx-pop-up id="modalGerenteObra" titulo="{{ResourceBundle['label_indicar_gerente_obra']}}">
+        <h4>{{ResourceBundle["msg_envio_gerente_obra"]}}</h4>
+        <form id="formGerenteObra">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>{{ResourceBundle["label_gerente_obra"]}}</label>
+                        <nx-combo id="comboGerenteCustos" required="true" ng-model="objSelecionado.rmAprovador.rm.gerenteObra" ng-options="GerenteObra as GerenteObra.nome for GerenteObra in comboGerenteObra track by GerenteObra.pessoaId">
+                        </nx-combo>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group pull-right">
+                        <nx-btn2 ng-click="fecharModalEnviarGerenteObra()" icone="glyphicon glyphicon-arrow-left" label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                        <nx-btn2 ng-click="salvarEnviarGerenteObra()" icone="glyphicon glyphicon-ok" label="{{ResourceBundle['label_enviar']}}"></nx-btn2>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </nx-pop-up>
+</nx-tela-padrao>

@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-md-12 tab-container">
+        <nx-tab id="abasHome">
+
+            <nx-tab-item id='home' active="true" tab-pane="pageHome" btn-close="false" tab-template="<page-menu></page-menu>" item-value="ResourceBundle['label_home']" page-content></nx-tab-item>
+
+            <nx-tab-item id='suprimentos' tab-pane="pageFlex" item-value="Suprimentos" tab-template="<div id='objFlexId' ng-init='configuraTela()'></div>" page-content></nx-tab-item>
+
+            <nx-tab-item id='rastreabilidade' tab-pane="pageRastreabilidade" item-value="ResourceBundle['label_rastreabilidade']" tab-template="<page-rastreabilidade></page-rastreabilidade>" controller="RastreabilidadeController"></nx-tab-item>
+
+            <nx-tab-item id='cadastroRma' tab-pane="pageCadastroRma" item-value="ResourceBundle['label_rma']" tab-template="<page-cadastro-rma></page-cadastro-rma>" controller="CadastroRmaController"></nx-tab-item>
+            <!--HM-->
+            <nx-tab-item id='cadastroRmaServico' tab-pane="pageCadastroRmaServico" item-value="ResourceBundle['label_rma_servico']" tab-template="<page-cadastro-rma-servico></page-cadastro-rma-servico>" controller="CadastroRmaServicoController"></nx-tab-item>
+
+            <nx-tab-item id='rmAprovacao' tab-pane="pageRmAprovacao" item-value="ResourceBundle['label_aprovacao_requisicao']" tab-template="<page-rm-aprovacao></page-rm-aprovacao>" controller="RmAprovacaoController"></nx-tab-item>
+            <!--HM-->
+            <nx-tab-item id='painelRequisicaoMateriais' tab-pane="pagePainelRequisicaoMateriais" item-value="ResourceBundle['label_painel_requisicao_materais']" tab-template="<page-painel-requisicao-materiais></page-painel-requisicao-materiais>" controller="PainelRequisicaoMateriaisController"></nx-tab-item>
+
+            <!--<nx-tab-item id='painelRequisicaoServicos' tab-pane="pagePainelRequisicaoServicos" item-value="ResourceBundle['label_painel_requisicao_servicos']" tab-template="<page-painel-requisicao-materiais></page-painel-requisicao-materiais>" controller="PainelRequisicaoMateriaisController"></nx-tab-item>-->
+
+            <nx-tab-item id='materiaisSemCodigoSap' tab-pane="pageMateriaisSemCodigoSap" item-value="ResourceBundle['label_materiais_sem_codigo_sap']" tab-template="<page-materiais-sem-codigo-sap></page-materiais-sem-codigo-sap>" controller="MateriaisSemCodigoSapController"></nx-tab-item>
+
+            <nx-tab-item id='relatorioDesempenhoFornecedor' tab-pane="pageRelatorioDesempenhoFornecedor" item-value="ResourceBundle['label_relatorio_desempenho_fornecedor']" tab-template="<page-relatorio-desempenho-fornecedor></page-relatorio-desempenho-fornecedor>"
+                controller="RelatorioDesempenhoFornecedorController"></nx-tab-item>
+
+            <nx-tab-item id='previsaoPendenciaRecebimento' tab-pane="pagePrevisaoPendenciaRecebimento" item-value="ResourceBundle['label_previsao_pendencia_recebimento']" tab-template="<page-previsao-pendencia-recebimento></page-previsao-pendencia-recebimento>" controller="PrevisaoPendenciaRecebimentoController"></nx-tab-item>
+
+            <nx-tab-item id='relatorioEstoqueInconsistencia' tab-pane="pageRelatorioEstoqueInconsistencia" item-value="ResourceBundle['label_gestao_estoque']" tab-template="<page-relatorio-estoque-inconsistencia></page-relatorio-estoque-inconsistencia>" controller="RelatorioEstoqueInconsistenciaController"></nx-tab-item>
+
+            <nx-tab-item id='gestaoRma' tab-pane="pageGestaoRma" item-value="ResourceBundle['label_gestao_rma']" tab-template="<page-gestao-rma></page-gestao-rma>" controller="GestaoRmaController"></nx-tab-item>
+
+            <nx-tab-item id='administrador' tab-pane="pageAdministrador" item-value="ResourceBundle['label_administrar_envio_sap']" tab-template="<page-administrador></page-administrador>" controller="AdministradorController"></nx-tab-item>
+
+            <nx-tab-item id='documentoResponsabilidade' tab-pane="pageDocumentoResponsabilidade" item-value="ResourceBundle['label_documento_responsabilidade']" tab-template="<page-documento-responsabilidade></page-documento-responsabilidade>" controller="DocumentoResponsabilidadePendController"></nx-tab-item>
+
+            <nx-tab-item id='hierarquiaComprador' tab-pane="pageHierarquiaComprador" item-value="ResourceBundle['label_hierarquia_comprador']" tab-template="<page-hierarquia-comprador></page-hierarquia-comprador>" controller="HierarquiaCompradorController"></nx-tab-item>
+
+            <nx-tab-item id='usuario' tab-pane="pageUsuario" item-value="ResourceBundle['label_usuario']" tab-template="<page-usuario></page-usuario>" controller="UsuarioController"></nx-tab-item>
+
+
+            <nx-tab-item id='logInterface' tab-pane="pageLogInterface" item-value="ResourceBundle['label_log_interface']" tab-template="<page-log-interface></page-log-interface>" controller="LogInterfaceController"></nx-tab-item>
+
+            <nx-tab-item id='usuarioPerfil' tab-pane="pagePerfil" item-value="ResourceBundle['label_perfil']" tab-template="<page-perfil></page-perfil>" controller="PerfilController"></nx-tab-item>
+
+            <nx-tab-item id='workflow' tab-pane="pageWorkflow" item-value="ResourceBundle['label_workflow']" tab-template="<page-workflow></page-workflow>" controller="WorkflowController"></nx-tab-item>
+
+            <nx-tab-item id='comprador' tab-pane="pageComprador" item-value="ResourceBundle['label_painel_requisicao_materais']" tab-template="<page-comprador></page-comprador>" controller="CompradorController"></nx-tab-item>
+
+            <nx-tab-item id='painelEstoquista' tab-pane="pagePainelEstoquista" item-value="ResourceBundle['label_painel_requisicao_materais']" tab-template="<page-painel-estoquista></page-painel-estoquista>" controller="PainelEstoquistaController"></nx-tab-item>
+
+            <nx-tab-item id='cadastroObra' tab-pane="pageCadastroObra" item-value="ResourceBundle['label_cadastro_obra']" tab-template="<page-cadastro-obra></page-cadastro-obra>" controller="CadastroObraController"></nx-tab-item>
+
+        </nx-tab>
+
+        <nx-tab-content>
+        </nx-tab-content>
+    </div>
+</div>

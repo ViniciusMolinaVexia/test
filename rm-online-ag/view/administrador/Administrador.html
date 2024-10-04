@@ -1,0 +1,26 @@
+<nx-tela-padrao id="telaAdministrador">
+    <nx-titulo titulo="{{ResourceBundle['label_administrar_envio_sap']}}"></nx-titulo>
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-novo;nx-btn-salvar">
+        <nx-btn-2 ng-show="state === 'STATE_MANUT'" ng-click="reenviarParaSap()" 
+                  label="{{ResourceBundle['label_reenviar_para_sap']}}" 
+                  title="{{ResourceBundle['label_reenviar_para_sap']}}" 
+                  icone="glyphicon glyphicon-share-alt"></nx-btn-2>
+        <nx-btn-2 ng-if="objSelecionado.sincRegistro.funcionalidade == 'INTEGRACAO_RETIRADA_MATERIAL'"
+                  ng-show="state === 'STATE_MANUT' && habilitarManutSap()" ng-click="desativarRegistroRetirada()"
+                  label="{{ResourceBundle['label_excluir']}}"
+                  title="{{ResourceBundle['label_excluir']}}"
+                  icone="glyphicon glyphicon-remove"></nx-btn-2>
+        <nx-btn-2 ng-show="state === 'STATE_MANUT' && habilitarManutSap()" ng-click="salvar()"
+                  ng-if="objSelecionado.recebidoCp == null || !objSelecionado.recebidoCp"
+                  label="{{ResourceBundle['label_salvar']}}"
+                  title="{{ResourceBundle['label_salvar']}}"
+                  icone="glyphicon glyphicon-ok"></nx-btn-2>
+    </nx-botoes-padrao>
+    <filtro-administrador></filtro-administrador>
+
+    <manut-administrador btns-padrao-disable="nx-btn-novo;nx-btn-salvar"></manut-administrador>
+
+    <lista-administrador></lista-administrador>
+    <nx-alert></nx-alert> 
+    <nx-loading></nx-loading>
+</nx-tela-padrao>

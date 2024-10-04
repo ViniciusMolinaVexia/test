@@ -1,0 +1,636 @@
+html, body {
+    /* padding-right: 30px;
+     padding-left: 30px;
+     padding-bottom: 30px; */
+    padding: 0;
+    margin: 0;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px;
+}
+
+.margin-bottom-10 {
+    margin-bottom: 10px;
+}
+
+.opcoes {
+    text-align: center;
+    width: 40px !important;
+}
+
+.alert {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.jumbotron {
+    margin-bottom: 40px;
+    background-color: #F4F4F4;
+}
+
+h1 {
+    font-family: 'Roboto Slab', sans-serif;
+    color: #000 !important;
+}
+
+h2 {
+    margin-bottom: 24px;
+
+}
+
+h5 {
+    border-bottom: 1px solid #CCC;
+    margin: 3px 0 10px 0;
+    padding-bottom: 2px;
+    font-weight: 700;
+}
+
+.my-drop-zone {
+    border: dotted 3px lightgray;
+}
+
+.ng-file-over {
+    border: dotted 3px red;
+}
+
+.another-file-over-class {
+    border: dotted 3px green;
+}
+
+#canvas {
+    background-color: #f3f3f3;
+    -webkit-box-shadow: 3px 3px 3px 0 #e3e3e3;
+    -moz-box-shadow: 3px 3px 3px 0 #e3e3e3;
+    box-shadow: 3px 3px 3px 0 #e3e3e3;
+    border: 1px solid #c3c3c3;
+    height: 100px;
+    margin: 6px 0 0 6px;
+}
+
+textarea {
+    max-width: 100%;
+    min-height: 100px;
+}
+
+.style-checkbox {
+    margin: 5px 0 0 0;
+    display: block;
+    height: 20px;
+    width: 20px;
+}
+
+.checkbox-ciente {
+    height: 25px;
+}
+
+.checkbox-ciente input {
+    height: 20px;
+    width: 20px;
+}
+
+.checkbox-ciente span {
+    padding-top: 3px;
+    padding-left: 5px;
+    display: block;
+}
+
+.app-loading-container {
+    height: 100px;
+    width: 100px;
+    margin-left: 30%;
+    position: absolute;
+    top: 80%;
+}
+
+.app-loading-animation {
+    -webkit-transition: all 0.25s linear;
+    background: url(loader2.gif) center center no-repeat;
+    width: 100px;
+    height: 100px;
+    display: block;
+    margin: 0 auto;
+}
+
+.app-loading-animation.ready {
+    opacity: 0;
+}
+
+.app-loading-animation,
+.app-loading-animation.loading {
+    opacity: 1;
+}
+
+.loading {
+    z-index: 1500;
+    position: absolute;
+    top: 0;
+    right: 50%;
+
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.42;
+    border-radius: 15px;
+}
+
+.ativado {
+    background: #000;
+}
+
+.fundo_azul {
+    color: #ffffff !important;
+    background-color: #428bca !important;
+    border-color: #357ebd !important;
+}
+
+.fundo_cinza {
+    color: #333 !important;
+    background-color: #cccccc !important;
+
+}
+
+.fundo_cinza_claro {
+    color: #333 !important;
+    background-color: #f9f9f9 !important;
+
+}
+
+.transparent {
+    background-color: transparent;
+}
+
+.fundo-cinza2 {
+    background: #d5d8dd;
+}
+
+.fundo-cinza-escuro {
+    background: #58697b;
+    color: #fff;
+}
+
+.fundo-laranja {
+    /*background: #fcb13b;*/
+    background: #f6d52d;
+}
+
+.well-transparent {
+    background: transparent;
+}
+
+.nav-tabs > li.active > a {
+
+    color: #ffffff;
+    background-color: #428bca;
+}
+
+.lista tr td[class*="col-"] a {
+    text-decoration: none;
+    color: #36526e;
+    cursor: pointer;
+}
+
+.lista thead tr th a {
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: #428bca;
+}
+
+.selected a {
+    color: #FFF;
+}
+
+.modal-body table tr td a {
+    text-decoration: none;
+}
+
+.campo-obrigatorio {
+    border: 1px solid red;
+}
+
+.campo-invalido {
+    color: Red;
+}
+
+/**
+ *  Sobrescrito .table-responsive do Bootstrap, pois no bootstrap
+ *  somente colocava Scroll caso o tamanho da tela fosse inferior a 768 Px (Dafault Tablet) e agora
+ *  sobrescrevemos para que ele inclua scroll qdo estourar o limite do tamanho. 
+ *  [Marlos M. Novo]
+ **/
+.table-responsive {
+    width: 100%;
+    margin-bottom: 15px;
+    overflow: auto;
+    margin-top: 10px;
+
+    border: 1px solid #dddddd;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* COMBO MAGICSUGGEST */
+.ms-ctn, .ms-res-ctn {
+    width: auto !important;
+    height: auto !important;
+}
+
+tr {
+    cursor: pointer;
+
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #fff;
+    cursor: default;
+    background-color: #428bca;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+
+.obrigatorio {
+    font-size: 8px;
+    color: #ff0000;
+    vertical-align: top;
+}
+
+.modal-title {
+    padding: 2px;
+}
+
+.modal-header {
+    padding: 4px;
+}
+
+/******************/
+/* BTN */
+/******************/
+.btn-azul-escuro {
+    color: #fff;
+
+    background-color: #36526e;
+    border-color: #586979;
+}
+
+.btn-azul-escuro:hover,
+.btn-azul-escuro:focus,
+.btn-azul-escuro:active,
+.btn-azul-escuro.active,
+.open .dropdown-toggle.btn-azul-escuro {
+    color: #fff;
+    background-color: #2c4769;
+
+}
+
+.btn-cinza-escuro {
+    color: #fff;
+
+    background-color: #58697b;
+    border-color: #677482;
+}
+
+.btn-cinza-escuro:hover,
+.btn-cinza-escuro:focus,
+.btn-cinza-escuro:active,
+.btn-cinza-escuro.active,
+.open .dropdown-toggle.btn-azul-escuro {
+    color: #fff;
+    background-color: #4e657d;
+
+}
+
+/******************/
+/* MENU FLUTUANTE */
+/******************/
+
+.form-dropdown {
+
+    padding: 0px !important;
+
+}
+
+.form-dropdown .panel {
+
+    margin: 0px !important;
+
+}
+
+.rightMenu {
+    position: relative;
+    z-index: 1;
+    float: right;
+}
+
+.btn-group {
+    position: static;
+
+}
+
+@media (min-width: 768px) {
+    .nx-popup {
+        width: 600px;
+
+    }
+
+    .nx-popup-sm {
+        width: 300px;
+    }
+
+}
+
+@media (min-width: 992px) {
+    .nx-popup-lg {
+        width: 900px;
+    }
+}
+
+@media (max-width: 767px) {
+    .nx-popup, .nx-popup-lg, .nx-popup-sm {
+        width: 100%;
+
+    }
+
+}
+
+.nx-popup-full {
+    width: 100%;
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+.open-close-popup .btn {
+
+    border-radius: 4px !important;
+
+}
+
+/*.panel-body
+{
+    
+ max-height:350px;
+ overflow:auto;   
+    
+}*/
+
+.tab-content > .tab-pane {
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 0 0 4px 4px;
+}
+
+.tabbable ul li {
+    border: 1px solid #304258;
+
+}
+
+.nav-tabs > li > a {
+    margin-right: 0px;
+    border: none !important;
+    border-radius: 0px;
+}
+
+.nav-tabs > li {
+    margin-right: 0px;
+
+    /*border-radius: 4px 4px 0 0;*/
+}
+
+.modal-backdrop {
+    background: none;
+}
+
+.header {
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd;
+
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+#manut-proc {
+    margin-top: 10px;
+    padding: 5px;
+
+}
+
+#manut-proc .panel-heading {
+    border: none;
+    margin-bottom: 5px;
+
+}
+
+fieldset.scheduler-border {
+    border: 1px groove #ddd !important;
+    padding: 0 1.0em 1.0em 1.0em !important;
+    /* margin: 0 0 1.5em 0 !important;*/
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto;
+    padding: 0 10px;
+    border-bottom: none;
+}
+
+#fieldset-procuracao {
+
+    width: 420px;
+}
+
+#editor {
+    max-height: 250px;
+    height: 100px;
+    background-color: white;
+    border-collapse: separate;
+    border: 1px solid rgb(204, 204, 204);
+    padding: 4px;
+    box-sizing: content-box;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
+    box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 1px 0px inset;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+    overflow: scroll;
+    outline: none;
+    margin-top: 5px;
+}
+
+div[data-role="editor-toolbar"] {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.dropdown-menu a {
+    cursor: pointer;
+}
+
+.icon-flipped {
+    transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+}
+
+.nx-disabled {
+    cursor: default !important;
+}
+
+/******************/
+/* MENU FLUTUANTE */
+/******************/
+
+.form-dropdown {
+
+    padding: 0px !important;
+
+}
+
+.form-dropdown .panel {
+
+    margin: 0px !important;
+
+}
+
+.rightMenu {
+    position: relative;
+    z-index: 1;
+    float: right;
+}
+
+.btn-group {
+    position: static;
+
+}
+
+.nx-popup-full {
+
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .nx-popup {
+        min-width: 600px;
+        max-width: 900px;
+    }
+
+    .nx-popup-sm {
+        min-width: 300px;
+        max-width: 600px;
+    }
+
+}
+
+@media (min-width: 992px) {
+    .nx-popup-lg {
+        min-width: 900px;
+        max-width: 970px;
+    }
+
+    .nx-popup {
+        min-width: 600px;
+        max-width: 970px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .nx-popup-lg {
+        min-width: 900px;
+        max-width: 1170px;
+    }
+
+    .nx-popup {
+        min-width: 600px;
+        max-width: 1170px;
+    }
+}
+
+@media (max-width: 767px) {
+    .nx-popup, .nx-popup-lg, .nx-popup-sm {
+        width: 100%;
+
+    }
+
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+.open-close-popup .btn {
+
+    border-radius: 4px !important;
+
+}
+
+.navbar-nextage {
+    background-color: #9d0707;
+    border-color: #e7e7e7;
+    color: #428bca;
+}
+
+.navbar-nextage li a, .navbar-nextage .navbar-brand {
+    color: #fff;
+
+}
+
+.navbar-nextage li a:hover {
+    color: #9d0707;
+
+}
+
+.navbar-nextage .navbar-toggle .icon-bar {
+    background: #9d0707;
+}
+
+.navbar-toggle {
+
+    background: #f9f9f9;
+}
+
+.samplecontent {
+    position: static;
+
+    left: 0px;
+    padding: 0px;
+}
+
+.btn-vermelho {
+    background-color: #9d0707;
+    border-color: #e7e7e7;
+    color: #fff;
+}
+
+.btn-vermelho:hover, .btn-vermelho:focus {
+    background-color: #b10909;
+    border-color: #e7e7e7;
+    color: #fff;
+}
+
+#dir {
+    padding-left: 0px;
+}
+
+
+    
+      

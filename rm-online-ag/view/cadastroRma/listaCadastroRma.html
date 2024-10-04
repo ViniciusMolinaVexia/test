@@ -1,0 +1,234 @@
+<nx-paginacao 
+    num-paginas="numPaginas" 
+    pagina-atual="paginaAtiva" 
+    listar-pagina="irParaPaginaEspecifica"
+    qtde-paginas="15"> 
+    <div class="col-md-12">
+        
+        <div class="table-responsive"> 
+               
+            <table class="table table-hover table-striped table-bordered lista"> 
+                <thead class="fundo-cabecalho-tabela"> 
+                    <tr> 
+                        <th class="icone">{{ResourceBundle['label_opcoes']}}</th>
+                        <th class="icone" ng-if="ATRIBUIR_COMPRADOR">{{ResourceBundle['label_atribuir_comprador']}}
+                            <input type="checkbox" id="selTdAtrComp" name="selTdAtrComp" value="selTdAtrComp"
+                                   ng-click="selTdAtrComp($event)">
+                        </th>
+                        <th>{{ResourceBundle['label_teste']}}</th>
+                        <th>{{ResourceBundle['label_area_requisitante']}}</th>
+                        <th>{{ResourceBundle['label_numero']}}</th>
+                        <th>{{ResourceBundle['label_prioridade']}}</th>
+                        <th>{{ResourceBundle['label_material']}}</th>
+                        <th>{{ResourceBundle['label_qtd_solicitada']}}</th>
+                        <th>{{ResourceBundle['label_quantidade_comprada']}}</th>
+                        <th>{{ResourceBundle['label_quantidade_recebida']}}</th>
+                        <th>{{ResourceBundle['label_data_recebimento']}}</th>
+                        <th>{{ResourceBundle['label_saldo_a_receber']}}</th>
+                        <th>{{ResourceBundle['label_status']}}</th>
+                        <th>{{ResourceBundle['label_opcao_requisicao']}}</th>
+                        <th>{{ResourceBundle['label_usuario_cadastrante']}}</th>
+                        <th>{{ResourceBundle['label_requisitante']}}</th>
+                        <th>{{ResourceBundle['label_emissao']}}</th>
+                        <th>{{ResourceBundle['label_necessidade']}}</th>
+                        <th>{{ResourceBundle['label_tipo_requisicao']}}</th>
+                        <th>Data requisição SAP</th>
+                        <th>{{ResourceBundle['label_numero_requisicao_sap']}}</th>
+                        <th>{{ResourceBundle['label_item_requisicao_sap']}}</th>
+                        <th>{{ResourceBundle['label_pedido_criado_em']}}</th>
+                        <th>{{ResourceBundle['label_numero_pedido_compra_sap']}}</th>
+                        <th>{{ResourceBundle['label_grupo_comprador']}}</th>
+                        <th>{{ResourceBundle['label_data_previsao_entrega']}}</th>
+                         <th>Data da Migo</th>
+                        <th>{{ResourceBundle['label_numero_documento']}}</th>                        
+                       
+                        
+                        
+                        <th>{{ResourceBundle['label_nome_aprovacao_coord']}}</th>
+                        <th>{{ResourceBundle['label_aprovacao_coord']}}</th>
+
+                        <th>{{ResourceBundle['label_nome_aprovacao_gerente_area']}}</th>
+                        <th>{{ResourceBundle['label_aprovacao_gerente_area']}}</th>
+                        
+                        <th>{{ResourceBundle['label_nome_aprovacao_gerente_custos']}}</th>
+                        <th>{{ResourceBundle['label_aprovacao_gerente_custos']}}</th>
+                        
+                        <th>{{ResourceBundle['label_nome_aprovacao_maquina_parada']}}</th>
+                        <th>{{ResourceBundle['label_aprovacao_maquina_parada']}}</th>
+                        
+                        <th>{{ResourceBundle['label_aprovacao_equipe_custos']}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="obj in listaRma | orderBy:'obj.rmDataEmissao'">
+                        <td>
+                            <div>
+                                <nx-btn-2 title="{{ResourceBundle['label_editar']}}" 
+                                          icone="glyphicon glyphicon-edit" 
+                                          ng-click="editar(obj)"></nx-btn-2>
+                                <nx-btn-2 title="{{ResourceBundle['label_enviar_para_aprovacao']}}"
+                                          icone="glyphicon glyphicon-share-alt"
+                                          ng-show="habilitaBtnEnviarParaAprovacao(obj)"
+                                          ng-click="escolherAprovador(obj.rmRmId)"></nx-btn-2>
+                                <nx-btn-2 ng-click="copiarRequisicao(obj)"
+                                          title="{{ResourceBundle['label_copiar_requisicao']}}"
+                                          icone="glyphicon glyphicon-new-window"></nx-btn-2>
+                                <nx-btn-2 ng-click="exibirAprovadores(obj)"
+                                          title="{{ResourceBundle['label_exibir_aprovadores']}}"
+                                          ng-if="obj.rmDataEnvioAprovacao || obj.rmDataReprovacao"
+                                          icone="glyphicon glyphicon-list"></nx-btn-2>
+                                <nx-btn-2 ng-click="alterarQuantidadeMaterial(obj)"
+                                          title="{{ResourceBundle['label_alterar_quantidade']}}"
+                                          icone="glyphicon glyphicon-resize-vertical"
+                          				  ng-if="obj.statusNome == 'Enviar Aprovação' || obj.statusNome == 'Reprovada'"></nx-btn-2>
+                                <nx-btn-2 ng-click="alterarPrioridade(obj)"
+                                          title="{{ResourceBundle['label_alterar_prioridade']}}"
+                                          icone="glyphicon glyphicon-exclamation-sign"
+                                          ng-if="obj.statusNome == 'Enviar Aprovação' || obj.statusNome == 'Reprovada'"></nx-btn-2>
+                                <nx-btn-2 ng-click="listarRetiradasNaoPresenciais(obj)" 
+                                          title="{{ResourceBundle['label_confirmar_retirada_nao_presencial']}}"                             
+                                          icone="glyphicon glyphicon-ok"
+                                          ng-show="obj.confirmarRetirada"></nx-btn-2>
+                                <nx-btn-2 ng-click="alterarColetorDeCustos(obj)"
+                                          title="{{ResourceBundle['label_alterar_coletor_custos']}}"
+                                          icone="glyphicon glyphicon-usd"
+                                          ng-if="obj.statusNome == 'Enviar Aprovação' || obj.statusNome == 'Reprovada'"></nx-btn-2>
+                            </div>
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.centroNome}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                        	{{ obj.areaNome }}
+                            {{obj.subAreaCodigo}}
+                            {{obj.subAreaCodigo && obj.subAreaDescricao ? '-' : ''}}
+                            {{obj.subAreaDescricao}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmNumeroRm}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.prioridadeDescricao}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)"
+                            title="{{obj.rmMaterial.material.nomeCompleto}}">
+                            {{obj.materialCodigo}} - {{obj.materialNome}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.quantidadeSolicitada}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.quantidadeComprada}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.quantidadeRecebida}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmDataRecebimento | date : 'dd/MM/yyyy'}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.statusNome == 'Aguardando Retirada'? obj.saldoAReceber: '---'}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.statusNome}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            <span ng-if="obj.rmMaterialOperacao|| obj.rmMaterialDiagramaRede">{{ResourceBundle["label_diagrama_de_rede"] + ': ' + obj.rmMaterialDiagramaRede + ' - ' + obj.rmMaterialOperacao}}</span>
+                            <span ng-if="obj.rmMaterialColetorCustos">{{ResourceBundle["label_elemento_pep"] + ': ' + obj.rmMaterialColetorCustos}}</span>
+                            <span ng-if="obj.rmMaterialColetorOrdem">{{ResourceBundle["label_estoque"] + ': '}}{{obj.rmMaterialColetorOrdem}}</span>
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.usuarioPessoaReferencia}}
+                            {{obj.usuarioPessoaReferencia
+                            && obj.usuarioPessoaNome ? '-' : ''}}
+                            {{obj.usuarioPessoaNome}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.requisitanteReferencia}}
+                            {{obj.requisitanteReferencia && obj.requisitanteNome ? '-' : ''}}
+                            {{obj.requisitanteNome}}
+                        </td>
+
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmDataEmissao | date: ResourceBundle['format_date']}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmDataAplicacao | date: ResourceBundle['format_date']}}
+                        </td>
+
+                        <td>
+                            {{ obj.rmMaterialFluxoMaterial }}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmMaterialDataCompra | date: ResourceBundle['format_date']}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmMaterialNumeroRequisicaoSap}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmMaterialItemRequisicaoSap}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmMaterialDataCompra | date: ResourceBundle['format_date']}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmMaterialNumeroPedidoCompra}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmMaterialGrupoComprador}}
+                        </td>
+                        
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmMaterialDataPrevistaEntr | date: ResourceBundle['format_date']}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.DataMigo | date: ResourceBundle['format_date']}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.rmMaterialNumeroDocEntrada}}
+                        </td>
+                        
+                       
+                      
+
+                        
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.nomeAprovCoordenador}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.dataAprovCoordenador| date: ResourceBundle['format_date']}}
+                        </td>
+                        
+
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.nomeAprovGerenteArea}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.dataAprovGerenteArea| date: ResourceBundle['format_date']}}
+                        </td>
+
+
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.nomeAprovGerenteCustos}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.dataAprovGerenteCustos| date: ResourceBundle['format_date']}}
+                        </td>
+                                                
+                        
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.nomeAprovMaquinaParada}}
+                        </td>
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.dataAprovMaquinaParada| date: ResourceBundle['format_date']}}
+                        </td>
+                        
+                        <td ng-click="detalharStatus(obj)">
+                            {{obj.dataAprovComplementoCustos| date: ResourceBundle['format_date']}}
+                        </td>
+                    </tr>
+                </tbody> 
+            </table> 
+        </div> 
+    </div>
+</nx-paginacao>

@@ -1,0 +1,61 @@
+<nx-tela-padrao id="telaUsuario">
+    <nx-titulo titulo="{{ResourceBundle['label_usuario']}}"></nx-titulo>
+
+    <nx-botoes-padrao btns-padrao-disable="{{ROLE_USUARIOS_CADASTRO?'':'nx-btn-salvar;nx-btn-filtro;nx-btn-novo;nx-btn-listar;nx-btn-limpar'}}">
+    	<a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_salvar']}}" 
+           ng-click="salvarSenha()"
+           ng-if="!ROLE_USUARIOS_CADASTRO"
+           title="{{ResourceBundle['label_enviar_para_aprovacao']}}">
+        	<span>{{ResourceBundle['label_salvar']}}</span>
+        </a>
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_sincronizar_pessoas']}}" 
+           ng-click="sincronizarPessoa()"
+           ng-if="ROLE_USUARIOS_CADASTRO"
+           title="{{ResourceBundle['label_sincronizar_pessoas']}}">
+        	<span>{{ResourceBundle['label_sincronizar_pessoas']}}</span>
+        </a>
+    </nx-botoes-padrao>
+
+    <filtro-usuario  ng-show="ROLE_USUARIOS_CADASTRO"></filtro-usuario>
+
+    <manut-usuario  ng-show="ROLE_USUARIOS_CADASTRO"></manut-usuario>
+
+    <lista-usuario  ng-show="ROLE_USUARIOS_CADASTRO"></lista-usuario>
+
+    <form id="formAlterarSenha" ng-show="!ROLE_USUARIOS_CADASTRO" style="padding-top: 10px;">
+        <nx-float-group cols="1">
+            <div class="form-group">
+                <label>{{ResourceBundle["label_nome"]}}</label>
+                <label>{{userLogado.nome}}</label>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle["label_login"]}}</label>
+                <label>{{userLogado.login}}</label>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle["label_senha"]}}</label>
+                <input id="inputSenha" type="password" maxlength="255"
+                       ng-model="userLogado.senha" class="form-control required">
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle["label_comfirmar_senha"]}}</label>
+                <input id="inputConfirmarSenha" type="password" maxlength="255"
+                       ng-model="userLogado.confirmarSenha" class="form-control required">
+            </div>
+
+        </nx-float-group>
+    </form>
+
+    <nx-alert></nx-alert>
+    <nx-loading></nx-loading>
+
+    <nx-modal-confirmacao-exclusao></nx-modal-confirmacao-exclusao>
+
+
+</nx-tela-padrao>
+

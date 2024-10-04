@@ -1,0 +1,42 @@
+<nx-paginacao num-paginas="numPaginas" pagina-atual="paginaAtiva" listar-pagina="irParaPaginaEspecifica" qtde-paginas="15">
+    <nx-lista>
+        <div class="col-md-12 listaObjetos">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered lista">
+                    <thead class="fundo-cabecalho-tabela">
+                        <tr>
+                            <th>{{ResourceBundle['label_centro']}} / {{ResourceBundle['label_obra']}}</th>
+                            <th>{{ResourceBundle['label_numero']}}</th>
+                            <th>{{ResourceBundle['label_usuario_cadastrante']}}</th>
+                            <th>{{ResourceBundle['label_requisitante']}}</th>
+                            <th>{{ResourceBundle['label_data_emissao']}}</th>
+                            <th>{{ResourceBundle['label_data_aplicacao']}}</th>
+                            <th>{{ResourceBundle['label_tipo_requisicao']}}</th>
+                            <th>{{ResourceBundle['label_tipo_rm']}}</th>
+                            <th>{{ResourceBundle['label_pessoa_equipe_custos']}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="rmAprovador in lista">
+                            <td ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.centro.descricao}}</td>
+                            <!--<td ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.numeroRm}}</td>-->
+                            <td ng-if="rmAprovador.rm.tipoRm == 'MAT'" ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.numeroRm}}</td>
+                            <td ng-if="rmAprovador.rm.tipoRm == 'SER'" ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.area.codigo + " - " + rmAprovador.rm.numeroRmServico}}</td>
+                            <td ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.usuario.pessoa.nome}}</td>
+                            <td ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.requisitante.nome}}</td>
+                            <td ng-click="editar(rmAprovador.id)">
+                                {{rmAprovador.rm.dataEmissao|date:ResourceBundle["format_date"]}}
+                            </td>
+                            <td ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.dataAplicacao|date:ResourceBundle["format_date"]}}</td>
+                            <!--<td ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.tipoRequisicao.descricao}}</td>-->
+                            <td ng-if="rmAprovador.rm.tipoRm == 'MAT'" ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.tipoRequisicao.descricao}}</td>
+                            <td ng-if="rmAprovador.rm.tipoRm == 'SER'" ng-click="editar(rmAprovador.id)">{{ResourceBundle['label_tp_sol_rm_servico']}}</td>
+                            <td ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.tipoRm}}</td>
+                            <td ng-click="editar(rmAprovador.id)">{{rmAprovador.rm.atribuidoPara.nome}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </nx-lista>
+</nx-paginacao>

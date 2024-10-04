@@ -1,0 +1,33 @@
+<div class="modal fade" id="{{id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog  modal-{{tamanho}}">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;</button>
+                <h3 class="modal-title modalConfirmacao" id="H2" ng-if="!isLabel">
+                    {{mensagem}}</h3>
+                <h3 class="modal-title modalConfirmacao" id="H2" ng-if="isLabel">
+                    {{ResourceBundle[mensagem]}}</h3>
+            </div>
+            <div class="modal-body">
+                <form name="formConfirma" role="form" id="formConfirma">
+                    <div class="form-group">
+                        <div class="row text-align-center">
+                            <div class="col-md-6 col-xs-6 col-sm-6">
+                                <a ng-click="funcao()" class="btn btn-success botaoFullCol" data-dismiss="modal"><span
+                                        class="glyphicon glyphicon-ok">
+                                    </span> {{ResourceBundle["label_sim"]}}</a>
+                            </div>
+                            <div class="col-md-6 col-xs-6 col-sm-6">
+                                <a type="button" class="btn btn-danger botaoFullCol" data-dismiss="modal"><span
+                                        class="glyphicon glyphicon-remove">
+                                    </span> {{ResourceBundle["label_nao"]}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para confirmação de exclusão -->
+</div>

@@ -1,0 +1,100 @@
+<nx-filtro>
+
+    <div class="form-group">
+        <label for="sistema">
+            {{ResourceBundle['label_sistema']}}
+        </label>
+        <input type="text" class="form-control" id="sistema" name="sistema" ng-model="filtro.sistema" maxlength="255"/>
+    </div>
+    <div class="form-group">
+        <label for="interfaceExec">
+            {{ResourceBundle['label_interface_exec']}}
+        </label>
+        <input type="text" class="form-control" id="interfaceExec" name="interfaceExec" ng-model="filtro.interfaceExec"
+               maxlength="255"/>
+    </div>
+    <div class="form-group">
+        <label for="numRma">
+            {{ResourceBundle['label_num_rma']}}
+        </label>
+        <input type="text" class="form-control" id="numRma" name="numRma" ng-model="filtro.numRma" maxlength="255"/>
+    </div>
+    <div class="form-group">
+        <label for="codigoDeposito">
+            {{ResourceBundle['label_codigo_deposito']}}
+        </label>
+        <input type="text" class="form-control" id="codigoDeposito" name="codigoDeposito"
+               ng-model="filtro.codigoDeposito" maxlength="255"/>
+    </div>
+    <div class="form-group">
+        <label for="itemRequisicaoSap">
+            {{ResourceBundle['label_item_requisicao_sap']}}
+        </label>
+        <input type="text" class="form-control" id="itemRequisicaoSap" name="itemRequisicaoSap"
+               ng-model="filtro.itemRequisicaoSap" maxlength="255"/>
+    </div>
+    <div class="form-group">
+        <label for="numRequisicaoSap">
+            {{ResourceBundle['label_num_requisicao_sap']}}
+        </label>
+        <input type="text" class="form-control" id="numRequisicaoSap" name="numRequisicaoSap"
+               ng-model="filtro.numRequisicaoSap" maxlength="255"/>
+    </div>
+    <div class="form-group">
+        <label for="numPedidoSap">
+            {{ResourceBundle['label_num_pedido_sap']}}
+        </label>
+        <input type="text" class="form-control" id="numPedidoSap" name="numPedidoSap" ng-model="filtro.numPedidoSap"
+               maxlength="255"/>
+    </div>
+    <div class="form-group row">
+        <label for="dataHoraInclusaoLogInicio" class="col-md-12">
+            {{ResourceBundle['label_data_hora_inclusao_log']}}
+        </label>
+        <div class="col-md-6">
+            <nx-date-field id="filtroStdataHoraInclusaoLogInicio" ng-model="filtro.stDataHoraInclusaoLogInicio"
+                           placeholder="{{ResourceBundle['label_de']}}"></nx-date-field>
+        </div>
+        <div class="col-md-6">
+            <nx-date-field id="filtroStdataHoraInclusaoLogFim"
+                           placeholder="{{ResourceBundle['label_ate']}}"
+                           ng-model="filtro.stDataHoraInclusaoLogFim"></nx-date-field>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="usuarioInclusao">
+            {{ResourceBundle['label_usuario_inclusao']}}
+        </label>
+        <input type="text" class="form-control" id="usuarioInclusao" name="usuarioInclusao"
+               ng-model="filtro.usuarioInclusao" maxlength="255"/>
+    </div>
+    <div class="form-group">
+        <label for="mensagem">
+            {{ResourceBundle['label_mensagem']}}
+        </label>
+        <input type="text" class="form-control" id="mensagem" name="mensagem" ng-model="filtro.mensagem"
+               maxlength="255"/>
+    </div>
+    <div class="form-group">
+        <label for="tipoMensagem">
+            {{ResourceBundle['label_tipo_mensagem']}}
+        </label>
+        <input type="text" class="form-control" id="tipoMensagem" name="tipoMensagem" ng-model="filtro.tipoMensagem"
+               maxlength="255"/>
+    </div>
+    <div class="form-group">
+        <label for="json">
+            {{ResourceBundle['label_json']}}
+        </label>
+        <input type="text" class="form-control" id="json" name="json" ng-model="filtro.json"
+               maxlength="255"/>
+    </div>
+    <div class="form-group">
+        <label for="erroMensagem">
+            {{ResourceBundle['label_erro_mensagem']}}
+        </label>
+        <input type="text" class="form-control" id="erroMensagem" name="erroMensagem" ng-model="filtro.erroMensagem"
+               maxlength="255"/>
+    </div>
+
+</nx-filtro>

@@ -1,0 +1,637 @@
+<nx-manut id="manutCadastroRma">
+    <div class="panel-body">
+        <form id="formManutencao">
+            <nx-float-group cols="4">
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_centro']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-combo id="manutCadastroCentro" ng-model="objSelecionado.rm.centro" ng-change="atualizarDepositos(objSelecionado.rm.centro)" required ng-options="Centro as Centro.nome for Centro in listaCentros track by Centro.centroId" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm">
+                    </nx-combo>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_area']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-combo id="manutCadastroArea" ng-model="objSelecionado.rm.area" ng-change="changeArea()" required ng-options="Area as Area.nome for Area in listaAreas track by Area.areaId" ng-disabled="false">
+                    </nx-combo>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_numero"]}}</label>
+                    <input id="manutCadastroRmaNumeroRma" type="text" ng-disabled="true" ng-model="objSelecionado.rm.numeroRm" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_requisitante"]}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                    <nx-auto-complete id="manutCadastroRmaRequisitante" ng-model="objSelecionado.rm.requisitante" typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompleteRequisitante($viewValue)" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"
+                        required></nx-auto-complete>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_data_emissao"]}}</label>
+                    <nx-date-field id="manutCadastroRmaDataEmissao" ng-model="objSelecionado.rm.stDataEmissao" ng-disabled="true"></nx-date-field>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_necessidade"]}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                    <nx-date-field id="manutCadastroRmaDataAplicacao" ng-model="objSelecionado.rm.stDataAplicacao" required ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" ng-change="changeDataAplicacao()"></nx-date-field>
+                    <!-- <div class="form-group" ng-if="!objSelecionado.rm.rmId">
+                        <label>{{msgPrioridade}}</label>
+                    </div>-->
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_prioridade"]}} / {{ResourceBundle["label_tipo_requisicao"]}}</label>
+                    <input id="manutCadastroRmaPrioridade" type="text" ng-disabled="true" ng-value="(objSelecionado.rm.prioridade.descricao)" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_local_entrega"]}}</label>
+                    <span class="glyphicon" ng-class="{'glyphicon-asterisk obrigatorio': objSelecionado.rm.centro.codigo !== 'WMG2'}"></span>
+                    <input id="manutCadastroRmaLocalEntrega" type="text" maxlength="25" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm || objSelecionado.rm.centro.codigo == 'WMG2'" ng-model="objSelecionado.rm.localEntrega" class="form-control" ng-class="{'required': objSelecionado.rm.centro.codigo !== 'WMG2'}">
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_observacoes_rm"]}}</label>
+                    <textarea id="manutCadastroRmaObservacao" rows="3" maxlength="1000" ng-model="objSelecionado.rm.observacao" class="form-control" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_compra"]}} / {{ResourceBundle["label_reserva"]}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span><br>
+                    <nx-combo id="manutCadastroRmaRequisicaoTipo" ng-model="objSelecionado.rm.tipoRequisicao" ng-options="TipoRequisicao as TipoRequisicao.descricao for TipoRequisicao in listaTipoRequisicao track by TipoRequisicao.tipoRequisicaoId" required ng-show="!(bloquearCampos || possuiRoleLeituraTodasRm)"></nx-combo>
+                    <label ng-show="(bloquearCampos || possuiRoleLeituraTodasRm)">{{objSelecionado.rm.tipoRequisicao.descricao}}</label>
+                </div>
+
+                <!-- comentado porque essa função sera implementada no próximo passo do projeto 
+
+
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_tipo_cadastro"]}}</label>
+                    <div>
+                        <a class="btn btn-default btn-espaco" label="{{ResourceBundle['label_cadastrar_servico']}}" ng-click="cadastrarServico()" ng-show="painelCadastrarMaterial">
+                            <span>{{ResourceBundle['label_cadastrar_servico']}}</span>
+                        </a>
+                        <a class="btn btn-default btn-espaco" label="{{ResourceBundle['label_cadastrar_materiais']}}" ng-click="cadastrarMaterial()" ng-show="painelCadastrarServico">
+                            <span>{{ResourceBundle['label_cadastrar_materiais']}}</span>
+                        </a>
+                    </div>
+                </div> -->
+            </nx-float-group>
+        </form>
+        <div ng-show="!painelCadastrarServico">
+            <h3>{{ResourceBundle["label_materiais"]}}</h3>
+            <hr>
+            <form id="formManutencaoMateriais">
+                <div class="form-group">
+                    <label>{{ResourceBundle["label_material"]}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                    <nx-auto-complete class="autocomplete-grande" id="manutCadastroRmaMaterial" ng-model="rmMaterial.material" typeahead="Material as (Material.nomeCompleto || Material.nome) + '- {{ResourceBundle['label_codigo']}}: ' + Material.codigo + '- {{ResourceBundle['label_unidade_medida']}}: ' + Material.unidadeMedida.descricao for Material in getAutoCompleteMateriaisCadastroRma($viewValue)"
+                        ng-required="true" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" typeahead-on-select="detalharMaterial()">
+                    </nx-auto-complete>
+                    <br>
+
+                    <div ng-repeat="depositoMaterial in listaDetalheMaterial" class="form-inline">
+                        <div ng-if="depositoMaterial.nomeDeposito">{{depositoMaterial.nomeDeposito}}: {{depositoMaterial.quantidade ? depositoMaterial.quantidade:0}}</div>
+                    </div>
+
+                    <nx-btn-2 label="{{ResourceBundle['label_materiais_similares']}}" ng-click="listarMateriaisSimilares()" icone="glyphicon glyphicon-zoom-in" ng-disabled="!rmMaterial.material.materialId || possuiRoleLeituraTodasRm"></nx-btn-2>
+                </div>
+                <div class="nx-float-group">
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <div style="width: 100%;margin-bottom: 5px;">
+                                <label>{{ResourceBundle["label_quantidade"]}}</label>
+                                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                                <input id="manutCadastroRmaQuantidade" type="text" class="double" maxlength="25" ng-model="rmMaterial.quantidade" class="form-control">
+                            </div>
+
+                            <div style="width: 100%">
+                                <div class="form-group">
+                                    <label>{{ResourceBundle["label_deposito_para_entrega"]}}</label>
+                                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                                    <nx-combo id="manutCadastroRmaDepositoEntrega" ng-model="rmMaterial.deposito" ng-options="Deposito as Deposito.codigo + ' - ' + Deposito.nome + ' - ' + (Deposito.quantidade ? Deposito.quantidade:0) for Deposito in listaDepositos track by Deposito.depositoId"
+                                        ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" ng-change="detalharMaterial()"></nx-combo>
+                                </div>
+                            </div>
+
+                            <div style="width: 100%">
+                                <div class="form-group">
+                                    <label>{{ResourceBundle["label_valor_orcado"]}}</label>
+                                    <input id="manutCadastroValorOrcado" type="text" class="double" maxlength="25" ng-model="rmMaterial.valorOrcado" class="form-control">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <label>{{ResourceBundle["label_observacao_material"]}}</label>
+                                    <textarea id="manutCadastroObservacao" rows="3" maxlength="1000" ng-model="rmMaterial.nota" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nx-float-group cols="4">
+                    <div class="form-group" style="width: 100%;">
+                        <label for="RdbPepReplica">
+                            <input ng-model="objColetorCusto.valor"
+                                   ng-change="changeColetorCusto()"
+                                   type="radio" name="opcoes" id="RdbPepReplica"
+                                   value="{{OPERACAO_PEP}}"/> {{ResourceBundle["label_elemento_pep"]}}
+                        </label>
+                        </br>
+                        <label for="RdbDiagramaReplica">
+                            <input ng-model="objColetorCusto.valor"
+                                   ng-change="changeColetorCusto()"
+                                   type="radio" name="opcoes" id="RdbDiagramaReplica"
+                                   value="{{DIAGRAMA_DE_REDE}}"/> {{ResourceBundle["label_diagrama_de_rede"]}}
+                        </label>
+                        </br>
+                        <label for="RbdEstoqueReplica">
+                            <input ng-model="objColetorCusto.valor"
+                                   ng-change="changeColetorCusto()"
+                                   type="radio" name="opcoes" id="RbdEstoqueReplica"
+                                   value="{{ESTOQUE}}"/> {{ResourceBundle["label_estoque"]}}
+                        </label>
+                        </br>
+                        </br>
+                        <div ng-if="objColetorCusto.valor === OPERACAO_PEP" style="width: 32%;">
+                            <label style="width: 100%;">{{ResourceBundle["label_elemento_pep"]}}</label>
+                            <input style="width: 100%;" type="text" class="form-control required" id="coletorCustoReplica" maxlength="24" name="coletorCusto" ng-model="rmMaterial.coletorCustos" nx-limit-to="200" />
+                        </div>
+                        <div class="input-group" ng-if="objColetorCusto.valor === DIAGRAMA_DE_REDE" style="width: 32%;">
+                            <label>{{ResourceBundle["label_diagrama_de_rede"]}}</label>
+                            <input type="text" id="diagramaRede" class="form-control required" name="diagramaRede" maxlength="12" ng-model="rmMaterial.diagramaRede" placeholder='{{ResourceBundle["label_diagrama_de_rede"]}}'>
+                            <span class="input-group-btn"></span>
+                        </div>
+                        <div class="input-group" ng-if="objColetorCusto.valor === ESTOQUE" style="width: 32%;">
+                            <label style="width: 100%;">{{ResourceBundle["label_estoque"]}}</label>
+                            <input style="width: 100%;" class="form-control required" value=" " id="estoque" ng-model="rmMaterial.coletorOrdem" nx-limit-to="100" />
+                        </div>
+                    </div>
+                    </br>
+                    <div class="form-group">
+
+                    </div>
+                </nx-float-group>
+                <nx-float-group cols="3">
+                    <input class="btn btn-default" type="submit" ng-show="!indexTelaRmMaterial && indexTelaRmMaterial != 0" value="{{ResourceBundle['label_adicionar']}}" ng-click="salvarRmMaterial()" ng-disabled="possuiRoleLeituraTodasRm">
+
+                    <input class="btn btn-default" type="submit" ng-show="indexTelaRmMaterial != null && indexTelaRmMaterial >=0" value="{{ResourceBundle['label_atualizar']}}" ng-click="salvarRmMaterial()" ng-disabled="possuiRoleLeituraTodasRm">
+
+                    <input class="btn btn-default" type="submit" value="{{ResourceBundle['label_limpar']}}" ng-click="limparRmMaterial()" ng-disabled="possuiRoleLeituraTodasRm">
+                </nx-float-group>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-striped not-fix" not-fix="true">
+                    <thead class="fundo-cabecalho-tabela">
+                        <tr>
+                            <th></th>
+                            <th>{{ResourceBundle["label_item"]}}</th>
+                            <th>{{ResourceBundle["label_material"]}}</th>
+                            <th>{{ResourceBundle["label_descricao"]}}</th>
+                            <th>{{ResourceBundle["label_observacao_material"]}}</th>
+                            <th>{{ResourceBundle["label_quantidade"]}}</th>
+                            <th>{{ResourceBundle["label_opcao_requisicao"]}}</th>
+                            <th>{{ResourceBundle["label_unidade_medida"]}}</th>
+                            <th>{{ResourceBundle["label_local_entrega"]}}</th>
+                            <th>{{ResourceBundle["label_deposito_para_entrega"]}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="obj in objSelecionado.rmMateriais" title="{{obj.material.nomeCompleto}}">
+                            <td style="min-width: 145px;">
+                                <nx-btn-2 title="{{ResourceBundle['label_excluir']}}" icone="glyphicon glyphicon-remove" ng-click="removerRmMaterial($index)" ng-show="!bloquearCampos && !possuiRoleLeituraTodasRm"></nx-btn-2>
+                                <nx-btn-2 title="{{ResourceBundle['label_anexos']}}" ng-show="objSelecionado.rm.rmId" icone="glyphicon glyphicon-paperclip" ng-click="abrirModalAnexo('RM_MATERIAL', obj.rmMaterialId)"></nx-btn-2>
+                                <nx-btn-2 title="{{ResourceBundle['label_cancelar_material']}}" icone="glyphicon glyphicon-remove-circle" ng-click="cancelarMaterialConfirma(obj)" ng-if="!obj.dataCancelamento" ng-show="!bloqueiaBotaoCancelarMaterialStatus && obj.rm.rmId && !obj.dataCancelamento"
+                                    ng-disabled="bloqueiaBotaoCancelarRm || obj.numeroRequisicaoSap || possuiRoleLeituraTodasRm"></nx-btn-2>
+                                <nx-btn-2 title="{{ResourceBundle['label_editar_material']}}" icone="glyphicon glyphicon-edit" ng-click="editarMaterialConfirma(obj, $index)" ng-if="!bloquearCampos && !possuiRoleLeituraTodasRm" ng-show="!bloquearCampos && !possuiRoleLeituraTodasRm" ng-disabled="possuiRoleLeituraTodasRm || obj.material.isServico"></nx-btn-2>
+                            </td>
+                            <td style="min-width: 50px;">{{obj.ordem}}</td>
+                            <td style="min-width: 125px;">{{obj.material.codigo}}</td>
+                            <td style="min-width: 520px;">{{obj.material.nome}}</td>
+                            <td style="min-width: 520px;">{{obj.nota}}</td>
+                            <td style="min-width: 520px;">{{obj.quantidade}}</td>
+                            <td style="min-width: 200px;">
+                                <textarea id="manutCadastroRmaMaterialObservacao{{$index}}" maxlength="1000" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm" ng-model="obj.observacao" class="form-control"></textarea>
+                            </td>
+                            <td style="min-width: 100px;">{{obj.material.unidadeMedida.descricao}}</td>
+                            <td style="min-width: 100px;">
+                                <input id="manutCadastroRmaMaterialLocalEntrega{{$index}}" type="text" maxlength="25" ng-disabled="bloquearCampos || possuiRoleLeituraTodasRm || objSelecionado.rm.centro.codigo == 'WMG2'" ng-model="obj.localEntrega" class="form-control">
+                            </td>
+                            <td>{{obj.deposito.nome}}</td>
+                        </tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div ng-show="painelCadastrarServico">
+            <h3>{{ResourceBundle["label_servicos"]}}</h3>
+            <hr>
+            <form id="formServicos">
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_tipo_solicitacao"] }}</label>
+                    <div>
+                        <label>
+                            <input ng-model="servico.opcoesTpSolicitacao" 
+                                   type="radio" name="opcoesTpSolicitacao" id="tpSolicitacaoSpot"
+                                   value="spot"/> 
+                                {{ResourceBundle["label_solicitacao_servico_pontual"]}}
+                        </label>
+                        <label>
+                            <input ng-model="servico.opcoesTpSolicitacao" 
+                                   type="radio" name="opcoesTpSolicitacao" id="tpSolicitacaoContrato"
+                                   value="contrato"/> 
+                                {{ResourceBundle["label_solicitacao_servico_contrato"]}}
+                        </label>
+                        <label>
+                            <input ng-model="servico.opcoesTpSolicitacao" 
+                                   type="radio" name="opcoesTpSolicitacao" id="tpSolicitacaoSub"
+                                   value="sub"/> 
+                                {{ResourceBundle["label_solicitacao_contratacao_subempreitada"]}}
+                        </label>
+                    </div>
+                </div>
+                <nx-float-group cols="3">
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_numero_acompanhamento"] }}</label>
+                        <div>
+                            <input class="form-control" type="text" ng-model="servico.numeroAcompanhamento" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_data_emissao"] }}</label>
+                        <nx-date-field ng-model="servico.dataEmissao"></nx-date-field>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_data_necessidade"] }}</label>
+                        <nx-date-field ng-model="servico.dataNecessidade"></nx-date-field>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_elemento_pep"] }} / {{ ResourceBundle["label_ordem_servico"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.elementoPEP" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_codigo_sap"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.codigoSAP" /></div>
+                    </div>
+                </nx-float-group>
+                <div class="form-group">
+                    <label>1 - {{ ResourceBundle["label_escopo_servicos"] }}</label>
+                    <div><textarea class="form-control" ng-model="servico.escopoServico" rows="5" maxlength="1000"></textarea></div>
+                </div>
+                <nx-float-group cols="2">
+                    <div class="form-group">
+                        <label>2 - {{ ResourceBundle["label_abrangencia_escopo"] }}</label>
+                        <div><textarea class="form-control" ng-model="servico.abrangenciaEscopo" rows="5" maxlength="1000"></textarea></div>
+                    </div>
+                    <div class="form-group">
+                        <label>3 - {{ ResourceBundle["label_local_prestacao_servico"] }}</label>
+                        <div><textarea class="form-control" ng-model="servico.localPrestacaoServico" rows="5" maxlength="1000"></textarea></div>
+                    </div>
+                </nx-float-group>
+                <div class="form-group">
+                    <label>4 - {{ ResourceBundle["label_sugestao_fornecedores"] }}</label>
+                    <nx-float-group cols="4">
+                        <div class="form-group">
+                            <label>{{ ResourceBundle["label_fornecedor"] }}</label>
+                            <input class="form-control" type="text" ng-model="servico.cadFornecedor" />
+                        </div>
+                        <div class="form-group">
+                            <label>{{ ResourceBundle["label_telefone"] }}</label>
+                            <input class="form-control" type="text" ng-model="servico.cadTelefone" />
+                        </div>
+                        <div class="form-group">
+                            <label>{{ ResourceBundle["label_email"] }}</label>
+                            <input class="form-control" type="text" ng-model="servico.cadEmail" />
+                        </div>
+                        <div class="form-group">
+                            <label>{{ ResourceBundle["label_pessoa_contato"] }}</label>
+                            <input class="form-control" type="text" ng-model="servico.cadPessoaContato" />
+                        </div>
+                        <input class="btn btn-default" type="button" value="{{ResourceBundle['label_adicionar']}}" ng-click="addFornecedorServico()" />
+                    </nx-float-group>
+                </div>
+                <div>
+                    <table class="table table-bordered table-hover table-striped not-fix" not-fix="true">
+                        <thead class="fundo-cabecalho-tabela">
+                            <tr>
+                                <th>
+                                </th>
+                                <th>{{ ResourceBundle["label_fornecedor"] }}</th>
+                                <th>{{ ResourceBundle["label_telefone"] }}</th>
+                                <th>{{ ResourceBundle["label_email"] }}</th>
+                                <th>{{ ResourceBundle["label_pessoa_contato"] }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="fornecedor in servico.fornecedores">
+                                <td>
+                                    <nx-btn-2 title="{{ResourceBundle['label_excluir']}}" icone="glyphicon glyphicon-remove" ng-click="rmFornecedorServico($index)"></nx-btn-2>
+                                </td>
+                                <td>{{ fornecedor.fornecedor }}</td>
+                                <td>{{ fornecedor.telefone }}</td>
+                                <td>{{ fornecedor.email }}</td>
+                                <td>{{ fornecedor.pessoaContato }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <label>5 - {{ ResourceBundle["label_particularidades_servicos"] }}</label>
+                </div>
+                <nx-float-group cols="4">
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_atestacao_empresa"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.atestacaoEmpresa" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_curriculos_colaboradores"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.curriculosColaboradores" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_certificacoes_exigidas"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.certificadosExigidos" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_outros"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.particularidadesServicosOutros" /></div>
+                    </div>
+                </nx-float-group>
+                <div class="form-group">
+                    <label>6 - {{ ResourceBundle["label_responsabilidades"] }}</label>
+                </div>
+                <div class="form-group">
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="width:30%">
+                                <table class="table table-bordered table-hover table-striped not-fix" style="width:100%;" not-fix="true">
+                                    <thead class="fundo-cabecalho-tabela">
+                                        <tr>
+                                            <td>{{ ResourceBundle["label_ag"] }}</td>
+                                            <td>{{ ResourceBundle["label_fornecedor"] }}</td>
+                                            <td style="width:60%"></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.alojamento" name="alojamento" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.alojamento" name="alojamento" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_alojamento"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.alimentacao" name="alimentacao" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.alimentacao" name="alimentacao" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_alimentacao"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.transporte" name="transporte" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.transporte" name="transporte" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_transporte"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.cestaBasica" name="cesta_basica" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.cestaBasica" name="cesta_basica" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_cesta_basica"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.planoOdontologico" name="plano_odontologico" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.planoOdontologico" name="plano_odontologico" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_plano_odontologico"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.epis" name="epis" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.epis" name="epis" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_epis"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.epcs" name="epcs" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.epcs" name="epcs" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_epcs"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.despesasViagem" name="despesas_viagem" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.despesasViagem" name="despesas_viagem" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_despesas_viagem"] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td style="width:4%"></td>
+                            <td style="width:30%;">
+                                <table class="table table-bordered table-hover table-striped not-fix" style="width:100%;" not-fix="true">
+                                    <thead class="fundo-cabecalho-tabela">
+                                        <tr>
+                                            <td>{{ ResourceBundle["label_ag"] }}</td>
+                                            <td>{{ ResourceBundle["label_fornecedor"] }}</td>
+                                            <td style="width:60%"></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.escritorio" name="escritorio" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.escritorio" name="escritorio" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_escritorio"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.mobiliario" name="mobiliario" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.mobiliario" name="mobiliario" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_mobiliario"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.seguro" name="seguro" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.seguro" name="seguro" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_seguro"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.garantias" name="garantias" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.garantias" name="garantias" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_garantias"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.veiculos" name="veiculos" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.veiculos" name="veiculos" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_veiculos"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.impostos" name="impostos" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.impostos" name="impostos" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_impostos"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.responsabilidadesOutros1" name="responsabilidadesOutros1" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.responsabilidadesOutros1" name="responsabilidadesOutros1" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_outros"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.responsabilidadesOutros2" name="responsabilidadesOutros2" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.responsabilidadesOutros2" name="responsabilidadesOutros2" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_outros"] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td style="width:4%"></td>
+                            <td style="width:31%">
+                                <table class="table table-bordered table-hover table-striped not-fix" style="width:100%" not-fix="true">
+                                    <thead class="fundo-cabecalho-tabela">
+                                        <tr>
+                                            <td>{{ ResourceBundle["label_ag"] }}</td>
+                                            <td>{{ ResourceBundle["label_fornecedor"] }}</td>
+                                            <td style="width:60%"></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.banheiroQuimico" name="banheiro_quimico" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.banheiroQuimico" name="banheiro_quimico" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_banheiro_quimico"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.energia" name="energia" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.energia" name="energia" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_energia"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.agua" name="agua" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.agua" name="agua" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_agua"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.examesAdmissionais" name="exames_admissionais" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.examesAdmissionais" name="exames_admissionais" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_exames_admissionais"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.crachaUniforme" name="cracha_uniforme" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.crachaUniforme" name="cracha_uniforme" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_cracha_uniforme"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.guindaste" name="guindaste" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.guindaste" name="guindaste" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_guindaste"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.andaime" name="andaime" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.andaime" name="andaime" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_andaime"] }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="radio" ng-model="servico.pequenoPorte" name="pequeno_porte" value="AG" /></td>
+                                            <td><input type="radio" ng-model="servico.pequenoPorte" name="pequeno_porte" value="FORNECEDOR" /></td>
+                                            <td>{{ ResourceBundle["label_equipamentos_pequeno_porte"] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_observacoes"] }}</label>
+                    <textarea class="form-control" ng-model="servico.responsabilidadeObservacoes" rows="5" maxlength="1000"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>7 - {{ ResourceBundle["label_prazo_previsto_execucao_servico"] }}</label>
+                </div>
+                <nx-float-group cols="4">
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_data_inicio"] }}</label>
+                        <nx-date-field ng-model="servico.dataInicio"></nx-date-field>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_data_termino"] }}</label>
+                        <nx-date-field ng-model="servico.dataTermino"></nx-date-field>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_prazo_total"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.prazoTotal" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_marcos_parciais"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.marcosParciais" /></div>
+                    </div>
+                </nx-float-group>
+                <div class="form-group">
+                    <label>8 - {{ ResourceBundle["label_condicao_trabalho"] }}</label>
+                </div>
+                <nx-float-group cols="4">
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_jornada_trabalho"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.jornadaTrabalho" /></div>
+                    </div>
+                </nx-float-group>
+                <div class="form-group">
+                    <table class="table table-bordered table-hover table-striped not-fix" not-fix="true">
+                        <thead class="fundo-cabecalho-tabela">
+                            <tr>
+                                <td></td>
+                                <td>{{ ResourceBundle["label_sim"] }}</td>
+                                <td>{{ ResourceBundle["label_nao"] }}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ ResourceBundle["label_permitido_trabalho_noturno"] }}</td>
+                                <td><input type="radio" ng-model="servico.permitidoTrabalhoNoturno" name="permitidoTrabalhoNoturno" value="SIM" /></td>
+                                <td><input type="radio" ng-model="servico.permitidoTrabalhoNoturno" name="permitidoTrabalhoNoturno" value="NAO" /></td>
+                            </tr>
+                            <tr>
+                                <td>{{ ResourceBundle["label_permitido_trabalho_horario_extraordinario"] }}</td>
+                                <td><input type="radio" ng-model="servico.permitidoTrabalhoHorarioExtraordinario" name="permitidoTrabalhoHorarioExtraordinario" value="SIM" /></td>
+                                <td><input type="radio" ng-model="servico.permitidoTrabalhoHorarioExtraordinario" name="permitidoTrabalhoHorarioExtraordinario" value="NAO" /></td>
+                            </tr>
+                            <tr>
+                                <td>{{ ResourceBundle["label_permitido_trabalho_dias_especiais"] }}</td>
+                                <td><input type="radio" ng-model="servico.permitidoTrabalhoDiasEspeciais" name="permitidoTrabalhoDiasEspeciais" value="SIM" /></td>
+                                <td><input type="radio" ng-model="servico.permitidoTrabalhoDiasEspeciais" name="permitidoTrabalhoDiasEspeciais" value="NAO" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <label>{{ ResourceBundle["label_observacoes"] }}</label>
+                    <textarea class="form-control" ng-model="servico.condicaoTrabalhoObservacoes"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>9 - {{ ResourceBundle["label_requisitos_acesso_obra"] }}</label>
+                </div>
+                <nx-float-group cols="4">
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_exames_necessarios"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.examesNecessarios" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_prazo_integracao"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.prazoIntegracao" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_tempo_medio_espera_pessoal"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.tempoMedioEsperaPessoal" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ ResourceBundle["label_tempo_medio_espera_materiais"] }}</label>
+                        <div><input class="form-control" type="text" ng-model="servico.tempoMedioEsperaMateriais" /></div>
+                    </div>
+                </nx-float-group>
+                <div class="form-group">
+                    <label>10 - {{ ResourceBundle["label_anexos"] }}</label>
+                </div>
+                <div class="form-group" ng-show="objSelecionado.rm.rmId">
+                    <nx-float-group cols="5">
+                        <input class="btn btn-default" type="file" ng-model="anexoServicoSelecionado" id="anexoServico" value="{{ResourceBundle['label_novo_anexo']}}" onchange="angular.element(this).scope().adicionarAnexoServico()" multiple/>
+                    </nx-float-group>
+                </div>
+                <div class="form-group" ng-show="objSelecionado.rm.rmId">
+                    <table class="table table-bordered table-hover table-striped not-fix" not-fix="true">
+                        <thead class="fundo-cabecalho-tabela">
+                            <tr>
+                                <td>{{ ResourceBundle["label_anexos"] }}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="anexo in listaAnexosServico">
+                                <td>{{ anexo.nome }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</nx-manut>

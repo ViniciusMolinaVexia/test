@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html id="ng-app" ng-app="Rma" class="fundo-nx">
+<!--manifest="app.appcache"-->
+
+<head>
+    <title>RM</title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--[if lt IE 9]> <meta http-equiv="X-UA-Compatible" content="IE=8" /> <![endif]-->
+
+    <meta name="description" content="Rma" />
+    <meta name="keywords" content="Nextage" />
+    <meta name="author" content="NextAge" />
+    <meta charset="UTF-8" />
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="css/bootstrap.css?v=#version#" />
+    <link rel="stylesheet" href="../Nextage_Util_Html5/css/nxSkinDefault.css?v=#version#" />
+    <link rel="stylesheet" href="../Nextage_Util_Html5/css/style-campos.css?v=#version#" />
+    <link rel="stylesheet" href="../Nextage_Util_Html5/css/jquery-ui.css?v=#version#" />
+    <link rel="stylesheet" href="css/style.css?v=#version#" />
+    <link rel="stylesheet" href="../util/print.min.css?v=#version#" />
+
+    <!--abaixo estao desclaradas os inports do angular-->
+    <!-- jQuery -->
+    <script src="../Nextage_Util_Html5/lib/jquery.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/jquery-ui.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/jquery.price_format.2.0.min.js?v=#version#"></script>
+    <!-- angular -->
+    <script src="../Nextage_Util_Html5/lib/angular/angular.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/angular/angular-route.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/angular/angular-resource.min.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/angular/angular-ui.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/angular/angular-ui-bootstrap.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/angular/angular-sanitize.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/angular/angular-file-upload.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/angular-file.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/FileSaver.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/angular_multi_select/angular-multi-select.js?v=#version#"></script>
+    <link rel="stylesheet" href="../Nextage_Util_Html5/lib/angular_multi_select/angular-multi-select.css?v=#version#" />
+
+    <script src="../Nextage_Util_Html5/lib/jquery.mask.js?v=#version#"></script>
+
+
+    <!-- Compileds -->
+    <script src="../Nextage_Util_Html5/lib/bootstrap.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/tooltip.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/ui-utils.min.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/modal.js?v=#version#"></script>
+
+    <!-- GERADOR XLSX -->
+    <script src="../util/xlsx.full.min.js?v=#version#"></script>
+    <!-- PRINT HTML -->
+    <script src='../util/print.min.js'></script>
+
+    <!-- JQUERY MASK -->
+    <script src='../util/jquery.mask.min.js'></script>
+    <script src='../rm-online-ag/js/mask-apply.js'></script>
+
+    <!--app-->
+    <script src="js/app.js?v=#version#"></script>
+
+    <!-- Util -->
+    <script src="../Nextage_Util_Html5/js/util/Info.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/js/util/Loading.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/js/util/funcoes.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/js/util/localStorage.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/js/util/util.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/js/util/sessao.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/js/util/Criptografia.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/js/util/Componente.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/js/util/Constantes.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/js/util/paginacaoView.js"></script>
+
+    <!-- Html Export -->
+    <script src="../Nextage_Util_Html5/lib/jquery.wordexport.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/htmlExport/tableExportParaCamposDinamicos.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/htmlExport/jquery.base64.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/htmlExport/html2canvas.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/htmlExport/jspdf/libs/sprintf.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/htmlExport/jspdf/jspdf.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/htmlExport/jspdf/libs/base64.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/lib/autoNumeric.js?v=#version#"></script>
+
+    <!--diretivas-->
+    <script src="../Nextage_Util_Html5/componentes/diretivaAutoComplete.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/componentes/diretivasPaginas.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/componentes/diretivasInputs.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/componentes/diretivaCloseMenuOnClick.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/componentes/diretivaDatepickerData.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/componentes/diretivaSomenteNumero.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/componentes/diretivaLayout.js?v=#version#"></script>
+    <script src="../Nextage_Util_Html5/componentes/diretivasCampoObrigatorio.js?v=#version#"></script>
+
+    <!--local-->
+    <script src="../Nextage_Util_Html5/lib/angular/i18n/angular-locale_pt-br.js?v=#version#"></script>
+
+    <!--abaixo estao desclaradas os inports do sistema de alojamento-->
+    <!--sistema Rma-->
+    <!-- entidades -->
+    <script src="classes/entity/Usuario.js?v=#version#"></script>
+    <script src="classes/entity/CadastroUsuarioVo.js?v=#version#"></script>
+    <script src="classes/entity/RmMaterial.js?v=#version#"></script>
+    <script src="classes/entity/Deposito.js?v=#version#"></script>
+    <script src="classes/entity/Rm.js?v=#version#"></script>
+    <script src="classes/entity/HierarquiaComprador.js?v=#version#"></script>
+    <script src="classes/entity/LogInterface.js?v=#version#"></script>
+    <script src="classes/entity/VwMaterialDepositoSaidaReserva.js?v=#version#"></script>
+    <script src="classes/entity/Servico.js?v=#version#"></script>
+
+    <!--Util vo-->
+    <script src="../Nextage_Util_Html5/js/vo/PaginacaoVo.js?v=#version#"></script>
+
+    <!--vo-->
+    <script src="classes/vo/PainelEstoquistaVo.js?v=#version#"></script>
+
+    <!--LogInterface-->
+    <!-- filtro -->
+    <script src="classes/filtro/FiltroLogin.js?v=#version#"></script>
+    <script src="classes/filtro/AutoCompleteFiltro.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroRelatorioCustosDetalhado.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroRmAprovacao.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroCadastroRma.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroCadastroRmaServico.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroPainelEstoquista.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroMateriaisSemCodigoSap.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroPrevisaoPendenciaRecebimento.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroGestaoRma.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroAdministrador.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroComprador.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroRelatorioEstoqueInconsistencia.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroHierarquiaComprador.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroLogInterface.js?v=#version#"></script>
+    <script src="classes/filtro/FiltroPainelRequisicaoMateriais.js?v=#version#"></script>
+
+    <!--diretivas-->
+    <script src="view/home/diretivas/diretivaHome.js?v=#version#"></script>
+    <script src="view/cadastroRma/diretivas/diretivaCadastroRma.js?v=#version#"></script>
+    <script src="view/cadastroRmaServico/diretivas/diretivaCadastroRmaServico.js?v=#version#"></script>
+    <script src="view/rmAprovacao/diretivas/diretivaRmAprovacao.js?v=#version#"></script>
+    <script src="view/materiaisSemCodigoSap/diretivas/diretivaMateriaisSemCodigoSap.js?v=#version#"></script>
+    <script src="view/relatorios/relatorioDesempenhoFornecedor/diretivas/diretivaRelatorioDesempenhoFornecedor.js?v=#version#"></script>
+    <script src="view/relatorios/previsaoPendenciaRecebimento/diretivas/diretivaPrevisaoPendenciaRecebimento.js?v=#version#"></script>
+    <script src="view/relatorios/gestaoRma/diretivas/diretivaGestaoRma.js?v=#version#"></script>
+    <script src="view/administrador/diretivas/diretivaAdministrador.js?v=#version#"></script>
+    <script src="view/documentoResponsabilidade/diretivas/diretivaDocumentoResponsabilidade.js?v=#version#"></script>
+    <script src="view/relatorios/relatorioEstoqueInconsistencia/diretivas/diretivaRelatorioEstoqueInconsistencia.js?v=#version#"></script>
+    <script src="view/hierarquiaComprador/diretivas/diretivaHierarquiaComprador.js?v=#version#"></script>
+    <script src="view/usuario/diretivas/diretivaUsuario.js?v=#version#"></script>
+    <script src="view/logInterface/diretivas/diretivaLogInterface.js?v=#version#"></script>
+    <script src="view/comprador/diretivas/diretivaComprador.js?v=#version#"></script>
+    <script src="view/painelEstoquista/diretivas/diretivaPainelEstoquista.js?v=#version#"></script>
+    <script src="view/painelRequisicaoMateriais/diretivas/diretivaPainelRequisicaoMateriais.js?v=#version#"></script>
+
+    <!-- CONFIGURA FACTORY -->
+    <script src="controllers/factory.js?v=#version#"></script>
+
+    <!--controllers -->
+    <script src="controllers/PainelRequisicaoMateriaisController.js?v=#version#"></script>
+    <!--HM-->
+    <script src="controllers/PainelRequisicaoServicosController.js?v=#version#"></script>
+    <script src="controllers/PerfilController.js?v=#version#"></script>
+    <script src="controllers/LogInterfaceController.js?v=#version#"></script>
+    <script src="controllers/CadastroRmaController.js?v=#version#"></script>
+    <script src="controllers/CadastroRmaServicoController.js?v=#version#"></script>
+    <script src="controllers/ComboController.js?v=#version#"></script>
+    <script src="controllers/AutoCompleteController.js?v=#version#"></script>
+    <script src="controllers/ResourceBundleController.js?v=#version#"></script>
+    <script src="controllers/LoginController.js?v=#version#"></script>
+    <script src="controllers/RmAprovacaoController.js?v=#version#"></script>
+    <script src="controllers/PainelEstoquistaController.js?v=#version#"></script>
+    <script src="controllers/MateriaisSemCodigoSapController.js?v=#version#"></script>
+    <script src="controllers/relatorios/RelatorioDesempenhoFornecedorController.js?v=#version#"></script>
+    <script src="controllers/relatorios/PrevisaoPendenciaRecebimentoController.js?v=#version#"></script>
+    <script src="controllers/relatorios/GestaoRmaController.js?v=#version#"></script>
+    <script src="controllers/AdministradorController.js?v=#version#"></script>
+    <script src="controllers/CompradorController.js?v=#version#"></script>
+    <script src="controllers/DocumentoResponsabilidadePendController.js?v=#version#"></script>
+    <script src="controllers/DocumentoResponsabilidadeIndisRecController.js?v=#version#"></script>
+    <script src="controllers/relatorios/RelatorioEstoqueInconsistenciaController.js?v=#version#"></script>
+    <script src="controllers/HierarquiaCompradorController.js?v=#version#"></script>
+    <script src="controllers/UsuarioController.js?v=#version#"></script>
+    <script src="controllers/RastreabilidadeController.js?v=#version#"></script>
+    <script src="controllers/WorkflowController.js?v=#version#"></script>
+    <script src="controllers/CadastroObraController.js?v=#version#"></script>
+    <script src="js/controllers.js?v=#version#"></script>
+
+    <!-- Util -->
+    <script src="classes/util/Constantes.js?v=#version#"></script>
+    <script src="../util/Constantes.js?v=#version#"></script>
+    <script src="../util/UtilConfiguracao.js?v=#version#"></script>
+    <script src="../util/UtilUsuario.js?v=#version#"></script>
+
+    <link rel="icon" href="images/favicon.ico" />
+
+</head>
+
+<body class="ng-app fundo-nx" ng-controller="LoginController">
+
+
+    <div ng-if="autenticado">
+
+        <div class="usuario-logado">
+            <a class="btn btn-default ng-isolate-scope pull-left hidden-lg hidden-md hidden-sm" aba="home" close-menu-on-click label="">
+                <i class="glyphicon glyphicon-align-justify"></i>
+            </a>
+            <label class="nomeUsuario">{{usuarioLogado.nome}}&nbsp;&nbsp;&nbsp;</label>
+            <a class="btn btn-default ng-isolate-scope" ng-click="logout()" label="">
+                <span class="nx-fonte-btn ng-binding hidden-sm hidden-xs">{{ResourceBundle["label_sair"]}}</span>
+            </a>
+        </div>
+
+        <!-- ng view -->
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div ng-view></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid" ng-if="!autenticado" id="telaLogin">
+        <nx-alert></nx-alert>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4" id="tela-login">
+                <div class="panel panel-default panel-height-fixo">
+                    <div class="panel-body">
+                        <nx-loading></nx-loading>
+                        <div style="text-align:center;padding-top:25px;"><img src="images/RM.png" alt="" /></div>
+                        <form class="form-horizontal" role="form" id="formLoginRma">
+                            <div class="form-group">
+                                <label for="login" class="col-sm-2 control-label">{{ResourceBundle['label_login']}}</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control required" id="login" name="login" type="text" ng-model="filtroLogin.login" ng-init="setaLogin()">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="login" class="col-sm-2 control-label">{{ResourceBundle['label_senha']}}</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control required" id="senha" name="password" type="password" value="" ng-model="filtroLogin.senha">
+                                </div>
+                            </div>
+                            <div style="position:absolute;padding-left:110px;" ng-if="loading">
+                                <img src="images/loading.gif" style="height:60px;" />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input class="btn btn-default pull-right" type="submit" value="Entrar" ng-click="login()">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

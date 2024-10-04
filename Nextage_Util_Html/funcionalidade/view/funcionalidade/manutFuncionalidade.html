@@ -1,0 +1,32 @@
+<nx-manut>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs" id="abas{{idTela}}">
+                    <li>
+                        <a href="{{'#abaManut' + idTela}}" data-toggle="tab"
+                           ng-click="abas($event, 'abaManut' + idTela)">
+                            {{ResourceBundle["label_manutencao"]}}
+                        </a>
+                    </li>
+                    <li ng-repeat="aba in listaAbas" ng-show="objSelecionado[nomePropId] > 0">
+                        <a href="{{'#aba' + aba.codigo + idTela}}" data-toggle="tab"
+                           ng-click="abas($event, 'aba' + aba.codigo + idTela, aba)">
+                            {{(aba.titulo ? ResourceBundle[aba.titulo] : ResourceBundle["label_manutencao"])}}
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content manutDinamico">
+                    <div class="tab-pane col-md-12" id="{{'abaManut' + idTela}}">
+                        <conteudo-aba-funcionalidade></conteudo-aba-funcionalidade>
+                    </div>
+                    <div ng-repeat="aba in listaAbas" class="tab-pane col-md-12" id="{{'aba' + aba.codigo + idTela}}">
+                        <abas-filhas-funcionalidade></abas-filhas-funcionalidade>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+    </div>
+</nx-manut>

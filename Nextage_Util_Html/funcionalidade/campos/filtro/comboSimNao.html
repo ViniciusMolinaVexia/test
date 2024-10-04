@@ -1,0 +1,26 @@
+<div class="form-group"
+     ng-if="campoManut.campo.tipoCampo.nome === OBJECT && campoManut.campo.modoExibicao === COMBOSIMNAO">
+    <!--<span class="glyphicon glyphicon-asterisk obrigatorio" ng-if='campoManut.obrigatorio === "S"'></span>-->
+    <nx-combo id="{{campoManut.id}}"
+              ng-model="filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]"
+              ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+
+              ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+              ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+              ng-if='!campoManut.campo.propriedadeFiltro'>
+        <option value="" ng-if='filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]'></option>
+        <option value="S">{{ResourceBundle['label_sim']}}</option>
+        <option value="N">{{ResourceBundle['label_nao']}}</option>
+    </nx-combo>
+    <nx-combo id="{{campoManut.id}}"
+              ng-model="filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]"
+              ng-if='campoManut.campo.propriedadeFiltro'
+              ng-change="(campoManut.eventos.length > 0 ? [eventoNgChange(campoManut),setaPropFiltro(campoManut)] : setaPropFiltro(campoManut))"
+
+              ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+              ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)">
+        <option value="" ng-if='filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]'></option>
+        <option value="S">{{ResourceBundle['label_sim']}}</option>
+        <option value="N">{{ResourceBundle['label_nao']}}</option>
+    </nx-combo>
+</div> 

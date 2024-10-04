@@ -1,0 +1,33 @@
+<nx-manut ng-show="stateCancelarMp === 'STATE_CANCELAR_MP'" id="CancelarMp"
+          btns-padrao-disable="nx-btn-salvar;nx-btn-novo;nx-btn-excluir">
+    <div class="panel-heading">
+        <label>Cancelamento de Mp</label>
+        <div class="fundo_cinza col-md-12"></div>
+    </div>
+
+    <div class="panel-body">
+        <div id="formModalCancelamentoMp">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="observacao">
+                            {{ResourceBundle['label_observacao']}}
+                        </label>                     
+                        <textarea id="observacaoCancelarMp" class="form-control required-interno1" maxlength="200"
+                                  name="observacao" ng-model="objSelecionado.observacao" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <nx-btn2 label="{{ResourceBundle['label_cancelar_mp']}}"
+                             icone="glyphicon glyphicon-ok"
+                             ng-click="cancelarMpConfirma()"></nx-btn2>
+                    <nx-btn2 label="{{ResourceBundle['label_fechar']}}"
+                             icone="glyphicon glyphicon-eye-close"
+                             ng-click="fecharCancelamentoMp()"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </div>
+</nx-manut>

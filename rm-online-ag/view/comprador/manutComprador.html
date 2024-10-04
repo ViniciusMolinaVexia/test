@@ -1,0 +1,26 @@
+<nx-manut id="manutComprador">
+    <div class="panel-body" >
+        <form id="formManutencao">
+            <nx-float-group cols="4">
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_numero_rma']}}</label><br>
+                    <label>{{objSelecionado.rm.numeroRm}}</label>
+                </div>
+            </nx-float-group>
+        </form>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped not-fix">
+                <thead class="fundo-cabecalho-tabela">
+                    <tr>
+                        <th>{{ResourceBundle['label_item']}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="obj in objSelecionado.rmMateriais">
+                        <td>{{obj.ordem}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</nx-manut>

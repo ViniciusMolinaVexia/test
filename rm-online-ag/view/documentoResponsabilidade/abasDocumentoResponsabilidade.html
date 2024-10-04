@@ -1,0 +1,60 @@
+<nx-tela-padrao id="telaDocumençtoResponsabilidade">
+    <div class="panel-body row">
+        <div class="tabbable col-md-12">
+            <ul class="nav nav-tabs" id="tabTelaDocumentoResponsabilidade">
+                <li class="active">
+                    <a href="#abaPendentes" data-toggle="tab" ng-click="abas($event, 'abaPendentes')">
+                        {{ResourceBundle['label_pendentes']}}
+                    </a>
+                </li>
+                <li>
+                    <a ng-controller="DocumentoResponsabilidadeIndisRecController" href="#abaIndisponiveisRecusados"
+                       data-toggle="tab" ng-click="abas($event, 'abaIndisponiveisRecusados')">
+                        {{ResourceBundle['label_indis_recusado']}}
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div style="height:5px;"></div>
+                <div class="tab-pane active" id="abaPendentes">
+                    <nx-titulo titulo="{{ResourceBundle['label_pendentes']}}"></nx-titulo>
+                    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-novo">
+                        <nx-btn-2 ng-show="state === 'STATE_LISTA' && listaRmMaterialSelecionado.length > 0"
+                                  ng-click="gerarDocumento()" label="{{ResourceBundle['label_gerar_documento']}}"
+                                  title="{{ResourceBundle['label_gerar_documento']}}"
+                                  icone="glyphicon glyphicon-ok"></nx-btn-2>
+
+                    </nx-botoes-padrao>
+                    <filtro-pendentes></filtro-pendentes>
+                    <lista-pendentes></lista-pendentes>
+                    <nx-alert></nx-alert>
+                    <nx-loading></nx-loading>
+
+                    <nx-modal id="modalConfirmaEnviarAprovRm"
+                              mensagem="{{ResourceBundle['msg_deseja_enviar_aprovacao']}}"
+                              funcao="enviarParaAprovacao()"></nx-modal>
+                </div>
+                <div ng-controller="DocumentoResponsabilidadeIndisRecController" class="tab-pane"
+                     id="abaIndisponiveisRecusados">
+                    <nx-titulo titulo="{{ResourceBundle['label_indis_recusado']}}"></nx-titulo>
+                    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-novo">
+                        <nx-btn-2 ng-show="state === 'STATE_LISTA' && listaRmMaterialSelecionado.length > 0"
+                                  ng-click="gerarDocumento()" label="{{ResourceBundle['label_gerar_documento']}}"
+                                  title="{{ResourceBundle['label_gerar_documento']}}"
+                                  icone="glyphicon glyphicon-ok"></nx-btn-2>
+
+                    </nx-botoes-padrao>
+                    <filtro-indisponiveis-recusados></filtro-indisponiveis-recusados>
+                    <lista-indisponiveis-recusados></lista-indisponiveis-recusados>
+                    <nx-alert></nx-alert>
+                    <nx-loading></nx-loading>
+
+                    <nx-modal id="modalConfirmaEnviarAprovRm"
+                              mensagem="{{ResourceBundle['msg_deseja_enviar_aprovacao']}}"
+                              funcao="enviarParaAprovacao()"></nx-modal>
+                </div>
+            </div>
+        </div>
+        <nx-alert></nx-alert>
+        <nx-loading></nx-loading>
+</nx-tela-padrao>

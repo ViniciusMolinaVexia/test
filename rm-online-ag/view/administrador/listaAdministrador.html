@@ -1,0 +1,32 @@
+<nx-paginacao 
+    num-paginas="numPaginas" 
+    pagina-atual="paginaAtiva" 
+    listar-pagina="irParaPaginaEspecifica"
+    qtde-paginas="15" > 
+    <div class="col-md-12">
+        <div class="table-responsive"> 
+            <table class="table table-hover table-striped table-bordered lista"> 
+                <thead class="fundo-cabecalho-tabela"> 
+                    <tr> 
+                        <th>{{ResourceBundle['label_numero']}}</th>
+                        <th>{{ResourceBundle['label_funcionalidade']}}</th>
+                        <th>{{ResourceBundle['label_observacao']}}</th>  
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="obj in lista">
+                        <td ng-click="editar(obj)">{{obj.rmaConcatena.indexOf(';') === 0 ? obj.rmaConcatena.substring(1) : obj.rmaConcatena}}</td>
+                        <td ng-if="compra_mat === obj.funcionalidade" ng-click="editar(obj)">{{ResourceBundle['label_erro_envio_requisicao_compra']}}</td>
+                        <td ng-if="retirada_mat === obj.funcionalidade" ng-click="editar(obj)">{{ResourceBundle['label_erro_envio_retirada']}}</td>
+                        <td ng-if="sinc_equipamento === obj.funcionalidade" ng-click="editar(obj)">{{ResourceBundle['label_erro_envio_equipamento']}}</td>
+                        <td ng-if="sinc_transf_equipamento === obj.funcionalidade" ng-click="editar(obj)">{{ResourceBundle['label_erro_envio_transf_equip']}}</td>
+                        <td ng-if="sinc_gera_cautela === obj.funcionalidade" ng-click="editar(obj)">{{ResourceBundle['label_erro_envio_cautela']}}</td>
+                        <td ng-if="sinc_reserva === obj.funcionalidade" ng-click="editar(obj)">{{ResourceBundle['label_erro_envio_reserva']}}</td>
+
+                        <td ng-click="editar(obj)">{{obj.observacao}}</td>
+                    </tr>
+                </tbody> 
+            </table> 
+        </div> 
+    </div>
+</nx-paginacao>

@@ -1,0 +1,35 @@
+<nx-manut id="listaRmMaterialDepositoEntrada">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped not-fix">
+                <thead class="fundo-cabecalho-tabela">
+                    <tr>
+                        <th>{{ResourceBundle['label_numero_rm']}}</th>
+                        <th>{{ResourceBundle['label_material']}}</th>
+                        <th>{{ResourceBundle['label_descricao']}}</th>
+                        <th>{{ResourceBundle['label_quantidade']}}</th>
+                        <th>{{ResourceBundle['label_data_entrada']}}</th>
+
+                        <th>{{ResourceBundle['label_unidade_medida']}}</th>
+                        <th>{{ResourceBundle['label_observacao']}}</th>
+                        <th>{{ResourceBundle['label_deposito']}}</th>
+                        <th>{{ResourceBundle['label_tipo_material']}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr >
+                        <td>{{objSelecionado.rm.numeroRm}}</td>
+                        <td>{{objSelecionado.objeto.materialDeposito.material.codigo}}</td>
+                        <td>{{objSelecionado.objeto.materialDeposito.material.nome}}</td>
+                        <td>{{objSelecionado.objeto.quantidade}}</td>
+                        <td>{{objSelecionado.objeto.dataEntrada | date:ResourceBundle['format_date']}}</td>
+                        <td>{{objSelecionado.objeto.materialDeposito.material.unidadeMedida.descricao}}</td>
+                        <td>{{objSelecionado.objeto.observacao}}</td>
+                        <td>{{objSelecionado.objeto.materialDeposito.deposito.nome}}</td>
+                        <td>{{objSelecionado.objeto.materialDeposito.material.tipoMaterial.descricao}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</nx-manut>

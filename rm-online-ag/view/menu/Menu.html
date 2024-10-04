@@ -1,0 +1,265 @@
+<div class="container-fluid">
+    <div class="panel panel-default panel-menu-home panel-menu-home-rma">
+        <div class="panel-body">
+            <div class="row" ng-if="habilitaMenuRma">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div>
+                                <label class="nx-color-1" style="color:#002A5A">
+                                    {{ResourceBundle['label_solicitacao_eletronica_materiais']}}
+                                </label>
+                                <hr class="nx-hr-1" style="background-color:#002A5A">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:15px;padding-bottom:30px;">
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_CADASTRAR_CONSULTAR">
+                            <div class="menu-principal menu-principal-1" close-menu-on-click aba="cadastroRma">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-cadastrar.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_cadastro_consulta']}}</div>
+                            </div>
+                        </div>
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_APROVAR">
+                            <div class="menu-principal menu-principal-1" close-menu-on-click aba="rmAprovacao">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-aprovar.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_aprovar_requisicao']}}</div>
+                            </div>
+                        </div>
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_ADMINISTRAR_ENVIO_SAP">
+                            <div class="menu-principal menu-principal-1" close-menu-on-click aba="administrador">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-sap.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_administrar_envio_sap']}}</div>
+                            </div>
+                        </div>
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_RASTREABILIDADE">
+                            <div class="menu-principal menu-principal-1" close-menu-on-click aba="rastreabilidade">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-rastreabilidade.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_rastreabilidade']}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" ng-if="habilitaMenuSuprimentos || habilitaMenuRma">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="nx-color-1" style="color:#8DB8D0">
+                                Suprimentos
+                            </label>
+                            <hr class="nx-hr-1" style="background-color:#8DB8D0">
+                        </div>
+                    </div>
+                    <!--HM-->
+                    <div class="row" style="padding-top:15px;padding-bottom:30px;">
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_CADASTRAR_CONSULTAR">
+                            <div class="menu-principal menu-principal-2" close-menu-on-click aba="cadastroRmaServico">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-cadastrar.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_cadastro_consulta_servico']}}</div>
+                            </div>
+                        </div>
+                        <!--<div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_SUPRIMENTOS">
+                            <div class="menu-principal menu-principal-2" close-menu-on-click aba="suprimentos">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-sap.png')"></div>
+                                    </div>
+                                </div>
+                                <div style="text-transform:capitalize">{{ResourceBundle['label_suprimentos']}}</div>
+                            </div>
+                        </div>-->
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_ALMOXARIFE">
+                            <div class="menu-principal menu-principal-2" close-menu-on-click aba="painelRequisicaoMateriais">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/icon-painel-materiais.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_painel_requisicao_materais']}}</div>
+                            </div>
+                        </div>
+                        <!--HM
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_ALMOXARIFE">
+                            <div class="menu-principal menu-principal-2" close-menu-on-click aba="painelRequisicaoServicos">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/icon-painel-materiais.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_painel_requisicao_servicos']}}</div>
+                            </div>
+                        </div>-->
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_MATERIAIS_SEM_CODIGO_SAP">
+                            <div class="menu-principal menu-principal-2" close-menu-on-click aba="materiaisSemCodigoSap">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-materiais.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_materiais_sem_codigo_sap']}}</div>
+                            </div>
+                        </div>
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_DOCUMENTO_RESPONSABILIDADE">
+                            <div class="menu-principal menu-principal-2" close-menu-on-click aba="documentoResponsabilidade">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-documento.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_documento_responsabilidade']}}</div>
+                            </div>
+                        </div>
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_GESTAO_ESTOQUE">
+                            <div class="menu-principal menu-principal-2" close-menu-on-click aba="relatorioEstoqueInconsistencia">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-gestao-estoque.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_gestao_estoque']}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relatorios -->
+            <div class="row" ng-if="habilitaMenuRelatorios">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="nx-color-1" style="color:#90D1E4">
+                                {{ResourceBundle['label_relatorios']}}
+                            </label>
+                            <hr class="nx-hr-1" style="background-color:#90D1E4">
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:15px;padding-bottom:30px;">
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_RELATORIO_GESTAO">
+                            <div class="menu-principal menu-principal-3" close-menu-on-click aba="gestaoRma">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-gestao-rma.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_gestao_rma']}}</div>
+                            </div>
+                        </div>
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_RELATORIO_PREVISOES_PENDENCIA_RECEBIMENTO">
+                            <div class="menu-principal menu-principal-3" close-menu-on-click aba="previsaoPendenciaRecebimento">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-previsao.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_previsao_pendencia_recebimento']}}</div>
+                            </div>
+                        </div>
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_LOG_INTERFACE">
+                            <div class="menu-principal menu-principal-3" close-menu-on-click aba="logInterface">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-log.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_log_interface']}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Configuraçoes -->
+            <div class="row" ng-if="habilitaMenuConfiguracao">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="nx-color-1" style="color:#2CAFD1">
+                                {{ResourceBundle['label_configuracao']}}
+                            </label>
+                            <hr class="nx-hr-1" style="background-color:#2CAFD1">
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:15px;padding-bottom:30px;">
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_HIERARQUIA_COMPRADOR">
+                            <div class="menu-principal menu-principal-4" close-menu-on-click aba="hierarquiaComprador">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-hierarquia.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_hierarquia_comprador']}}</div>
+                            </div>
+                        </div>
+
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_USUARIOS">
+                            <div class="menu-principal menu-principal-4" close-menu-on-click aba="usuario">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/ico-usuario.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_usuario']}}</div>
+                            </div>
+                        </div>
+
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_PERFIL">
+                            <div class="menu-principal menu-principal-4" close-menu-on-click aba="usuarioPerfil">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/icon-perfil.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_perfil']}}</div>
+                            </div>
+                        </div>
+
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_WORKFLOW">
+                            <div class="menu-principal menu-principal-4" close-menu-on-click aba="workflow">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/icon-workflow.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ ResourceBundle['label_workflow'] }}</div>
+                            </div>
+                        </div>
+
+                        <div class=" col-sm-6 col-md-4 col-lg-2" ng-if="ROLE_CADASTRO_OBRA">
+                            <div class="menu-principal menu-principal-4" close-menu-on-click aba="cadastroObra">
+                                <div>
+                                    <div>
+                                        <div style="background-image: url('images/cadastro-obras.png')"></div>
+                                    </div>
+                                </div>
+                                <div>{{ResourceBundle['label_cadastro_obra']}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

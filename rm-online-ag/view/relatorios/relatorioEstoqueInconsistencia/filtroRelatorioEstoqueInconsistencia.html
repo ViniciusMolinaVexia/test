@@ -1,0 +1,38 @@
+<nx-filtro>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_deposito']}}</label>
+        <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+        <nx-combo id="filtroRelatorioEstoqueInconsistenciaDeposito" ng-model="filtro.deposito"
+                  ng-options="Deposito as Deposito.nome for Deposito in listaDepositos"
+        ></nx-combo>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_material']}}</label>
+        <nx-auto-complete
+                id="filtroRelatorioEstoqueInconsistenciaMaterial"
+                ng-model="filtro.material"
+                typeahead="Material as '{{ResourceBundle['label_codigo']}}: ' + Material.codigo + '<br>{{ResourceBundle['label_nome']}}: ' + Material.nome + '<br>{{ResourceBundle['label_unidade_medida']}}: ' + Material.unidadeMedida.descricao + '<br>{{ResourceBundle['label_ncm']}}: ' + Material.ncm + '<br>{{ResourceBundle['label_ultimo_valor_negociado']}}: ' + Material.ultimoValorNegociado for Material in getAutoCompleteMateriais($viewValue)">
+        </nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_material_chave']}}</label>
+        <input id="relatorioEstoqueInconsistenciaMaterialChave" class="form-control" ng-model="filtro.materialChave">
+    </div>
+    <!--<div class="form-group">
+        <label>{{ResourceBundle['label_sistema']}}</label>
+        <nx-combo class="form-control" id="filtroRelatorioEstoqueInconsistenciaSistema"
+                  name="filtroRelatorioEstoqueInconsistenciaSistema" ng-model="filtro.sistema">
+            <option value="{{SISTEMA_RMA_WEB}}">{{ResourceBundle['label_sistema_rma_web']}}</option>
+            <option value="{{SISTEMA_CP_WEB}}">{{ResourceBundle['label_sistema_cp_web']}}</option>
+            <option value="{{SISTEMA_SAP}}">{{ResourceBundle['label_sistema_sap']}}</option>
+        </nx-combo>
+    </div>-->
+    <div class="form-group">
+        <label>{{ResourceBundle['label_exibir_inconsistencias']}}</label>
+        <nx-combo class="form-control" id="filtroRelatorioEstoqueInconsistenciaInconsistencia"
+                  name="filtroRelatorioEstoqueInconsistenciaInconsistencia" ng-model="filtro.inconsistencia">
+            <option value="true">{{ResourceBundle['label_sim']}}</option>
+            <option value="false">{{ResourceBundle['label_nao']}}</option>
+        </nx-combo>
+    </div>
+</nx-filtro>

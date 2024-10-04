@@ -1,0 +1,65 @@
+<!--campos fixos do tipo Double ou float-->
+<div class="form-group" ng-if="campoManut.campo.tipoCampo.nome === DOUBLE || campoManut.campo.tipoCampo.nome === FLOAT">
+    <!--<span class="glyphicon glyphicon-asterisk obrigatorio" ng-if='campoManut.obrigatorio === "S"'></span>-->
+    <nx-numero id="{{campoManut.id}}"
+               ng-if='!campoManut.campo.propriedadeFiltro'
+               ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+               ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+               ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+               ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+               ng-model="filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]">
+    </nx-numero>
+    <nx-numero id="{{campoManut.id}}"
+               ng-if='campoManut.campo.propriedadeFiltro'
+               ng-model="filtroCampos2[propriedadeSisema][campoManut.campo.propriedadeEntity][campoManut.id]"
+               ng-change="(campoManut.eventos.length > 0 ? [eventoNgChange(campoManut),setaPropFiltro(campoManut)] : setaPropFiltro(campoManut))"
+               ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+               ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+               ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)">
+    </nx-numero>
+</div>
+<!--campos fixos do tipo integer-->
+<div class="form-group" ng-if="campoManut.campo.tipoCampo.nome === INTEGER">
+    <!--<span class="glyphicon glyphicon-asterisk obrigatorio" ng-if='campoManut.obrigatorio === "S"'></span>-->
+    <nx-numero id="{{campoManut.id}}"
+               ng-if='!campoManut.campo.propriedadeFiltro'
+               ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+               ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+               ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+               ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+               ng-model="filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]"
+               somente-numero="true"
+               max-char="15">
+    </nx-numero>
+    <nx-numero id="{{campoManut.id}}"
+               ng-if='campoManut.campo.propriedadeFiltro'
+               ng-change="(campoManut.eventos.length > 0 ? [eventoNgChange(campoManut),setaPropFiltro(campoManut)] : setaPropFiltro(campoManut))"
+               ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+               ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+               ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+               ng-model="filtroCampos2[propriedadeSisema][campoManut.campo.propriedadeEntity][campoManut.id]"
+               somente-numero="true"
+               max-char="15">
+    </nx-numero>
+</div>
+<!--campos fixos do tipo String-->
+<div class="form-group" ng-if="campoManut.campo.tipoCampo.nome === STRING">
+    <input type="text" class="form-control"
+           id="{{campoManut.id}}"
+           ng-if='!campoManut.campo.propriedadeFiltro'
+           name="{{campoManut.campo.propriedadeEntity}}"
+           ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+           ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+           ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+           ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+           ng-model="filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]"/>
+
+    <input type="text" class="form-control" id="{{campoManut.id}}"
+           ng-if='campoManut.campo.propriedadeFiltro'
+           name="{{campoManut.campo.propriedadeEntity}}"
+           ng-change="(campoManut.eventos.length > 0 ? [eventoNgChange(campoManut),setaPropFiltro(campoManut)] : setaPropFiltro(campoManut))"
+           ng-click="(campoManut.eventos.length > 0 ? eventoNgClick(campoManut) : null)"
+           ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+           ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+           ng-model="filtroCampos2[propriedadeSisema][campoManut.campo.propriedadeEntity][campoManut.id]"/>
+</div>

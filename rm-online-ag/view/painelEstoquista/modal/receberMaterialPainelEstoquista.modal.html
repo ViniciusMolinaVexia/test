@@ -1,0 +1,70 @@
+<nx-pop-up id="modalReceberMaterial" titulo="{{ResourceBundle['label_receber_material']}}">
+    <form id="formModalReceberMaterial" novalidate>
+        <nx-float-group cols="2">
+            <div class="form-group">
+                <label>{{ResourceBundle['label_numero_pedido_compra_sap']}}:</label><br>
+                <label>{{recebimentoMaterial.rmMaterial.numeroPedidoCompra}}</label>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle['label_a_receber']}}:</label><br>
+                <label>{{recebimentoMaterial.saldoItens | number : 3}}</label>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle['label_max_itens']}}:</label><br>
+                <label>{{recebimentoMaterial.maxItens}}</label>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle['label_material']}}:</label><br>
+                <label>{{objSelecionado.materialDepositoSaidaReserva.rmMaterial.material.nome}}</label>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle['label_quantidade']}}</label>
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                <nx-numero id="manutCadastroRmaQuantidade" m-dec="3" ng-model="recebimentoMaterial.quantidade" 
+                           allow-negative="false"
+                           ng-required="true" required></nx-numero>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle['label_deposito']}}</label>  
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>                    
+                <nx-combo id="manutReceberMaterialDeposito" name="manutAprovarMaterialDeposito" ng-model="recebimentoMaterial.deposito" 
+                          ng-options="Deposito as Deposito.nome for Deposito in listaDepositos track by Deposito.depositoId" 
+                          ng-class="{'campo-obrigatorio': formModalReceberMaterial.manutReceberMaterialDeposito.$invalid && !formModalReceberMaterial.manutReceberMaterialDeposito.$pristine }"
+                          required>
+                </nx-combo>
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle["label_nota_fiscal"]}}</label>
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                <input id="receberMaterialNotaFiscal" type="text" maxlength="25"
+                       ng-model="recebimentoMaterial.numeroNotaFiscal" class="form-control required">
+            </div>
+
+            <div class="form-group">
+                <label>{{ResourceBundle["label_data_nota_fiscal"]}}</label>
+                <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                <nx-date-field id="receberMaterialDataNotaFiscal" required
+                               ng-model="recebimentoMaterial.stDataEmissaoNf"
+                               ></nx-date-field>
+            </div>
+
+        </nx-float-group>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 data-dismiss="modal" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="abrirModalSalvarRecebimento()" icone="glyphicon glyphicon-ok" 
+                             ng-disabled="formModalReceberMaterial.$invalid"
+                             label="{{ResourceBundle['label_salvar_recebimento']}}"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </form>
+</nx-pop-up>

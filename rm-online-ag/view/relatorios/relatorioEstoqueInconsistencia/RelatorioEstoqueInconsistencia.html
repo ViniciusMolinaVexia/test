@@ -1,0 +1,171 @@
+<nx-tela-padrao id="telaRelatorioEstoqueInconsistencia">
+    <nx-titulo titulo="{{ResourceBundle['label_gestao_estoque']}}"></nx-titulo>
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-novo;nx-btn-excluir;">
+        <nx-btn-gerar-excel ng-click="gerarXls()"
+                            ng-show="(lista.length > 0)"></nx-btn-gerar-excel>
+        <nx-btn-2 ng-click="abrirModalNovoItemDeposito()"
+                  label="{{ResourceBundle['label_entrada_saida_material']}}"
+                  ng-if="ROLE_MOVIMENTACAO_ESTOQUE"></nx-btn-2>
+    </nx-botoes-padrao>
+    <filtro-relatorio-estoque-inconsistencia></filtro-relatorio-estoque-inconsistencia>
+    <lista-relatorio-estoque-inconsistencia></lista-relatorio-estoque-inconsistencia>
+    <nx-alert></nx-alert>
+    <nx-loading></nx-loading>
+
+    <!--MODAL ENTRADA/SAÍDA DE MATERIAL-->
+    <nx-pop-up id="modalAdicionarItemDeposito" titulo="{{ResourceBundle['label_entrada_saida_material']}}">
+        <form name="formEntradaSaidaItemDeposito" id="formEntradaSaidaItemDeposito">
+            <div class="row">
+                <div class="col-md-6">
+                    <label>{{ResourceBundle['label_operacao']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                    <div class="form-group">
+                        <label for="aprRdbEntrada">
+                            <input ng-model="objAdicionarEstoque.operacao"
+                                   type="radio" name="opcoes" id="aprRdbEntrada" ng-change="selecionaOperacao()"
+                                   value="{{ENTRADA}}"/> {{ResourceBundle["label_entrada"]}}
+                        </label>
+                        <label for="aprRdbSaida">
+                            <input ng-model="objAdicionarEstoque.operacao"
+                                   type="radio" name="opcoes" id="aprRdbSaida" ng-change="selecionaOperacao()"
+                                   value="{{SAIDA}}"/> {{ResourceBundle["label_saida"]}}
+                        </label>
+                    </div>
+
+                    <label>{{ResourceBundle['label_sistema']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                    <div class="form-group">
+                        <input type="checkbox" ng-model="objAdicionarEstoque.checkRma"
+                               title="{{ResourceBundle['label_sistema_rma_web']}}"
+                               class="required"
+                               name="modalAdicionarItemDepositoCheckRma" id="modalAdicionarItemDepositoCheckRma">
+                        <label for="modalAdicionarItemDepositoCheckRma" class="modalAdicionarItemDepositoLabel">{{ResourceBundle['label_sistema_rma_web']}}</label>
+                        <input type="checkbox" ng-model="objAdicionarEstoque.checkCp"
+                               class="required" ng-change="selecionaCheckCp()"
+                               title="{{ResourceBundle['label_sistema_cp_web']}}"
+                               name="modalAdicionarItemDepositoCheckCp" id="modalAdicionarItemDepositoCheckCp">
+                        <label for="modalAdicionarItemDepositoCheckCp" class="modalAdicionarItemDepositoLabel">{{ResourceBundle['label_sistema_cp_web']}}</label>
+                        <div ng-if="objAdicionarEstoque.checkCp && !objAdicionarEstoque.checkRma">
+                            <label><font color="red">{{ResourceBundle['label_envia_somente_cp']}}</font></label>
+                        </div>
+                        <div ng-if="!objAdicionarEstoque.checkCp && objAdicionarEstoque.checkRma">
+                            <label><font color="red">{{ResourceBundle['label_envia_somente_rma']}}</font></label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_deposito']}}</label>
+                        <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                        <nx-combo id="modalAdicionarItemDepositoDeposito" ng-model="objAdicionarEstoque.deposito"
+                                  ng-change="changeDeposito()"
+                                  ng-disabled="objAdicionarEstoque.patrimoniado"
+                                  ng-options="Deposito as Deposito.nome for Deposito in listaDepositos track by Deposito.depositoId"
+                        ></nx-combo>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_material']}}</label>
+                        <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                        <nx-auto-complete
+                                id="modalAdicionarItemDepositoMaterial"
+                                ng-model="objAdicionarEstoque.material"
+                                typeahead-on-select="changeMaterial()"
+                                ng-disabled="(objAdicionarEstoque.checkCp && objAdicionarEstoque.operacao == 'Saida' && objAdicionarEstoque.material && objAdicionarEstoque.prefixoEquipamento != null || objAdicionarEstoque.patrimoniado)"
+                                typeahead="Material as '{{ResourceBundle['label_codigo']}}: ' + Material.codigo + '<br>{{ResourceBundle['label_nome']}}: ' + Material.nome + '<br>{{ResourceBundle['label_unidade_medida']}}: ' + Material.unidadeMedida.descricao + '<br>{{ResourceBundle['label_ncm']}}: ' + Material.ncm + '<br>{{ResourceBundle['label_ultimo_valor_negociado']}}: ' + Material.ultimoValorNegociado for Material in getAutoCompleteMateriais($viewValue)">
+                        </nx-auto-complete>
+                    </div>
+
+                    <input type="checkbox" ng-model="objAdicionarEstoque.patrimoniado"
+                           ng-if="(objAdicionarEstoque.checkCp && objAdicionarEstoque.operacao == 'Saida' && objAdicionarEstoque.material && objAdicionarEstoque.material.patrimoniado == 'S')"
+                           title="{{ResourceBundle['label_equipamento_saida_patrimonio']}}"
+                           class="required"
+                           ng-change="selecionaPatrimoniado()"
+                           name="modalAdicionarItemDepositoCheckPatrimoniado"
+                           id="modalAdicionarItemDepositoCheckPatrimoniado">
+                    <label for="modalAdicionarItemDepositoCheckPatrimoniado"
+                           ng-if="(objAdicionarEstoque.checkCp && objAdicionarEstoque.operacao == 'Saida' && objAdicionarEstoque.material.patrimoniado == 'S')"
+                           class="modalAdicionarItemDepositoCheckPatrimoniado">{{ResourceBundle['label_equipamento_saida_patrimonio']}}</label>
+                    <div class="form-group">
+                        <div ng-if="objAdicionarEstoque.patrimoniado">
+                            <label>{{ResourceBundle["label_informe_numero_patrimonio"]}}:</label>
+                            <nx-auto-complete id="modalAdicionarItemDepositoPrefixoEquipamento"
+                                              ng-model="objAdicionarEstoque.patrimonio"
+                                              typeahead-on-select="changePatrimonioSelecionado()"
+                                              typeahead="PrefixoEquipamento as '{{ResourceBundle['label_num_patrimonio']}}: ' + PrefixoEquipamento for PrefixoEquipamento in getAutoCompletePrefixoEquipamento($viewValue)">
+
+                            </nx-auto-complete>
+                            <br></br>
+                            <div ng-if="objAdicionarEstoque.prefixoEquipamento">
+                                <label>{{ResourceBundle['label_patrimonio_selecionado']}}: <span
+                                        ng-click="excluirPatrimonioSelecionado()"
+                                        class="glyphicon glyphicon-remove"></span> <b>{{objAdicionarEstoque.prefixoEquipamento}}</b></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_quantidade']}}</label>
+                        <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+                        <nx-numero id="modalAdicionarItemDepositoQuantidade" m-dec="3"
+                                   ng-disabled="objAdicionarEstoque.patrimoniado"
+                                   ng-model="objAdicionarEstoque.quantidade"></nx-numero>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_justificativa']}}</label>
+                        <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+            <textarea id="modalAdicionarItemDepositoJustificativa" rows="3" maxlength="255"
+                      ng-model="objAdicionarEstoque.justificativaAdicionarEstoque"
+                      class="form-control"></textarea>
+                    </div>
+
+                    <div class="form-group"
+                         ng-if="objAdicionarEstoque.quantidadeEstoqueRmaSelecionado != null && objAdicionarEstoque.quantidadeEstoqueCpSelecionado != null">
+                        <label><b>{{ResourceBundle['label_quantidade_atual']}}</b></label>
+                        <div style="height:3px;"></div>
+
+                        <label>{{ResourceBundle['label_quantidade_rma']}}:</label>
+                        <label>{{objAdicionarEstoque.quantidadeEstoqueRmaSelecionado | number : 3}}</label><br>
+
+                        <div ng-if="(objAdicionarEstoque.material && objAdicionarEstoque.material.patrimoniado == 'N' && objAdicionarEstoque.material.tipoMaterial.codigo == 'C')">
+                            <label>{{ResourceBundle['label_quantidade_cp']}}:</label>
+                            <label>{{objAdicionarEstoque.quantidadeEstoqueCpSelecionado | number : 3}}</label><br>
+                        </div>
+
+                        <div ng-if="(objAdicionarEstoque.material && objAdicionarEstoque.material.patrimoniado == 'S' && objAdicionarEstoque.material.tipoMaterial.codigo == 'C')">
+                            <label>{{ResourceBundle['label_quantidade_cp_nao_patrimoniado']}}:</label>
+                            <label>{{objAdicionarEstoque.quantidadeEstoqueCpSelecionado | number : 3}}</label><br>
+                        </div>
+
+                        <div ng-if="(objAdicionarEstoque.material && objAdicionarEstoque.material.patrimoniado == 'S' && objAdicionarEstoque.material.tipoMaterial.codigo == 'C')">
+                            <label>{{ResourceBundle['label_quantidade_cp_patrimoniado']}}:</label>
+                            <label>{{objAdicionarEstoque.quantidadeEstoqueCpPatrimoniadoSelecionado | number :
+                                3}}</label><br>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <hr>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group pull-right">
+                        <nx-btn2 ng-click="fecharModalNovoItemDeposito()" icone="glyphicon glyphicon-arrow-left"
+                                 label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                        <nx-btn2 ng-click="salvarAdicionarItemDeposito()" icone="glyphicon glyphicon-ok"
+                                 label="{{ResourceBundle['label_salvar']}}"
+                                 ng-disabled="(!objAdicionarEstoque.justificativaAdicionarEstoque ||
+                                         !objAdicionarEstoque.operacao || !objAdicionarEstoque.quantidade ||
+                                         !objAdicionarEstoque.deposito || !objAdicionarEstoque.material) || (objAdicionarEstoque.checkCp && objAdicionarEstoque.operacao == 'Saida' && objAdicionarEstoque.patrimoniado && objAdicionarEstoque.prefixoEquipamento == null)"
+                        ></nx-btn2>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </nx-pop-up>
+
+</nx-tela-padrao>

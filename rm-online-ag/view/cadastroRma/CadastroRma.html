@@ -1,0 +1,904 @@
+<nx-tela-padrao id="telaCadastroRma"> 
+    <nx-titulo titulo="{{ResourceBundle['label_cadastro_consulta']}}"></nx-titulo>
+    <nx-botoes-padrao btns-padrao-disable="nx-btn-salvar;nx-btn-filtro;nx-btn-novo;nx-btn-listar;nx-btn-limpar">
+    	<a class="btn btn-azul btn-espaco" 
+    	   label="{{ResourceBundle['label_consulta']}}" 
+    	   ng-click="abrirFiltro()">
+        	<span>{{ResourceBundle['label_consulta']}}</span>
+        </a>
+        
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_buscar']}}" 
+           ng-click="listar()"
+           ng-show="state === 'STATE_FILTRO'" is-btn-listar="true">
+        	<span>{{ResourceBundle['label_buscar']}}</span>
+        </a>
+        
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_limpar']}}" 
+           ng-click="limparFiltro()"
+           ng-show="state === 'STATE_FILTRO'">
+        	<span>{{ResourceBundle['label_limpar']}}</span>
+        </a>
+        
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_novo']}}" 
+           ng-click="abrirNovo()"
+           ng-show="state === 'STATE_MANUT' || state === 'STATE_LISTA'">
+        	<span>{{ResourceBundle['label_novo']}}</span>
+        </a>
+        
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_salvar']}}" 
+           ng-click="validarEstoqueMateriais()"
+           ng-show="state === 'STATE_MANUT' && !bloquearCampos && !possuiRoleLeituraTodasRm">
+        	<span>{{ResourceBundle['label_salvar']}}</span>
+        </a>
+        
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_enviar_para_aprovacao']}}" 
+           ng-click="escolherAprovador(objSelecionado.rm.rmId)"
+           ng-if="objSelecionado.rm.rmId && (!objSelecionado.rm.dataEnvioAprovacao || objSelecionado.rm.dataReprovacao) && !objSelecionado.rm.dataCancelamento && !possuiRoleLeituraTodasRm && objSelecionado.rm.tipoRequisicao.codigo != 'TIP_RET_ESTOQUISTA'"
+           ng-show="state === 'STATE_MANUT'">
+        	<span>{{ResourceBundle['label_enviar_para_aprovacao']}}</span>
+        </a>
+        
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_cancelar_rm']}}" 
+           ng-click="cancelarRequisicaoConfirma(objSelecionado.rm)"
+           ng-if="objSelecionado.rm.rmId && !objSelecionado.rm.dataReprovacao && !objSelecionado.rm.dataCancelamento && !possuiRoleLeituraTodasRm"
+           ng-show="state === 'STATE_MANUT' && !bloqueiaBotaoCancelarRm && !bloqueiaBotaoCancelarRmStatus">
+        	<span>{{ResourceBundle['label_cancelar_rm']}}</span>
+        </a>
+        
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_direcional_aprovacao_gerencia']}}" 
+           ng-click="abrirPopUpRedigirJustificativa(objSelecionado.rm)"
+           ng-if="objSelecionado.rm.dataReprovacao && objSelecionado.rm.reprovadoPor === 'GC'"
+           ng-show="state === 'STATE_MANUT'">
+        	<span>{{ResourceBundle['label_direcional_aprovacao_gerencia']}}</span>
+        </a>
+        
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_copiar_requisicao']}}" 
+           ng-click="copiarRequisicao(objSelecionado.rm)"
+           ng-show="state === 'STATE_MANUT'"
+           ng-if="objSelecionado.rm.rmId">
+        	<span>{{ResourceBundle['label_copiar_requisicao']}}</span>
+        </a>
+        
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_atribuir_comprador']}}" 
+           ng-click="atribuirComprador()"
+           ng-show="listaAtribuirCompradores.length > 0 && ATRIBUIR_COMPRADOR && state !== 'STATE_MANUT'">
+        	<span>{{ResourceBundle['label_atribuir_comprador']}}</span>
+        </a>
+        
+        <a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_anexos']}}" 
+           ng-click="abrirModalAnexo('RM', objSelecionado.rm.rmId)"
+           ng-show="state === 'STATE_MANUT'"
+           ng-if="objSelecionado.rm.rmId">
+        	<span>{{ResourceBundle['label_anexos']}}</span>
+        </a>
+    
+    	<a class="btn btn-default btn-espaco" 
+           label="{{ResourceBundle['label_gerar_excel']}}" 
+           ng-click="gerarXls()"
+           ng-show="(listaRma.length > 0)">
+        	<span>{{ResourceBundle['label_gerar_excel']}}</span>
+        </a>
+    
+    </nx-botoes-padrao> 
+    <filtro-cadastro-rma></filtro-cadastro-rma> 
+    <manut-cadastro-rma btns-padrao-disable="nx-btn-salvar;nx-btn-novo"></manut-cadastro-rma> 
+    <detalhe-status-rma></detalhe-status-rma>
+    <lista-cadastro-rma></lista-cadastro-rma>
+    <nx-alert></nx-alert> 
+    <nx-loading></nx-loading>
+
+    <div class="modal fade" data-backdrop="static" id="modalConfirmaRemocaoRmMateriais" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog  modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title modalConfirmaRemocaoRmMateriais" id="H2">{{ResourceBundle["msg_alterar_tipo_requisicao"]}}</h3>
+                </div>
+                <div class="modal-body">
+                    <form name="formConfirma" role="form" id="formConfirma">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                    <a ng-click="excluirListaRmMateriais()" class="btn btn-success botaoFullCol" data-dismiss="modal"><span class="glyphicon glyphicon-ok">
+                                        </span> {{ResourceBundle["label_sim"]}}</a>
+                                </div>
+                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                    <a ng-click="setarComboRequisicao()" type="button" class="btn btn-danger botaoFullCol" data-dismiss="modal"><span class="glyphicon glyphicon-remove">
+                                        </span> {{ResourceBundle["label_nao"]}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalConfirmaTipoRetiradaEstoquista" data-backdrop="static" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog  modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3 class="modal-title modalConfirmaTipoRetiradaEstoquista" id="H2">
+                        {{ResourceBundle["msg_salvar_req_tip_estoquista"]}}
+                        <br><br>
+                        {{ResourceBundle["msg_deseja_continuar"]}}
+                        {{ResourceBundle["msg_processo_não_pode_ser_desf"]}}
+                    </h3>
+                </div>
+                <div class="modal-body">
+                    <form name="formConfirma" role="form" id="formConfirma">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                    <a ng-click="salvarRetiradaEstoquista()" class="btn btn-success botaoFullCol"
+                                       data-dismiss="modal"><span class="glyphicon glyphicon-ok">
+                                        </span> {{ResourceBundle["label_sim"]}}</a>
+                                </div>
+                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                    <a type="button" class="btn btn-danger botaoFullCol" data-dismiss="modal"><span
+                                            class="glyphicon glyphicon-remove">
+                                        </span> {{ResourceBundle["label_nao"]}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nx-modal id="modalConfirmaAprovarRm" 
+              mensagem="{{ResourceBundle['label_deseja_aprovar']}}" 
+              funcao="aprovar()"></nx-modal>
+
+    <!-- MODAL ALTERAR COLETOR -->
+    <nx-pop-up id="modalAlterarColetorCadastroRma" titulo="{{ResourceBundle['label_alterar_coletor_custos']}}">
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_material']}}:</label>
+            <label>{{materialAux}}</label><br>
+
+            <label>{{ResourceBundle['label_coletor_atual']}}:</label>
+            <label>{{objAlterarColetorAuxCadastroRma.coletorCustos ?
+                objAlterarColetorAuxCadastroRma.coletorCustos :
+                objAlterarColetorAuxCadastroRma.diagramaRede|| objAlterarColetorAuxCadastroRma.operacao ?
+                objAlterarColetorAuxCadastroRma.diagramaRede + " - " + objAlterarColetorAuxCadastroRma.operacao :
+                ''}}</label>
+        </div>
+
+        <span class="additional-info-wrap">
+            <div class="btn-group">
+                <label for="compRdbPep">
+                    <input ng-model="coletorCustosCadastroRma.aux"
+                           required
+                           ng-change="alteraColetorCusto(OPERACAO_PEP)"
+                           type="radio" name="opcoes" id="compRdbPep"
+                           value="{{OPERACAO_PEP}}"/> {{ResourceBundle["label_elemento_pep"]}}
+                </label>
+                <label for="compRdbDiagrama">
+                    <input ng-model="coletorCustosCadastroRma.aux"
+                           ng-change="alteraColetorCusto(DIAGRAMA_DE_REDE)"
+                           type="radio" name="opcoes" id="compRdbDiagrama"
+                           value="{{DIAGRAMA_DE_REDE}}"/> {{ResourceBundle["label_diagrama_de_rede"]}}
+                </label>
+                <label for="compRdbEstoque">
+                    <input ng-model="coletorCustosCadastroRma.aux"
+                           ng-change="alteraColetorCusto(ORDEM)"
+                           type="radio" name="opcoes" id="compRdbEstoque"
+                           value="{{ORDEM}}"/> {{ResourceBundle["label_estoque"]}}
+                </label>
+            </div>
+
+            <div id="compDivColetorCustoCadastroRma" ng-show="true">
+                <input type="text" class="form-control" id="coletorCusto" required
+                       placeholder='{{ResourceBundle["label_coletor_custos"]}}' maxlength="24"
+                       name="coletorCusto" ng-model="objAlterarColetorCadastroRma.coletorCustos"
+                       nx-limit-to="200"/>
+            </div>
+            <div id="compDivDiagramaCadastroRma" class="input-group">
+                <input type="text" id="diagramaRede"
+                       name="diagramaRede" maxlength="12"
+                       ng-model="objAlterarColetorCadastroRma.diagramaRede"
+                       nx-limit-to="200" required
+                       placeholder='{{ResourceBundle["label_diagrama_de_rede"]}}'
+                       class="form-control input-sm">
+                <span class="input-group-btn" style="width:0px;"></span>
+                <input type="text"
+                       class="form-control"
+                       id="operacao" required
+                       name="operacao"
+                       max="4" maxlength="4"
+                       ng-model="objAlterarColetorCadastroRma.operacao"
+                       placeholder='{{ResourceBundle["label_operacao"]}}'
+                       nx-limit-to="200" />
+            </div>
+            <div id="compDivOrdemCadastroRma">
+                <input type="text" class="form-control" id="coletorOrdem" required
+                       placeholder='{{ResourceBundle["label_estoque"]}}' maxlength="24"
+                       name="coletorOrdem" ng-model="objAlterarColetorCadastroRma.coletorOrdem"
+                       nx-limit-to="200"/>
+            </div>
+        </span>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 data-dismiss="modal" icone="glyphicon glyphicon-arrow-left"
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="salvarAlterarColetor()" icone="glyphicon glyphicon-share-alt"
+                             label="{{ResourceBundle['label_salvar']}}">
+                    </nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL DETALHE STATUS-->
+    <nx-pop-up id="modalDetalheStatusRma" titulo="{{ResourceBundle['label_detalhe_status']}}{{mensagemDataPrevistaChegada}}">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="divProgressBar"  style="overflow:auto">
+                    <div id="progressbarDiv" class="progressbar">
+                        <div style="width:100px;" ng-repeat-start="status in listaStatus">
+                            <p class="title done">{{status.status.nome}} <br ng-if="status.status.codigo === 'Rep'"></p>
+                            <div ng-class="$last && !status.dataHoraStatus ? status.status.codigo === 'Rep' ? 'circle cancel' : 'circle active' : status.status.codigo === 'Rep' ? 'circle cancel' : 'circle done'">
+                                <span class="label">{{$index + 1}}</span>
+                            </div>
+                            <p>{{ResourceBundle["label_data"]}}: {{status.dataHoraStatus|date:"dd/MM/yyyy H:mm"}}</p>
+                        </div>
+                        <span class="bar done" ng-show="!$last" ng-repeat-end></span>                        
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div ng-repeat="status in listaStatus" ng-if="status.observacao">
+                        <p ng-if="status.status.codigo === 'Rep'">{{formataStatusReprovadoPor(status)}}{{nomeReprovador}}</p>
+                        <p ng-if="status.status.codigo === 'Rep'">{{ResourceBundle["label_observacao_reprovacao"]}}: {{status.observacao}}<br></p>
+                        <p ng-if="status.status.codigo === 'RetParc' || status.status.codigo === 'Fim'">{{ResourceBundle["label_status"]}} {{$index + 1}} - {{status.observacao}}</p>
+                        <p ng-if="status.status.codigo === 'RecParc'">{{ResourceBundle["label_status"]}} {{$index + 1}} - {{status.observacao}}</p>
+                        <p ng-if="status.status.codigo === 'MatEstornoRec'">{{ResourceBundle["label_status"]}} {{$index
+                            + 1}} - {{status.observacao}}</p>
+                        <p ng-if="status.status.codigo === 'Rec'">{{ResourceBundle["label_status"]}} {{$index + 1}} - {{status.observacao}}</p>
+                        <p ng-if="status.status.codigo === 'RecEst'">{{ResourceBundle["label_status"]}} {{$index + 1}} - {{status.observacao}}</p>
+                        <p ng-if="status.status.codigo === 'MatAlt'">{{ResourceBundle["label_status"]}} {{$index + 1}} - {{status.observacao}}</p>
+                        <!--<p ng-if="status.status.codigo === 'Can'">{{ResourceBundle["label_status"]}} {{$index + 1}} - {{status.observacao}}</p>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL MATERIAIS SIMILARES-->
+    <nx-pop-up id="modalMateriaisSimilares" titulo="{{ResourceBundle['label_materiais_similares']}}">
+        <nx-btn2 ng-click="alterarMaterialSimilar()" icone="glyphicon glyphicon-transfer" 
+                 label="{{ResourceBundle['label_alterar_material']}}"
+                 ng-disabled="!materialSimilarSelecionado"></nx-btn2>
+        <nx-paginacao 
+            num-paginas="numPaginasMateriaisSimilares"
+            pagina-atual="paginaAtivaMateriaisSimilares"
+            listar-pagina="irParaPaginaEspecificaMateriaisSimilares"
+            qtde-paginas="15">
+            <div class="col-md-12 listaObjetos">
+                <div class="table-responsive" id="listaMateriais">
+                    <table class="table table-hover table-striped table-bordered lista">
+                        <thead>
+                            <tr>
+                                <th>{{ResourceBundle["label_codigo"]}}</th>
+                                <th>{{ResourceBundle["label_nome"]}}</th>
+                                <th ng-repeat="deposito in listaMateriaisSimilaresCabecalho">{{deposito.nome}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr not-fix-height ng-repeat="material in listaMateriaisSimilares" ng-click="selecionarMaterialSimilar(material.material)">
+                                <td ng-class="{'read':material.material.materialId === materialSimilarSelecionado.materialId}">
+                                    {{material.material.codigo}}
+                                </td>
+                                <td ng-class="{'read':material.material.materialId === materialSimilarSelecionado.materialId}">
+                                    {{material.material.nome}}
+                                </td>
+                                <td ng-class="{'read':material.material.materialId === materialSimilarSelecionado.materialId}"
+                                    ng-repeat="depositoQuantidade in material.depositoQuantidade track by $index">
+                                    {{depositoQuantidade.quantidade}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nx-paginacao>
+    </nx-pop-up>
+
+    <!--MODAL JUSTIFICATIVA DEPOSITOS COM QUANTIDADE-->
+    <nx-pop-up id="modalJustificativaDepositosRma" titulo="{{ResourceBundle['msg_encontrado_deposito_com_quantidades']}}">
+        <div class="form-group">
+            <label>{{ResourceBundle['label_justificativa']}}</label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span> 
+            <textarea id="manutCadastroRmaObservacao" rows="3" 
+                      ng-model="objEnviarAprovacao.rm.justificativaEnvioAprovacao" 
+                      class="form-control"></textarea>
+        </div>
+        <nx-lista>
+            <div class="col-md-12 listaObjetos">
+                <div class="table-responsive" id="listaDepositosComQuantidade">
+                    <table class="table table-hover table-striped table-bordered lista">
+                        <thead>
+                            <tr>
+                                <th>{{ResourceBundle["label_material"]}}</th>
+                                <th>{{ResourceBundle["label_deposito"]}}</th>
+                                <th>{{ResourceBundle["label_quantidade"]}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr not-fix-height ng-repeat="deposito in listaDepositosNaoSelecionados">
+                                <td>{{deposito.material.nome}}</td>
+                                <td>{{deposito.deposito.nome}}</td>
+                                <td>{{deposito.quantidade}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nx-lista>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 data-dismiss="modal" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="abrirModalSelecionarAprovadorMateriaisCautelados()" icone="glyphicon glyphicon-share-alt" 
+                             label="{{ResourceBundle['label_salvar_e_continuar']}}" 
+                             ng-disabled="!objEnviarAprovacao.rm.justificativaEnvioAprovacao ||
+                                         objEnviarAprovacao.rm.justificativaEnvioAprovacao.length < 3"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL APROVADOR COORDENADOR-->
+    <nx-pop-up id="modalAprovadorRma" titulo="{{ResourceBundle['label_selecione_um_aprovador']}}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" ng-show="habilitaEnvioAprovacaoCoordenador">
+                    <label>{{ResourceBundle['label_aprovador']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span> 
+                    <nx-combo id="aprovadorEscolha" ng-model="aprovadorEscolhido"
+                    		  ng-change="marcarAprovador(aprovadorEscolhido)"
+                              required
+                              ng-options="usuario as usuario.nome for usuario in usuariosAprovadores">
+                    </nx-combo>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="fecharModalAprovadorRma()" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="enviarParaAprovacao()"
+                             label="{{ResourceBundle['label_enviar_para_aprovacao']}}" 
+                             ng-disabled="!aprovador || !aprovador.nome"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL APROVADOR RRE-->
+    <nx-pop-up id="modalAprovadorRmaRRE" titulo="{{ResourceBundle['label_selecione_um_aprovador']}}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group" ng-show="habilitaEnvioAprovacaoCoordenador">
+                    <label>{{ResourceBundle['label_aprovador']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span> 
+                    <nx-auto-complete id="manutCadastroRmaAprovador" ng-model="objEnviarAprovacao.aprovador"
+                                      typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompleteResponsavelRetiradaEstoque($viewValue)"
+                                      ></nx-auto-complete>
+                </div>
+
+                <div class="form-group" ng-show="!habilitaEnvioAprovacaoCoordenador">
+                    <label>{{ResourceBundle["label_gerente_area"]}}</label>
+                    <nx-auto-complete id="aprovarComboGerenteArea"
+                                      ng-model="objEnviarAprovacao.aprovador"
+                                      typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompleteGerenteAreaEncarregado($viewValue)"
+                    ></nx-auto-complete>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="fecharModalAprovadorRRE()" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="enviarParaAprovacao()" icone="glyphicon glyphicon-share-alt" 
+                             label="{{ResourceBundle['label_enviar_para_aprovacao']}}" 
+                             ng-disabled="!objEnviarAprovacao.aprovador || !objEnviarAprovacao.aprovador.nome"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL JUSTIFICATIVA CANCELAMENTO DA RM-->
+    <nx-pop-up id="modalJustificativaCancelamento" titulo="{{ResourceBundle['msg_deseja_cancelar']}}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_justificativa']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span> 
+                    <textarea id="manutCadastroRmaObservacao" rows="3" 
+                              ng-model="objCancelarRM.justificativaCancelamento" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="fecharModalJustificativaCancelamento()" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="cancelarRequisicao()" icone="glyphicon glyphicon-ok" 
+                             label="{{ResourceBundle['label_cancelar_rm']}}" 
+                             ng-disabled="!objCancelarRM.justificativaCancelamento ||
+                                         objCancelarRM.justificativaCancelamento.length < 3"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+    
+    <!--MODAL JUSTIFICATIVA CANCELAMENTO DO MATERIAL-->
+    <nx-pop-up id="modalObservacaoCancelamentoMaterial" titulo="{{ResourceBundle['msg_deseja_cancelar_material']}}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_justificativa']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span> 
+                    <textarea id="manutCadastroRmaObservacao" rows="3" 
+                              ng-model="objCancelarMaterial.observacaoCancelamento" class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="fecharModalObservacaoCancelamentoMaterial()" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="cancelarMaterial()" icone="glyphicon glyphicon-ok" 
+                             label="{{ResourceBundle['label_cancelar_material']}}" 
+                             ng-disabled=" !objCancelarMaterial.observacaoCancelamento ||
+                                 objCancelarMaterial.observacaoCancelamento.length < 3"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL REDIGIR JUSTIFICATIVA-->
+    <nx-pop-up id="modalRedigirJustificativa" titulo="{{ResourceBundle['label_redigir_justificativa']}}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_justificativa']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span> 
+                    <textarea id="manutCadastroRmaObservacao" rows="3" 
+                              ng-model="objRedigirJustificativa.rm.justificativaGerenteObra" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_gerente_obra']}}</label>
+                    <span class="glyphicon glyphicon-asterisk obrigatorio"></span> 
+                    <nx-combo id="popUpRedigirJustificativaGerenteObra" ng-model="objRedigirJustificativa.aprovador" 
+                              ng-options="Pessoa as Pessoa.nome for Pessoa in listaGerentesObra track by Pessoa.pessoaId"></nx-combo>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="fecharModalRedigirJustificativa()" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="redigirJustificativa()" icone="glyphicon glyphicon-ok" 
+                             label="{{ResourceBundle['label_enviar']}}" 
+                             ng-disabled="(!objRedigirJustificativa.rm.justificativaGerenteObra ||
+                                                 objRedigirJustificativa.rm.justificativaGerenteObra.length < 3) ||
+                                         !objRedigirJustificativa.aprovador"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL CADASTRO RAPIDO MATERIAL-->
+    <nx-pop-up id="modalCadastroMaterial" titulo="{{ResourceBundle['msg_cadastro_rapido_materiais']}}">
+        <div class="form-group">
+            <label>{{ResourceBundle['label_material']}}</label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+            <input id="modalCadastroMaterialNome" type="text"
+                   ng-model="novoMaterial.nome" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_observacao']}}</label>
+            <textarea id="modalCadastroMaterialObservacao" rows="3" 
+                      ng-model="novoMaterial.observacao" 
+                      class="form-control"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_quantidade']}}</label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+            <nx-numero id="modalCadastroMaterialQuantidade" m-dec="3"  ng-model="novoMaterial.quantidade"></nx-numero>
+        </div>
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_unidade_medida']}}</label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+            <nx-combo id="comboUnidadeMaterial" 
+                      ng-model="novoMaterial.unidadeMedida"
+                      ng-options="UnidadeMedida as UnidadeMedida.descricao for UnidadeMedida in comboUnidadeMedida track by UnidadeMedida.unidadeMedidaId">
+            </nx-combo>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="salvarMaterial()" icone="glyphicon glyphicon-ok" 
+                             label="{{ResourceBundle['label_cadastro_rapido']}}"
+                             ng-disabled="!novoMaterial.nome || novoMaterial.length < 1 || !novoMaterial.quantidade || !novoMaterial.unidadeMedida"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL ATRIBUIR COMPRADOR-->
+    <nx-pop-up id="modalAtribuirComprador" titulo="{{ResourceBundle['label_atribuir_comprador']}}">
+        <div class="form-group">
+            <label>{{ResourceBundle['label_comprador']}}</label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+            <nx-combo id="popUpRedigirJustificativaGerenteObra" ng-model="objAtribuirComprador.comprador" 
+                      ng-options="Comprador as Comprador.nome for Comprador in listaComboComprador track by Comprador.compradorId"></nx-combo>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="fecharModalAtribuirComprador()" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="salvarAtribuirComprador()" icone="glyphicon glyphicon-ok" 
+                             label="{{ResourceBundle['label_salvar']}}"
+                             ng-disabled="!objAtribuirComprador.comprador.compradorId"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL CADASTRO SERVICO-->
+    <nx-pop-up id="modalCadastroServico" titulo="{{ResourceBundle['label_novo_servico']}}">
+        <h3>{{ResourceBundle['msg_aviso_cadastro_servico']}}</h3>
+        <br></br>
+        <div class="form-group">
+            <label>{{ResourceBundle['label_servico']}}</label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+            <input id="modalCadastroServicoNome" type="text"
+                   ng-model="novoServico.nome" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_quantidade']}}</label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span>
+            <nx-numero id="modalCadastroServicoQuantidade" m-dec="3" 
+                       ng-model="novoServico.quantidade"></nx-numero>
+        </div>
+        
+        <div class="form-group">
+            <label>{{ResourceBundle['label_numero_requisicao_sap']}}</label>
+            <input id="modalCadastroServicoNumeroRequisicaoSap" type="text" somente-numero
+                   maxlength="10" ng-model="novoServico.numeroRequisicaoSap" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>{{ResourceBundle['label_item_requisicao_sap']}}</label>
+            <input id="modalCadastroServicoItemRequisicaoSap" type="text" somente-numero
+                   maxlength="10" ng-model="novoServico.itemRequisicaoSap" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_aplicacao']}}</label>
+            <input id="modalCadastroServicoAplicacao" type="text"
+                   ng-model="novoServico.aplicacao" class="form-control">
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="fecharModalCadastroServico()" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="salvarCadastroServicoMaterial()" icone="glyphicon glyphicon-ok" 
+                             label="{{ResourceBundle['label_salvar']}}"
+                             ng-disabled="!novoServico.nome || novoServico.nome.length < 3 ||
+                                         !novoServico.quantidade || novoServico.quantidade < 1
+                                         || bloqueiaBtSalvarServico"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL ANEXO -->
+    <nx-pop-up id="modalAnexo" titulo="{{ResourceBundle['label_anexos']}}">
+
+        <div class="form-group">
+            <label for="inputAnexoRma">{{ResourceBundle["label_novo_anexo"]}}</label>
+            <input id="inputAnexoRma" type="file" class="form-control" ng-model="anexoSelecionado"
+                   onchange="angular.element(this).scope().adicionarAnexo()" ng-disabled="possuiRoleLeituraTodasRm" multiple/>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-md-2" ng-repeat="obj in listaAnexo">
+                        <nx-arquivo 
+                            nome="{{obj.nome}}"
+                            nx-click="carregarAnexo(obj)">
+
+                            <nx-btn2 title="{{ResourceBundle['label_excluir']}}"
+                                     icone="glyphicon glyphicon-remove"
+                                     ng-click="excluirAnexo(obj)"
+                                     ng-disabled="possuiRoleLeituraTodasRm"></nx-btn2>
+
+                            <nx-btn2 title="{{ResourceBundle['label_download']}}"
+                                     icone="glyphicon glyphicon-download-alt"
+                                     ng-click="carregarAnexo(obj)"></nx-btn2>
+                        </nx-arquivo>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL APROVADORES -->
+    <nx-pop-up id="modalAprovadoresRma" titulo="{{ResourceBundle['label_aprovadores']}}">
+        <nx-lista>
+            <div class="col-md-12">
+                <div>
+                    <table class="table table-hover table-striped table-bordered lista" *ngIf="aprovadoresRmMaterial">
+                        <thead>
+                            <tr>
+                                <th>{{ResourceBundle["label_data_avaliacao"]}}</th>
+                                <th>{{ResourceBundle["label_tipo_aprovador"]}}</th>
+                                <th>{{ResourceBundle["label_aprovador"]}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="aprovadoresRmMaterial.nomeAprovCoordenador">
+                                <td>{{aprovadoresRmMaterial.dataAprovCoordenador | date: ResourceBundle['format_date']}}</td>
+                                <td>{{ResourceBundle['label_nome_aprovacao_coord']}}</td>
+                                <td>{{aprovadoresRmMaterial.nomeAprovCoordenador}}</td>
+                            </tr>
+                            <tr ng-if="aprovadoresRmMaterial.nomeAprovGerenteArea">
+                                <td>{{aprovadoresRmMaterial.dataAprovGerenteArea | date: ResourceBundle['format_date']}}</td>
+                                <td>{{ResourceBundle['label_nome_aprovacao_gerente_area']}}</td>
+                                <td>{{aprovadoresRmMaterial.nomeAprovGerenteArea}}</td>
+                            </tr>
+                            <tr ng-if="aprovadoresRmMaterial.nomeAprovGerenteCusto">
+                                <td>{{aprovadoresRmMaterial.dataAprovGerenteCusto | date: ResourceBundle['format_date']}}</td>
+                                <td>{{ResourceBundle['label_nome_aprovacao_gerente_custos']}}</td>
+                                <td>{{aprovadoresRmMaterial.nomeAprovGerenteCusto}}</td>
+                            </tr>
+                            <tr ng-if="aprovadoresRmMaterial.nomeAprovMaquinaParada">
+                                <td>{{aprovadoresRmMaterial.dataAprovMaquinaParada | date: ResourceBundle['format_date']}}</td>
+                                <td>{{ResourceBundle['label_nome_aprovacao_maquina_parada']}}</td>
+                                <td>{{aprovadoresRmMaterial.nomeAprovMaquinaParada}}</td>
+                            </tr >
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nx-lista>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 data-dismiss="modal" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="salvarAlterarAprovador()" icone="glyphicon glyphicon-ok" 
+                             label="{{ResourceBundle['label_alterar_aprovador']}}"
+                             ng-show="(ALTERAR_APROVADOR || auxRmAprovado.rm.usuario.pessoa.pessoaId == auxVerificaUsuarioLogado.pessoa.pessoaId || auxRmAprovado.rm.requisitante.pessoaId == auxVerificaUsuarioLogado.pessoa.pessoaId) && aprovadorAlterado"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL ALTERAR QUANTIDADE DE MATERIAL-->
+    <nx-pop-up id="modalAlterarQuantidadeMaterial" titulo="{{ResourceBundle['label_alterar_quantidade_material']}}">
+        <div class="form-group">
+            <label>{{ResourceBundle['label_material']}}:</label>
+            <label>{{materialAux}}</label><br>
+
+            <label>{{ResourceBundle['label_quantidade']}}:</label>
+            <label>{{objAlterarQuantidadeAux.quantidade}}</label>
+        </div>
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_nova_quantidade']}}</label>
+            <nx-numero min="1" id="modalCadastroServicoQuantidade" m-dec="3" 
+                       ng-model="objAlterarQuantidade.quantidade"></nx-numero>
+        </div>
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_justificativa']}}</label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span> 
+            <textarea id="manutAlterarQuantidadeMaterial" rows="3" maxlength="500"
+                      ng-model="objAlterarQuantidade.justificativaAlteracaoQuantidade" 
+                      class="form-control"></textarea>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="fecharModalAlterarQuantidadeMaterial()" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="salvarAlterarQuantidadeMaterial()" icone="glyphicon glyphicon-ok" 
+                             label="{{ResourceBundle['label_salvar']}}"
+                             ng-disabled="!objAlterarQuantidade.justificativaAlteracaoQuantidade ||
+                                         objAlterarQuantidade.justificativaAlteracaoQuantidade.length < 5"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL ALTERAR PRIORIDADE-->
+    <nx-pop-up id="modalAlterarPrioridade" titulo="{{ResourceBundle['label_alterar_prioridade']}}">
+        <div class="form-group">
+            <label>{{ResourceBundle['label_numero_rm']}}:</label>
+            <label>{{objAlterarPrioridadeAux.numeroRm}}</label><br>
+
+            <label>{{ResourceBundle['label_prioridade_atual']}}:</label>
+            <label>{{prioridadeAux}}</label><br>
+        </div>
+
+        <div class="form-group">
+            <label>{{ResourceBundle['label_prioridade']}}</label>  
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span>                    
+            <nx-combo id="manutCadastroRmaPrioridade" ng-change="verificaPrioridade()" 
+                      ng-model="objAlterarPrioridade.prioridade" 
+                      ng-options="prioridade as prioridade.descricao for prioridade in listaPrioridades | unique: 'descricao'" 
+                      required></nx-combo>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="fecharModalAlterarPrioridade()" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="salvarAlterarPrioridade()" icone="glyphicon glyphicon-ok" 
+                             label="{{ResourceBundle['label_salvar']}}"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL INFORMAR ITENS NO -->
+    <nx-pop-up id="modalInfDepos" titulo="{{ResourceBundle['msg_tipo_estoque_sem_deposito']}}">
+        <nx-lista>
+            <div class="col-md-12 listaObjetos">
+                <div class="table-responsive" id="listaDepositosComQuantidade">
+                    <table class="table table-hover table-striped table-bordered lista">
+                        <thead>
+                            <tr>
+                                <th>{{ResourceBundle["label_selecionar"]}}</th>
+                                <th>{{ResourceBundle["label_material"]}}</th>
+                                <th>{{ResourceBundle["label_deposito"]}}</th>
+                                <th>{{ResourceBundle["label_quantidade"]}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr not-fix-height ng-repeat="deposito in listaDepositosNaoSelecionados">
+                                <td><nx-btn-2 title="{{ResourceBundle['msg_necessario_selecionar_deposito']}}" 
+                                      icone="glyphicon glyphicon-ok" 
+                                      ng-click="alterarMaterial(deposito)"></nx-btn-2></td>
+                        <td>{{deposito.material.nome}}</td>
+                        <td>{{deposito.deposito.nome}}</td>
+                        <td>{{deposito.quantidade}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nx-lista>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 data-dismiss="modal" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL JUSTIFICATIVA MATERIAIS CAUTELADOS EM DEPOSITO-->
+    <nx-pop-up id="modalJustificativaMateriaisCauteladosEmDeposito" titulo="{{ResourceBundle['msg_materiais_cautelados_em_estoque']}}">
+        <div class="form-group">
+            <label>{{ResourceBundle['label_justificativa']}}</label>
+            <span class="glyphicon glyphicon-asterisk obrigatorio"></span> 
+            <textarea id="manutCadastroRmaObservacao" rows="3" maxlength="500"
+                      ng-model="objEnviarAprovacao.rm.justMateriaisCautelados" 
+                      class="form-control"></textarea>
+        </div>
+        <nx-lista>
+            <div class="col-md-12 listaObjetos">
+                <div class="table-responsive" id="listaDepositosComQuantidade">
+                    <table class="table table-hover table-striped table-bordered lista">
+                        <thead>
+                            <tr>
+                                <th>{{ResourceBundle["label_material"]}}</th>
+                                <th>{{ResourceBundle["label_deposito"]}}</th>
+                                <th>{{ResourceBundle["label_quantidade"]}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr not-fix-height ng-repeat="deposito in listaMateriaisCauteladosEmDeposito">
+                                <td>{{deposito.material.nome}}</td>
+                                <td>{{deposito.deposito.nome}}</td>
+                                <td>{{deposito.quantidade}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nx-lista>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 ng-click="fecharModalMateriaisCauteladosEmDeposito()" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="abrirModalSelecionarAprovador()" icone="glyphicon glyphicon-share-alt" 
+                             label="{{ResourceBundle['label_salvar_e_continuar']}}" 
+                             ng-disabled="!objEnviarAprovacao.rm.justMateriaisCautelados ||
+                                         objEnviarAprovacao.rm.justMateriaisCautelados.length < 3"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+
+    <!--MODAL CONFIRMACAO MATERIAIS RETIRADOS NAO PRESENCIAL-->
+    <nx-pop-up id="modalMateriaisRetiradosNaoPresencial" titulo="{{ResourceBundle['label_confirmar_retirada_nao_presencial']}}">
+        <nx-lista>
+            <div class="col-md-12 listaObjetos">
+                <div class="table-responsive" id="listaRetiradaMateriais">
+                    <table class="table table-hover table-striped table-bordered lista">
+                        <thead>
+                            <tr>
+                                <th>{{ResourceBundle["label_data"]}}</th>
+                                <th>{{ResourceBundle["label_quantidade"]}}</th>
+                                <th>{{ResourceBundle["label_retirado_por"]}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr not-fix-height ng-repeat="retirada in listaRetiradasNaoPresencial">
+                                <td>{{retirada.dataRetirada |date: ResourceBundle["format_date"]}}</td>
+                                <td>{{retirada.quantidade}}</td>
+                                <td>{{retirada.retiradoPor.nome}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nx-lista>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group pull-right">
+                    <nx-btn2 data-dismiss="modal" icone="glyphicon glyphicon-arrow-left" 
+                             label="{{ResourceBundle['label_voltar']}}"></nx-btn2>
+                    <nx-btn2 ng-click="confirmarRetirada()" icone="glyphicon glyphicon-ok" 
+                             label="{{ResourceBundle['label_confirmar']}}"></nx-btn2>
+                </div>
+            </div>
+        </div>
+    </nx-pop-up>
+    
+</nx-tela-padrao>

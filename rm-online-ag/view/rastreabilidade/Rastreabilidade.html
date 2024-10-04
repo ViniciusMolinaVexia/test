@@ -1,0 +1,34 @@
+<nx-tela-padrao id="telaRastreabilidade"> 
+    <nx-titulo titulo="{{ResourceBundle['label_rastreabilidade']}}"></nx-titulo>
+    
+    	<div class="form-inline">
+           	<label>{{ResourceBundle['label_numero']}}</label>
+           	<input id="numeroRm" name="numeroRm" class="form-control" size="15" ng-model="numeroRm"  />
+           	<a class="btn btn-default btn-espaco" 
+           			label="{{ResourceBundle['label_buscar']}}" 
+           			ng-click="procurar()">
+        			<span>{{ResourceBundle['label_buscar']}}</span>
+       		</a>
+        </div>
+        
+        <table class="table-novo">
+	    	<thead>
+		    	<tr>
+		    		<th>{{ResourceBundle['label_data']}}</th>
+		    		<th>{{ResourceBundle['label_usuario']}}</th>
+		    		<th>{{ResourceBundle['label_acao']}}</th>
+		    		<th>{{ResourceBundle['label_campo']}}</th>
+		    		<th>{{ResourceBundle['label_valor']}}</th>
+		    	</tr>
+		    </thead>
+		    <tbody>
+		    	<tr ng-repeat="rastro in lista">
+		    		<td>{{ rastro.modificacao | date: ResourceBundle['format_date_hora_minuto_segundo'] }}</td>
+		    		<td>{{ rastro.usuario }}</td>
+		    		<td>{{ rastro.acao }}</td>
+		    		<td>{{ rastro.campo }}</td>
+		    		<td>{{ rastro.valor }}</td>
+		    	</tr>
+		    </tbody>
+	    </table>
+</nx-tela-padrao>

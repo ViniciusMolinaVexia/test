@@ -1,0 +1,20 @@
+<div class="form-group"
+     ng-if="campoManut.campo.tipoCampo.nome === OBJECT && campoManut.campo.modoExibicao === COMBOSTATUS">
+    <nx-combo id="{{campoManut.id}}"
+              ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+
+              ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+              ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+              ng-disabled="(bloqueioCampos  || campoManut.campo.isBloqueado) && (campoManut.sempreEditavel !== 'S')"
+              ng-model="objSelecionado[campoManut.campo.propriedadeEntity]">
+        <option value=""
+                ng-if="objSelecionado[campoManut.campo.propriedadeEntity] && campoManut.isObrigatorio !== 'S'"></option>
+        <option value="CAD">{{ResourceBundle["label_cadastrada"]}}</option>
+        <option value="EAN">{{ResourceBundle["label_emandamento"]}}</option>
+        <option value="REP">{{ResourceBundle["label_reprovada"]}}</option>
+        <option value="APR">{{ResourceBundle["label_aprovada"]}}</option>
+        <option value="CAN">{{ResourceBundle["label_cancelada"]}}</option>
+        <option value="EAV">{{ResourceBundle["label_em_avaliacao"]}}</option>
+        <option value="AVF">{{ResourceBundle["label_avaliacao_finalizada"]}}</option>
+    </nx-combo>
+</div>

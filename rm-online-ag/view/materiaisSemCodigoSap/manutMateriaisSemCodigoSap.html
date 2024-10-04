@@ -1,0 +1,54 @@
+<nx-manut id="manutMateriaisSemCodigoSap">
+    <div class="panel-body">
+        <h3 ng-if="operacao === 'dePara'">{{ResourceBundle['label_de']}}</h3>
+        <hr ng-if="operacao === 'dePara'">
+        <form id="formManutencao" ng-if="operacao === 'dePara'">
+            <nx-float-group cols="3">
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_material']}}:</label>
+                    <label>{{objSelecionado.nome}}</label><br>
+                    <label>{{ResourceBundle['label_observacao']}}:</label>
+                    <label>{{objSelecionado.observacao}}</label><br ng-show="filtro.status === 'S'">
+                    <label ng-show="filtro.status === 'S'">{{ResourceBundle['label_numero']}}:</label>
+                    <label ng-show="filtro.status === 'S'">{{objSelecionado.rmMaterial.rm.numeroRm}}</label><br ng-show="filtro.status === 'S'">
+                    <label ng-show="filtro.status === 'S'">{{ResourceBundle['label_requisitante']}}:</label>
+                    <label ng-show="filtro.status === 'S'">{{objSelecionado.rmMaterial.rm.requisitante.nome}}</label>
+                </div>
+            </nx-float-group>
+        </form>
+        <form id="formManutencaoOperacao" ng-if="operacao === 'codigo'">
+            <nx-float-group cols="3">
+                <label>{{ResourceBundle['label_observacao']}}:</label>
+                <label>{{objSelecionado.observacao}}</label><br ng-show="filtro.status === 'S'">
+                <label ng-show="filtro.status === 'S'">{{ResourceBundle['label_numero']}}:</label>
+                <label ng-show="filtro.status === 'S'">{{objSelecionado.rmMaterial.rm.numeroRm}}</label><br ng-show="filtro.status === 'S'">
+                <label ng-show="filtro.status === 'S'">{{ResourceBundle['label_requisitante']}}:</label>
+                <label ng-show="filtro.status === 'S'">{{objSelecionado.rmMaterial.rm.requisitante.nome}}</label>
+                <hr>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_codigo']}}</label>
+                    <input id="manutCadastroRmaCodigo" type="text" required="true" somente-numero ng-model="objSelecionado.codigo" class="form-control" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_nome']}}</label>
+                    <input id="manutCadastroRmaUsuario" type="text" ng-model="objSelecionado.nome" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_nome_completo']}}</label>
+                    <textarea id="manutCadastroRmaObservacao" rows="3" ng-model="objSelecionado.nomeCompleto" class="form-control"></textarea>
+                </div>
+            </nx-float-group>
+        </form>
+        <h3 ng-if="operacao === 'dePara'">{{ResourceBundle['label_para']}}</h3>
+        <hr ng-if="operacao === 'dePara'">
+        <form id="formManutencaoMateriais" ng-if="operacao === 'dePara'">
+            <nx-float-group cols="3">
+                <div class="form-group">
+                    <label>{{ResourceBundle['label_material']}}</label>
+                    <nx-auto-complete id="manutCadastroRmaMaterial" ng-model="deParaVo.materialPara" typeahead="Material as '{{ResourceBundle['label_codigo']}}: ' + Material.codigo + '<br>{{ResourceBundle['label_nome']}}: ' + Material.nome + '<br>{{ResourceBundle['label_unidade_medida']}}: ' + Material.unidadeMedida.descricao + '<br>{{ResourceBundle['label_ncm']}}: ' + Material.ncm + '<br>{{ResourceBundle['label_ultimo_valor_negociado']}}: ' + Material.ultimoValorNegociado for Material in getAutoCompleteMateriais($viewValue)">
+                    </nx-auto-complete>
+                </div>
+            </nx-float-group>
+        </form>
+    </div>
+</nx-manut>

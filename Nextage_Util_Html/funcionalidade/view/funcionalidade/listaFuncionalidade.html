@@ -1,0 +1,60 @@
+<nx-paginacao
+        num-paginas="numPaginas"
+        pagina-atual="paginaAtiva"
+        listar-pagina="irParaPaginaEspecifica"
+>
+    <div class="col-md-12 listaObjetos">
+        <div class=" table-responsive">
+            <table class="table table-hover table-striped table-bordered lista link-preto">
+                <thead class="fundo-cabecalho-tabela">
+                <tr>
+                    <th ng-click="ordenarLista(obj)" ng-repeat="obj in listaCamposLista">
+                        <a>
+                            {{ResourceBundle[obj.campo.chaveLabel]}}
+                        </a>
+                    </th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="obj in listaFuncionalidade| orderBy:ordemLista:reverse"
+                    ng-class="{'read':obj[nomePropId] === objSelecionado[nomePropId]}">
+                    <td ng-repeat="campo in listaCamposLista" class="col-md-2" ng-click="editar(obj[nomePropId])"
+                        ng-class="{'read':obj[nomePropId] === objSelecionado[nomePropId]}">
+                        <div ng-style="{'width': (campo.campo.tamanhoCampo ? campo.campo.tamanhoCampo : 75)}"></div>
+                        <label ng-if="campo.campo.tipoCampo.nome === DATE && campo.campo.nivelConsulta === 1"
+                               class="label-nao-negrito">
+                            {{obj[campo.campo.propriedadeEntity]| date: ResourceBundle["format_date"]}}
+                        </label>
+                        <label ng-if="campo.campo.tipoCampo.nome !== DATE && campo.campo.modoExibicao !== COMBOSIMNAO && campo.campo.tipoCampo.nome !== BOOLEAN && campo.campo.nivelConsulta === 1"
+                               class="label-nao-negrito">
+                            {{obj[campo.campo.propriedadeEntity]}}
+                        </label>
+                        <label ng-if="campo.campo.tipoCampo.nome !== DATE && (campo.campo.modoExibicao === COMBOSIMNAO) && campo.campo.nivelConsulta === 1"
+                               class="label-nao-negrito">
+                            {{ResourceBundle[(obj[campo.campo.propriedadeEntity] === "S" ? "label_sim" : "label_nao")]}}
+                        </label>
+                        <label ng-if="campo.campo.tipoCampo.nome !== DATE && (campo.campo.tipoCampo.nome === BOOLEAN) && campo.campo.nivelConsulta === 1"
+                               class="label-nao-negrito">
+                            {{ResourceBundle[(obj[campo.campo.propriedadeEntity] ? "label_sim" : "label_nao")]}}
+                        </label>
+                        <label ng-if="campo.campo.tipoCampo.nome === DATE && campo.campo.nivelConsulta !== 1"
+                               class="label-nao-negrito">
+                            {{formataLabel(obj[campo.campo.propriedadeEntity], campo.campo.propriedadeExibicao) | date:
+                            ResourceBundle["format_date"]}}
+                        </label>
+                        <label ng-if="campo.campo.tipoCampo.nome !== DATE && campo.campo.nivelConsulta !== 1 && campo.campo.tipoCampo.nome !== BOOLEAN"
+                               class="label-nao-negrito">
+                            {{formataLabel(obj[campo.campo.propriedadeEntity], campo.campo.propriedadeExibicao)}}
+                        </label>
+                        <label ng-if="campo.campo.tipoCampo.nome !== DATE && campo.campo.tipoCampo.nome === BOOLEAN && campo.campo.nivelConsulta !== 1"
+                               class="label-nao-negrito">
+                            {{ResourceBundle[(obj[campo.campo.propriedadeEntity] ? "label_sim" : "label_nao")]}}
+                        </label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</nx-paginacao>

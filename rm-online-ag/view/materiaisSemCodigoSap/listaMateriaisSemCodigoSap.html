@@ -1,0 +1,40 @@
+<nx-paginacao 
+    num-paginas="numPaginas" 
+    pagina-atual="paginaAtiva" 
+    listar-pagina="irParaPaginaEspecifica"
+    qtde-paginas="15" > 
+    <div class="col-md-12">
+        <div class="table-responsive"> 
+            <table class="table table-hover table-striped table-bordered lista"> 
+                <thead class="fundo-cabecalho-tabela"> 
+                    <tr> 
+                        <th></th>
+                        <th>{{ResourceBundle['label_codigo']}}</th>
+                        <th>{{ResourceBundle['label_material']}}</th>
+                        <th>{{ResourceBundle['label_tipo_material']}}</th>
+                        <th>{{ResourceBundle['label_observacao']}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="obj in lista">
+                        <td>
+                            <nx-btn-2 ng-click="editar(obj, 'dePara')" 
+                                      label="{{ResourceBundle['label_realizar_de_para']}}" 
+                                      title="{{ResourceBundle['label_realizar_de_para']}}" 
+                                      icone="glyphicon glyphicon-transfer"
+                                      ng-if="botaoDePara"></nx-btn-2>
+
+                            <nx-btn-2 ng-click="editar(obj, 'codigo')" 
+                                      label="{{ResourceBundle['label_preencher_codigo_sap']}}" 
+                                      title="{{ResourceBundle['label_preencher_codigo_sap']}}" 
+                                      icone="glyphicon glyphicon-transfer"></nx-btn-2></td> 
+                        <td>{{obj.codigo}}</td>
+                        <td>{{obj.nome}}</td>
+                        <td>{{obj.tipoMaterial.codigo === 'C' ? ResourceBundle['label_cautelado'] : obj.tipoMaterial.codigo === 'NC' ? ResourceBundle['label_nao_cautelado'] : ''}}</td>
+                        <td>{{obj.observacao}}</td>
+                    </tr>
+                </tbody> 
+            </table> 
+        </div> 
+    </div>
+</nx-paginacao>

@@ -1,0 +1,46 @@
+/**
+ * Variáveis estáticas.
+ *
+ * @author Marlos Morbis Novo
+ * */
+var SEPARADOR_FUNC_E_ROLES = "|:";
+var SIGLA_MODULO = "Rma";
+var SIGLA_RMA = "Rma";
+
+//variavel estatica criada para retornar erro do resource bundle
+var SEM_COMUNICACAO_SERVIDOR_RESOURCE_BUNDLE = "Erro de comunicação com o servidor (Resource Bundle não foi recuperado).";
+
+//CAONSTANTES PARA AS FUNCIONALIDADES QUE O SO AGE TEM ACESSO
+var NEXTAGE = "NEXTAGE";
+
+var ACESSO_EXPIRADO = "ACESSO_EXPIRADO";
+var SESSAO_EXPIRADA_I18N = "label_sessao_expirada";
+
+//nao excluir
+var enter = "↵";
+
+
+//siglas
+var SIGLA_APROVADA = "A";
+var SIM_ABREVIADO = "S";
+
+var CANCELADA = "CANCELADA";
+var APROVADA = "APROVADA";
+
+//Combo geral
+var COMBO_ESTOQUE_TIPO_MOV = 'COMBO_ESTOQUE_TIPO_MOV';
+
+var LISTA_EAP_MULTI_EMPRESA = "LISTA_EAP_MULTI_EMPRESA";
+var PRIMEIRO_EAP_MULTI_EMPRESA = "PRIMEIRO_EAP_MULTI_EMPRESA";
+
+//RHWEB CORPORATIVO
+var PROJETO_SESSAO = "PROJETO_SESSAO";
+var ROLE_USUARIO_CORPORATIVO = "USUARIO_CORPORATIVO";
+var FUNC_SISTEMA_CORPORATIVO = "sistemaCorporativo";
+
+//ROLES GERAIS
+var ROLE_RE_REQ_GERAL_VISUALIZAR_TODAS = "RE_REQ_GERAL_VISUALIZAR_TODAS";
+var ROLE_GERAL_GEREN_USUARIO = "GERAL_GEREN_USUARIO";
+var GERAL_PESSOA_EXTERNA = "GERAL_PESSOA_EXTERNA";
+
+var RESOURCE_BUNDLE = 'RESOURCE_BUNDLE';

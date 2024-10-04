@@ -1,0 +1,34 @@
+<nx-manut id="listaRmMaterial">
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped not-fix">
+                <thead class="fundo-cabecalho-tabela">
+                    <tr>
+                        <th>{{ResourceBundle['label_numero_rm']}}</th>
+                        <th>{{ResourceBundle['label_material']}}</th>
+                        <th>{{ResourceBundle['label_descricao']}}</th>
+                        <th>{{ResourceBundle['label_quantidade']}}</th>
+                        <th>{{ResourceBundle['label_unidade_medida']}}</th>
+                        <th>{{ResourceBundle['label_observacao']}}</th>
+                        <th>{{ResourceBundle['label_deposito']}}</th>
+                        <th>{{ResourceBundle['label_encarregado']}}</th>
+                        <th>{{ResourceBundle['label_corresponsavel']}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="obj in objSelecionado.rmMateriais">
+                        <td>{{obj.rm.numeroRm}}</td>
+                        <td>{{obj.material.codigo}}</td>
+                        <td>{{obj.material.nome}}</td>
+                        <td>{{obj.quantidade}}</td>
+                        <td>{{obj.material.unidadeMedida.descricao}}</td>
+                        <td>{{obj.observacao}}</td>
+                        <td>{{obj.deposito.nome || obj.rm.deposito.nome}}</td>
+                        <td>{{obj.rm.requisitante.referencia}}</td>
+                        <td>{{obj.cfResponsavel}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</nx-manut>

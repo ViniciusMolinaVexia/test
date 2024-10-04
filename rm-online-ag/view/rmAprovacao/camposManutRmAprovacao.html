@@ -1,0 +1,391 @@
+<div class="panel-body">
+    <form name="formManutencao" role="form" id="formManutencao" class="form">
+
+        <div class="form-group col-md-3" ng-if="!frenteDeServico">
+            <label for="observacaoRmAprovacao">
+                {{ResourceBundle["label_observacoes_aprovacao"]}}:</label>
+            <textarea rows="3" maxlength="200" class="form-control" ng-disabled="!objSelecionado.rmAprovador.aprovadorVez" id="observacaoRmAprovacao" name="observacaoRmAprovacao" ng-model="objSelecionado.rmAprovador.observacao">
+            </textarea>
+        </div>
+
+        <div class="form-group col-md-3" ng-if="aprovadorGerenteCustos">
+            <label for="justificativaVoltarCustos">
+                {{ResourceBundle["label_justificativa_para_equipe_custos"]}}:</label>
+            <textarea rows="3" maxlength="200" class="form-control" ng-disabled="aprovadorCustos" id="justificativaVoltarCustos" name="justificativaVoltarCustos" ng-model="objSelecionado.rmAprovador.rm.justRetornoEquipeCustos">
+            </textarea>
+        </div>
+
+        <div class="form-group col-md-3" ng-if="(aprovadorCustos || aprovadorLiderCustos) &&
+                        objSelecionado.rmAprovador.rm.justRetornoEquipeCustos">
+            <label>{{ResourceBundle["label_justificativa_para_equipe_custos"]}}:</label><br>
+            <label>{{objSelecionado.rmAprovador.rm.justRetornoEquipeCustos}}</label>
+        </div>
+
+        <div class="form-group col-md-3" ng-if="mensagemMateriaisCautelados &&
+                        (objSelecionado.rmAprovador.rm.tipoRequisicao.codigo == TIPO_REQUISICAO_MANUTENCAO ||
+                                objSelecionado.rmAprovador.rm.tipoRequisicao.codigo == TIP_REQ_MAT) && !atuacaoCusto">
+            <label style="color: red">{{ResourceBundle["msg_aprovador_materiais_cautelados"]}}</label>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <nx-float-group cols="3" class="nx-float-group-espaco-top">
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_centro']}} / {{ResourceBundle['label_obra']}}: </label> <br>
+                        <label>{{objSelecionado.rmAprovador.rm.centro.descricao}}</label>
+                    </div>
+                    <div class="form-group" ng-if="objSelecionado.rmAprovador.rm.tipoRm == 'MAT'">
+                        <label>{{ResourceBundle['label_numero']}}: </label> <br>
+                        <label>{{objSelecionado.rmAprovador.rm.numeroRm}}</label>
+                    </div>
+                    <div class="form-group" ng-if="objSelecionado.rmAprovador.rm.tipoRm == 'SER'">
+                        <label>{{ResourceBundle['label_numero']}}: </label> <br>
+                        <label>{{objSelecionado.rmAprovador.rm.area.codigo + " - " + objSelecionado.rmAprovador.rm.numeroRmServico}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_usuario_cadastrante']}}: </label><br>
+                        <label>{{objSelecionado.rmAprovador.rm.usuario.pessoa.nome}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_requisitante']}}: </label><br>
+                        <label>{{objSelecionado.rmAprovador.rm.requisitante.nome}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_data_emissao']}}: </label><br>
+                        <label>{{objSelecionado.rmAprovador.rm.dataEmissao|date:ResourceBundle["format_date"]}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_data_aplicacao']}}: </label><br>
+                        <label>{{objSelecionado.rmAprovador.rm.dataAplicacao|date:ResourceBundle["format_date"]}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_aprovador']}}: </label><br>
+                        <label>{{objSelecionado.rmAprovador.aprovador.nome}}</label>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label>{{ResourceBundle['label_tipo_aprovador']}}: </label><br>
+                        <label>{{formataLabelTipoAprovador(objSelecionado.rmAprovador)}}</label>
+                    </div>-->
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_local_entrega']}}: </label><br>
+                        <label>{{objSelecionado.rmAprovador.rm.localEntrega}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_observacoes_rm']}}: </label><br>
+                        <label>{{objSelecionado.rmAprovador.rm.observacao}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ResourceBundle['label_prioridade']}}: </label><br>
+                        <label>{{objSelecionado.rmAprovador.rm.prioridade.descricao}}</label>
+                    </div>
+                    <div class="form-group" ng-if="aprovadorLiderCustos || objSelecionado.rmAprovador.tipoAprovador === 'GC'">
+                        <label>{{ResourceBundle['label_pessoa_equipe_custos']}}: </label><br>
+                        <label>{{objSelecionado.rmAprovador.rm.atribuidoPara.nome}}</label>
+                    </div>
+                </nx-float-group>
+                <hr>
+                <!--Término Parte RM-->
+
+
+                <!-- <div class="form-group" ng-if="exibirCamposCustos && !frenteDeServico && !bloqueiaComboGerenteCustos">
+                    <label>{{ResourceBundle["label_gerente_custos"]}}</label>
+                    <nx-combo id="comboGerenteCustos"
+                              required="true"
+                              ng-model="objSelecionado.rmAprovador.rm.gerenteCustos"
+                              ng-options="GerenteCustos as GerenteCustos.nome for GerenteCustos in comboGerenteCusto track by GerenteCustos.pessoaId"
+                              ng-disabled="bloquearComboGerenteCustos">
+                    </nx-combo>
+                </div>
+                <div class="form-group" ng-if="aprovadorLiderCustos">
+                    <label>{{ResourceBundle["label_atribuir_para"]}}</label>
+                    <nx-combo id="comboAtribuirPara"
+                              ng-model="objSelecionado.pessoaCusto"
+                              ng-options="PessoaCustos as PessoaCustos.nome for PessoaCustos in comboEquipeCustos track by PessoaCustos.pessoaId"
+                              ng-disabled="false">
+                    </nx-combo>
+                </div>
+                <div class="form-group" ng-if="exibirComboGerenteArea">
+                    <label>{{ResourceBundle["label_gerente_area"]}}</label>
+                    <nx-auto-complete id="aprovarComboGerenteArea"
+                                      ng-model="objSelecionado.gerenteArea"
+                                      required="true"
+                                      typeahead="Pessoa as Pessoa.nome + '<br>' + Pessoa.eapMultiEmpresa.descricao for Pessoa in getAutoCompleteGerenteAreaEncarregado($viewValue)"
+                    ></nx-auto-complete>
+                </div>-->
+                </br>
+                <hr ng-if="aprovadorLiderCustos || exibirCamposCustos || aprovadorCustos || requisicaoRetiradaEstoquistaCusto || requisicaoRetiradaResponsavelEstoque">
+                <nx-float-group cols="3">
+                    <label ng-if="aprovadorLiderCustos || exibirCamposCustos || aprovadorCustos || requisicaoRetiradaEstoquistaCusto || requisicaoRetiradaResponsavelEstoque">{{ResourceBundle["label_replicar_custo_todos"]}}</label>
+                    <div class="form-group" ng-if="aprovadorLiderCustos || exibirCamposCustos || aprovadorCustos || requisicaoRetiradaEstoquistaCusto || requisicaoRetiradaResponsavelEstoque">
+                        <label for="RdbPepReplica">
+                            <input ng-model="objColetorCusto.valor"
+                                   ng-change="changeColetorCusto()"
+                                   type="radio" name="opcoes" id="RdbPepReplica"
+                                   value="{{OPERACAO_PEP}}"/> {{ResourceBundle["label_elemento_pep"]}}
+                        </label>
+                        <label for="RdbDiagramaReplica">
+                            <input ng-model="objColetorCusto.valor"
+                                   ng-change="changeColetorCusto()"
+                                   type="radio" name="opcoes" id="RdbDiagramaReplica"
+                                   value="{{DIAGRAMA_DE_REDE}}"/> {{ResourceBundle["label_diagrama_de_rede"]}}
+                        </label>
+                        <label for="RbdEstoqueReplica" ng-if="!requisicaoRetiradaEstoquistaCusto && !requisicaoRetiradaResponsavelEstoque && !requisicaoFrenteServico">
+                            <input ng-model="objColetorCusto.valor"
+                                   ng-change="changeColetorCusto()"
+                                   ng-if="!requisicaoRetiradaResponsavelEstoque && !requisicaoRetiradaEstoquistaCusto && !requisicaoFrenteServico"
+                                   type="radio" name="opcoes" id="RbdEstoqueReplica"
+                                   value="{{ESTOQUE}}"/> {{ResourceBundle["label_estoque"]}}
+                        </label>
+                    </div>
+                    <div class="form-group" ng-if="aprovadorLiderCustos || exibirCamposCustos || aprovadorCustos || requisicaoRetiradaEstoquistaCusto || requisicaoRetiradaResponsavelEstoque">
+                        <div ng-if="objColetorCusto.valor === OPERACAO_PEP">
+                            <label>{{ResourceBundle["label_elemento_pep"]}}</label>
+                            <input type="text" class="form-control required" id="coletorCustoReplica" maxlength="24" name="coletorCusto" ng-model="objColetorCusto.coletorCustos" nx-limit-to="200" />
+                        </div>
+                        <div class="input-group" ng-if="objColetorCusto.valor === DIAGRAMA_DE_REDE">
+                            <label>{{ResourceBundle["label_diagrama_de_rede"]}}</label>
+                            <input type="text" id="diagramaRedeReplica" class="form-control input-sm required" name="diagramaRede" maxlength="12" ng-model="objColetorCusto.diagramaRede" placeholder='{{ResourceBundle["label_diagrama_de_rede"]}}'>
+                            <span class="input-group-btn"></span>
+                            <label>{{ResourceBundle["label_operacao"]}}</label>
+                            <input type="text" class="form-control required" id="operacaoReplica" name="operacao" maxlength="4" ng-model="objColetorCusto.operacao" placeholder='{{ResourceBundle["label_operacao"]}}' />
+                        </div>
+                        <div ng-if="objColetorCusto.valor === ESTOQUE">
+                            <label>{{ResourceBundle["label_estoque"]}}</label>
+                            <input type="text" class="form-control required" id="estoque" maxlength="24" name="coletorCusto" ng-model="objColetorCusto.estoque" nx-limit-to="200" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <br>
+                        <input ng-if="aprovadorLiderCustos || exibirCamposCustos || aprovadorCustos || requisicaoRetiradaEstoquistaCusto || requisicaoRetiradaResponsavelEstoque" class="btn btn-default" type="submit" value="{{ResourceBundle['label_replicar']}}" ng-click="replicarColetorCustos()">
+                    </div>
+                </nx-float-group>
+                <hr ng-if="aprovadorLiderCustos || exibirCamposCustos || aprovadorCustos || requisicaoRetiradaEstoquistaCusto || requisicaoRetiradaResponsavelEstoque">
+                </br>
+            </div>
+        </div>
+
+        <!--Aprovar Material-->
+        <div>
+            <div class="row" ng-show="painelAprovarServico == 0">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading separador-cinza"><label>{{ResourceBundle["label_materiais"]}}</label>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped table-bordered lista" not-fix>
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>{{ResourceBundle["label_item"]}}</th>
+                                        <th>{{ResourceBundle["label_codigo_material"]}}</th>
+                                        <th>{{ResourceBundle["label_descricao"]}}</th>
+                                        <th>{{ResourceBundle["label_quantidade"]}}</th>
+                                        <th>{{ResourceBundle["label_unidade_medida"]}}</th>
+                                        <th>{{ResourceBundle["label_local_entrega"]}}</th>
+                                        <th>{{ResourceBundle["label_ultimo_valor_negociado"]}}</th>
+                                        <th>{{ResourceBundle["label_comprar_estoque"]}}</th>
+                                        <th ng-if="exibirCamposCustos">{{ResourceBundle["label_coletor_custos"]}}</th>
+                                        <th ng-if="exibirCamposCustos">{{ResourceBundle["label_esta_no_orcamento"]}}</th>
+                                        <th ng-if="exibirCamposCustos">{{ResourceBundle["label_valor_orcado"]}}</th>
+                                        <th ng-if="exibirCamposCustos">{{ResourceBundle["label_observacao_custo"]}}</th>
+                                        <th ng-if="objSelecionado.listaRmMaterial[0].rmMaterial.fluxoMaterial">
+                                            {{ResourceBundle["label_fluxo_material"]}}
+                                        </th>
+                                        <th ng-if="!exibirCamposCustos">{{ResourceBundle["label_coletor_custos"]}}</th>
+                                        <th>{{ResourceBundle["label_status"]}}</th>
+                                        <th ng-if="objSelecionado.listaRmMaterial[0].rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER'">
+                                            {{ResourceBundle["label_estoque_contabil"]}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="vwRmMaterial in objSelecionado.listaRmMaterial" title="{{vwRmMaterial.rmMaterial.material.nomeCompleto}}">
+                                        <td>
+                                            <nx-btn-2 title="{{ResourceBundle['label_anexos']}}" icone="glyphicon glyphicon-paperclip" ng-click="abrirModalAnexo('RM_MATERIAL', vwRmMaterial.rmMaterial.rmMaterialId)" ng-disabled="vwRmMaterial.rmMaterialStatus.status.codigo === 'Can'"></nx-btn-2>
+                                        </td>
+                                        <td style="vertical-align: middle">{{vwRmMaterial.rmMaterial.ordem}}</td>
+                                        <td style="vertical-align: middle">{{vwRmMaterial.rmMaterial.material.codigo}}</td>
+                                        <td style="vertical-align: middle">{{vwRmMaterial.rmMaterial.material.nome}}</td>
+                                        <td style="vertical-align: middle">{{vwRmMaterial.rmMaterial.quantidade}}</td>
+                                        <td style="vertical-align: middle">
+                                            {{vwRmMaterial.rmMaterial.material.unidadeMedida.descricao}}
+                                        </td>
+                                        <td style="vertical-align: middle">{{vwRmMaterial.rmMaterial.localEntrega}}</td>
+                                        <td style="vertical-align: middle">
+                                            {{vwRmMaterial.rmMaterial.material.ultimoValorNegociado | currency : 'R$ ':2}}
+                                        </td>
+                                        <td style="vertical-align: middle">{{vwRmMaterial.rmMaterial.coletorEstoque ? ResourceBundle["label_sim"] : ResourceBundle["label_nao"]}}
+                                        </td>
+                                        <td style="width:17%" ng-if="exibirCamposCustos || requisicaoRetiradaEstoquistaCusto || requisicaoRetiradaResponsavelEstoque">
+                                            <span class="additional-info-wrap">
+                                    <div class="btn-group">
+                                        <label for="aprRdbPep{{$index}}">
+                                            <input ng-model="objColetorCusto[$index]"
+                                                   ng-disabled="bloquearCamposCustos ||
+                                                                   vwRmMaterial.rmMaterialStatus.status.codigo === 'Can' ||
+                                           (vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' && vwRmMaterial.rmMaterial.material.estoqueSap === 'N')"
+                                                   required
+                                                   ng-change="changeColetorCusto(OPERACAO_PEP, $index)"
+                                                   type="radio" name="opcoes{{$index}}" id="aprRdbPep{{$index}}"
+                                                   value="{{OPERACAO_PEP}}"/> {{ResourceBundle["label_elemento_pep"]}}
+                                        </label>
+                                        <label for="aprRdbDiagrama{{$index}}">
+                                            <input ng-model="objColetorCusto[$index]"
+                                                   ng-disabled="bloquearCamposCustos ||
+                                                                   vwRmMaterial.rmMaterialStatus.status.codigo === 'Can' ||
+                                           (vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' && vwRmMaterial.rmMaterial.material.estoqueSap === 'N')"
+                                                   ng-change="changeColetorCusto(DIAGRAMA_DE_REDE, $index)"
+                                                   type="radio" name="opcoes{{$index}}" id="aprRdbDiagrama{{$index}}"
+                                                   value="{{DIAGRAMA_DE_REDE}}"/>
+                                            {{ResourceBundle["label_diagrama_de_rede"]}}
+                                        </label>
+                                        <label for="aprRdbEstoque{{$index}}"
+                                        ng-if="!requisicaoRetiradaEstoquistaCusto && !requisicaoRetiradaResponsavelEstoque && !requisicaoFrenteServico">
+                                            <input ng-model="objColetorCusto[$index]"
+                                                   ng-disabled="bloquearCamposCustos ||
+                                                                   vwRmMaterial.rmMaterialStatus.status.codigo === 'Can' ||
+                                           (vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' && vwRmMaterial.rmMaterial.material.estoqueSap === 'N')"
+                                                   ng-change="changeColetorCusto(ESTOQUE, $index)"
+                                                   type="radio" name="opcoes{{$index}}" id="aprRdbEstoque{{$index}}"
+                                                   value="{{ESTOQUE}}"/> {{ResourceBundle["label_estoque"]}}
+                                        </label>
+                                    </div>
+
+                                    <div id="aprDivColetorCusto{{$index}}" ng-show="true">
+                                        <input type="text" class="form-control" id="coletorCusto{{$index}}"
+                                               placeholder='{{ResourceBundle["label_coletor_custos"]}}' maxlength="24"
+                                               name="coletorCusto{{$index}}"
+                                               ng-model="vwRmMaterial.rmMaterial.coletorCustos"
+                                               nx-limit-to="200" ng-disabled="bloquearCamposCustos ||
+                                                               vwRmMaterial.rmMaterialStatus.status.codigo === 'Can' ||
+                                           (vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' && vwRmMaterial.rmMaterial.material.estoqueSap === 'N')"/>
+                                    </div>
+                                    <div id="aprDivDiagrama{{$index}}" class="input-group">
+                                        <input type="text" id="diagramaRede{{$index}}"
+                                               name="diagramaRede{{$index}}" maxlength="12"
+                                               ng-model="vwRmMaterial.rmMaterial.diagramaRede"
+                                               nx-limit-to="200"
+                                               placeholder='{{ResourceBundle["label_diagrama_de_rede"]}}'
+                                               class="form-control input-sm"
+                                               ng-disabled="bloquearCamposCustos ||
+                                                               vwRmMaterial.rmMaterialStatus.status.codigo === 'Can' ||
+                                           (vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' && vwRmMaterial.rmMaterial.material.estoqueSap === 'N')">
+                                        <span class="input-group-btn" style="width:0px;"></span>
+                                            <input type="text" class="form-control" id="operacao{{$index}}" name="operacao{{$index}}" max="4" maxlength="4" ng-model="vwRmMaterial.rmMaterial.operacao" placeholder='{{ResourceBundle["label_operacao"]}}' nx-limit-to="200" ng-disabled="bloquearCamposCustos ||
+                                                               vwRmMaterial.rmMaterialStatus.status.codigo === 'Can' ||
+                                           (vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' && vwRmMaterial.rmMaterial.material.estoqueSap === 'N')" />
+                        </div>
+                        <div id="aprDivEstoque{{$index}}" class="input-group">
+                            <input type="text" class="form-control" id="coletorOrdem{{$index}}" maxlength="100" name="coletorOrdem{{$index}}" ng-model="vwRmMaterial.rmMaterial.coletorOrdem" placeholder='{{ResourceBundle["label_estoque"]}}' nx-limit-to="200" ng-disabled="bloquearCamposCustos ||
+                                                               vwRmMaterial.rmMaterialStatus.status.codigo === 'Can' ||
+                                           (vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' && vwRmMaterial.rmMaterial.material.estoqueSap === 'N')" />
+                        </div>
+                        </span>
+                        </td>
+                        <td ng-if="exibirCamposCustos" style="vertical-align: middle">
+                            <nx-combo id="estaNoOrcamento{{$index}}" ng-model="vwRmMaterial.rmMaterial.estaNoOrcamento" ng-disabled="bloquearCamposCustos || vwRmMaterial.rmMaterialStatus.status.codigo === 'Can' ||
+                                           (vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' && vwRmMaterial.rmMaterial.material.estoqueSap === 'N')" ng-change="changeEstaNoOrcamento($index, vwRmMaterial.rmMaterial.estaNoOrcamento)">
+                                <option value=""></option>
+                                <option value="S">{{ResourceBundle['label_sim']}}</option>
+                                <option value="N">{{ResourceBundle['label_nao']}}</option>
+                                <option value="V">{{ResourceBundle['label_verba']}}</option>
+                            </nx-combo>
+                        </td>
+                        <td ng-if="exibirCamposCustos" style="vertical-align: middle">
+                            <nx-numero id="valorOrcado{{$index}}" ng-model="vwRmMaterial.rmMaterial.valorOrcado" nx-mil-separate="{{ResourceBundle['format_moeda_thousandsSeparatorTo']}}" nx-dec-separate="{{ResourceBundle['format_moeda_decimalSeparatorTo']}}" min="1" ng-disabled="bloquearCamposCustos || vwRmMaterial.rmMaterialStatus.status.codigo === 'Can' ||
+                                           (vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' && vwRmMaterial.rmMaterial.material.estoqueSap === 'N')">
+                            </nx-numero>
+                        </td>
+                        <td ng-if="exibirCamposCustos" style="vertical-align: middle">
+                            <input type="text" maxlength="1000" class="form-control" id="observacaoCusto{{$index}}" name="observacaoCusto{{$index}}" ng-model="vwRmMaterial.rmMaterial.observacaoCusto" nx-limit-to="200" ng-disabled="bloquearCamposCustos || vwRmMaterial.rmMaterialStatus.status.codigo === 'Can' ||
+                                           (vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER' && vwRmMaterial.rmMaterial.material.estoqueSap === 'N')" />
+                        </td>
+                        <td ng-if="vwRmMaterial.rmMaterial.fluxoMaterial" style="vertical-align: middle">
+                            {{vwRmMaterial.rmMaterial.fluxoMaterial}}
+                        </td>
+                        <td style="vertical-align: middle" ng-if="!exibirCamposCustos">
+                            {{vwRmMaterial.rmMaterial.coletorCustos ? vwRmMaterial.rmMaterial.coletorCustos : vwRmMaterial.rmMaterial.diagramaRede|| vwRmMaterial.rmMaterial.operacao ? vwRmMaterial.rmMaterial.diagramaRede + " - " + vwRmMaterial.rmMaterial.operacao : vwRmMaterial.rmMaterial.coletorEstoque
+                            ? ResourceBundle['label_estoque'] : ""}}
+                        </td>
+                        <td style="vertical-align: middle">
+                            {{vwRmMaterial.rmMaterialStatus.status.nome}}
+                        </td>
+                        <td style="vertical-align: middle" ng-if="vwRmMaterial.rmMaterial.rm.tipoRequisicao.codigo === 'TIP_REQ_FRE_SER'">
+                            <label>{{formataLabelEstoqueSap(vwRmMaterial.rmMaterial.material.estoqueSap)}}</label>
+                        </td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Aprovar Servico-->
+        <div>
+            <div class="row" ng-show="painelAprovarServico == 1">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading separador-cinza"><label>{{ResourceBundle["label_servicos"]}}</label>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped table-bordered lista" not-fix>
+                                <thead>
+                                    <tr>
+                                        <th>{{ResourceBundle["label_id_rm_servico"]}}</th>
+                                        <th>{{ResourceBundle["label_codigo_sap"]}}</th>
+                                        <th>{{ResourceBundle["label_local_prestacao_servico"]}}</th>
+                                        <th>{{ResourceBundle["label_elemento_pep"]}}</th>
+                                        <th>{{ResourceBundle["label_prazo_integracao"]}}</th>
+                                        <th>{{ResourceBundle["label_prazo_total"]}}</th>
+                                        <th>{{ResourceBundle["label_data_inicio"]}}</th>
+                                        <th>{{ResourceBundle["label_data_termino"]}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <td>
+                                            <nx-btn-2 title="{{ResourceBundle['label_anexos']}}" icone="glyphicon glyphicon-paperclip" ng-click="abrirModalAnexo('RM_MATERIAL', vwRmMaterial.rmMaterial.rmMaterialId)" ng-disabled="vwRmMaterial.rmMaterialStatus.status.codigo === 'Can'"></nx-btn-2>
+                                        </td> -->
+                                    <td style="vertical-align: middle">{{objSelecionado.rmAprovador.rm.area.codigo + " - " + objSelecionado.rmAprovador.rm.numeroRmServico}}</td>
+                                    <td style="vertical-align: middle">{{objSelecionado.rmServico.codigoSap}}</td>
+                                    <td style="vertical-align: middle">{{objSelecionado.rmServico.localPrestacaoServico}}</td>
+                                    <td style="vertical-align: middle">{{objSelecionado.rmServico.elementoPep}}</td>
+                                    <td style="vertical-align: middle">{{objSelecionado.rmServico.prazoIntegracao}}</td>
+                                    <td style="vertical-align: middle">{{objSelecionado.rmServico.prazoTotal}}</td>
+                                    <td style="vertical-align: middle">{{objSelecionado.rmServico.stDataInicio|date:ResourceBundle["format_date"]}}</td>
+                                    <td style="vertical-align: middle">{{objSelecionado.rmServico.stDataTermino|date:ResourceBundle["format_date"]}}</td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading separador-cinza"><label>{{ResourceBundle["label_tb_fornecedores"]}}</label>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped table-bordered lista" not-fix>
+                                <thead>
+                                    <tr>
+                                        <th>{{ ResourceBundle["label_fornecedor"] }}</th>
+                                        <th>{{ ResourceBundle["label_telefone"] }}</th>
+                                        <th>{{ ResourceBundle["label_email"] }}</th>
+                                        <th>{{ ResourceBundle["label_pessoa_contato"] }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="fornecedor in objSelecionado.rmServico.fornecedores">
+                                        <td>{{ fornecedor.fornecedor }}</td>
+                                        <td>{{ fornecedor.telefone }}</td>
+                                        <td>{{ fornecedor.email }}</td>
+                                        <td>{{ fornecedor.contato }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>

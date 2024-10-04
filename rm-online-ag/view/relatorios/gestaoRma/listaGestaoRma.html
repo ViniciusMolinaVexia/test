@@ -1,0 +1,154 @@
+<nx-paginacao
+        num-paginas="numPaginas"
+        pagina-atual="paginaAtiva"
+        listar-pagina="irParaPaginaEspecifica"
+        qtde-paginas="15">
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="table table-hover table-striped table-bordered lista">
+                <thead class="fundo-cabecalho-tabela">
+                <tr>
+                    <th>{{ResourceBundle['label_centro']}}</th>
+                    <th><a>{{ResourceBundle["label_numero"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_referencia"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_requisitante"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_setor"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_subarea"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_tipo_requisicao"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_codigo_material"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_material"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_deposito"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_quantidade"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_data_emissao"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_prioridade"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_data_aprov_coordenador"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_data_aprov_gerente_area"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_data_aprov_equipe_custo"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_data_aprov_gerente_custos"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_data_aprov_resp_retirada_estoque"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_data_criacao_pedido_sap"]}}</a></th>
+                    <th><a>{{ResourceBundle["label_comprador"]}}</a></th>
+                    <th ng-if="(configuracao.habilitaEapMultiEmpresa == null || configuracao.habilitaEapMultiEmpresa == true)">
+                        {{ResourceBundle['label_comprador_eap']}}
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="obj in listaRmMaterial | orderBy:ordemLista:reverse">
+                    <td ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true">
+                        {{obj.rmEapMultiEmpresaDescricao}}
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.rmNumeroRm}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.requisitanteReferencia}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.requisitanteNome}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.setorDescricao}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.subAreaDescricao}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.tipoRequisicaoDescricao}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.materialCodigo}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.materialNome}}
+                        </a>
+                    </td>
+
+                    <!-- Faço a verificação se o mesmo tem eap habilitada, se tiver, tem que exibir na coluna do lado do deposito -->
+                    <td ng-if="(configuracao.habilitaEapMultiEmpresa == null || (configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == false) || (configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true && obj.depositoEapMultiEmpresaDescricao == null))">
+                        <a>
+                            {{obj.depositoDescricao}}
+                        </a>
+                    </td>
+                    <td ng-if="configuracao.habilitaEapMultiEmpresa != null && configuracao.habilitaEapMultiEmpresa == true && obj.depositoEapMultiEmpresaDescricao != null">
+                        <a>
+                            {{obj.depositoDescricao}} - {{obj.depositoEapMultiEmpresaDescricao}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.rmMaterialQuantidade}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.rmDataEmissao| date: ResourceBundle['format_date_hora']}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.prioridadeDescricao}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.dataAprovCoordenador| date: ResourceBundle['format_date_hora']}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.dataAprovGerenteArea| date: ResourceBundle['format_date_hora']}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.dataAprovComplementoCustos| date: ResourceBundle['format_date_hora']}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.dataAprovGerenteCustos| date: ResourceBundle['format_date_hora']}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.dataAprovResponsavelRetiradaEstoque| date: ResourceBundle['format_date_hora']}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.dataCompra| date: ResourceBundle['format_date']}}
+                        </a>
+                    </td>
+                    <td>
+                        <a>
+                            {{obj.compradorNome}}
+                        </a>
+                    </td>
+                    <!-- Faço a verificação se o mesmo tem eap habilitada, se tiver, tem que exibir na coluna do lado do deposito -->
+                    <td ng-if="(configuracao.habilitaEapMultiEmpresa == null || configuracao.habilitaEapMultiEmpresa == true)">
+                        <a>
+                            {{obj.compradorEap}}
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</nx-paginacao>

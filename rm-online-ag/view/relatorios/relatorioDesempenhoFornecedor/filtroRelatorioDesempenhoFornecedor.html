@@ -1,0 +1,36 @@
+<nx-filtro>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_numero']}}</label>
+        <input id="cadastroRmaNumeroRma" class="form-control" ng-model="filtro.numeroRm">
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_material']}}</label>
+        <input id="cadastroRmaMaterial" class="form-control" ng-model="filtro.material">
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_requisitante']}}</label>
+        <nx-auto-complete id="cadastroRmaRequisitante" ng-model="filtro.requisitante" typeahead="Pessoa as Pessoa.nome for Pessoa in getAutoCompletePessoa($viewValue)"></nx-auto-complete>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_data_emissao']}}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <nx-date-field id="cadastroRmaDataEmissaoDe" placeholder="{{ResourceBundle['label_de']}}" ng-model="filtro.stDataEmissaoDe"></nx-date-field>
+            </div>
+            <div class="col-md-6">
+                <nx-date-field id="cadastroRmaDataEmissaoAte" placeholder="{{ResourceBundle['label_ate']}}" ng-model="filtro.stDataEmissaoAte"></nx-date-field>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>{{ResourceBundle['label_data_aplicacao']}}</label>
+        <div class="row">
+            <div class="col-md-6">
+                <nx-date-field id="cadastroRmaDataNecessidadeDe" placeholder="{{ResourceBundle['label_de']}}" ng-model="filtro.stDataNecessidadeDe"></nx-date-field>
+            </div>
+            <div class="col-md-6">
+                <nx-date-field id="cadastroRmaDataNecessidadeAte" placeholder="{{ResourceBundle['label_ate']}}" ng-model="filtro.stDataNecessidadeAte"></nx-date-field>
+            </div>
+        </div>
+    </div>
+</nx-filtro>

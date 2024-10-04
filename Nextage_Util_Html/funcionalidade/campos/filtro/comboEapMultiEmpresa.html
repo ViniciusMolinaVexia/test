@@ -1,0 +1,13 @@
+<div class="form-group"
+     ng-if="campoManut.campo.tipoCampo.nome === OBJECT && campoManut.campo.modoExibicao === COMBOEAPMULTIEMPRESA">
+    <!--<span class="glyphicon glyphicon-asterisk obrigatorio" ng-if='campoManut.obrigatorio === "S"'></span>-->
+    <nx-combo id="{{campoManut.id}}"
+              required
+              ng-model="filtroCampos[propriedadeSisema][campoManut.campo.propriedadeEntity]"
+              ng-change="(campoManut.eventos.length > 0 ? eventoNgChange(campoManut) : null)"
+
+              ng-blur="(campoManut.eventos.length > 0 ? eventoNgBlur(campoManut) : null)"
+              ng-focus="(campoManut.eventos.length > 0 ? eventoNgFocus(campoManut) : null)"
+              ng-options="eap.codigo + ' - ' + eap.descricao for eap in comboEapMultiEmpresa track by eap.id">
+    </nx-combo>
+</div> 
